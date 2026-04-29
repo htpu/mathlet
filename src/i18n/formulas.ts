@@ -1081,3 +1081,18 @@ Object.assign(FORMULA_I18N, {
   'falling-sand':{en:{title:'Falling sand',blurb:'Gravity-driven sand simulation.'},es:{title:'Arena cayendo',blurb:'Simulación de arena con gravedad.'}},
   'turing-machine':{en:{title:'Busy beaver (3-state Turing machine)',blurb:'3-state Turing machine execution trace.'},es:{title:'Castor laborioso',blurb:'Traza de máquina de Turing de 3 estados.'}},
 });
+
+Object.assign(FORMULA_I18N, {
+  'function-lab':{
+    en:{title:'Function Lab (custom expression)',blurb:'Type any JS math expression for live plotting. Supports sin/cos/exp/log/sqrt and constants pi, e, tau, phi.'},
+    es:{title:'Laboratorio de funciones',blurb:'Escribe cualquier expresión matemática para graficar en vivo. Soporta sin/cos/exp/log/sqrt y constantes pi, e, tau, phi.'},
+  },
+  'parametric-lab':{
+    en:{title:'Parametric curve lab',blurb:'Custom parametric curves in t (e.g. (cos(3t), sin(2t))).'},
+    es:{title:'Laboratorio de curvas paramétricas',blurb:'Curvas paramétricas personalizadas en t.'},
+  },
+  'polar-lab':{
+    en:{title:'Polar curve lab',blurb:'Custom polar functions (e.g. 1+cos(t), 2*sin(5t)).'},
+    es:{title:'Laboratorio de curvas polares',blurb:'Funciones polares personalizadas.'},
+  },
+});

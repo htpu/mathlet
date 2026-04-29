@@ -27,7 +27,8 @@ export type ParamSpec =
   | { kind: 'int'; key: string; label: string; min: number; max: number; default: number }
   | { kind: 'bool'; key: string; label: string; default: boolean }
   | { kind: 'select'; key: string; label: string; options: { value: string; label: string }[]; default: string }
-  | { kind: 'color'; key: string; label: string; default: string };
+  | { kind: 'color'; key: string; label: string; default: string }
+  | { kind: 'text'; key: string; label: string; default: string; placeholder?: string };
 
 export type SurfaceKind = 'canvas2d' | 'three';
 
@@ -86,4 +87,7 @@ export function s(key: string, label: string, def: string, options: { value: str
 }
 export function c(key: string, label: string, def: string): ParamSpec {
   return { kind: 'color', key, label, default: def };
+}
+export function t(key: string, label: string, def: string, placeholder?: string): ParamSpec {
+  return { kind: 'text', key, label, default: def, placeholder };
 }

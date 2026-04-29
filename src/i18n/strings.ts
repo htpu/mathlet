@@ -6,7 +6,7 @@ import type { Domain } from '../formulas/types';
 
 export const UI: Record<Lang, Record<string, string>> = {
   zh: {
-    siteTagline: '400 个公式可视化',
+    siteTagline: '403 个公式可视化',
     searchPlaceholder: '/ 搜索公式...',
     noMatch: '// 没有匹配的公式',
     notFound: '// 公式未找到',
@@ -18,11 +18,11 @@ export const UI: Record<Lang, Record<string, string>> = {
     needsJS: '该页面需要 JavaScript 进行交互式可视化。',
     surface2d: '2D',
     surface3d: '3D',
-    docTitle: 'mathlet · 400 个公式可视化',
-    docDescription: '400 个数学公式的交互式 2D/3D 可视化。极客向，按 L1-L5 分级，14 个领域全覆盖。',
+    docTitle: 'mathlet · 403 个公式可视化',
+    docDescription: '403 个数学公式的交互式 2D/3D 可视化。极客向，按 L1-L5 分级，14 个领域全覆盖。',
   },
   en: {
-    siteTagline: '400 formula visualizations',
+    siteTagline: '403 formula visualizations',
     searchPlaceholder: '/ search formulas...',
     noMatch: '// no matching formulas',
     notFound: '// formula not found',
@@ -34,11 +34,11 @@ export const UI: Record<Lang, Record<string, string>> = {
     needsJS: 'This page requires JavaScript for interactive visualization.',
     surface2d: '2D',
     surface3d: '3D',
-    docTitle: 'mathlet · 400 formula visualizations',
-    docDescription: 'Interactive 2D/3D visualization of 400 mathematical formulas. Geek-oriented, L1-L5 difficulty, 14 domains.',
+    docTitle: 'mathlet · 403 formula visualizations',
+    docDescription: 'Interactive 2D/3D visualization of 403 mathematical formulas. Geek-oriented, L1-L5 difficulty, 14 domains.',
   },
   es: {
-    siteTagline: '400 visualizaciones de fórmulas',
+    siteTagline: '403 visualizaciones de fórmulas',
     searchPlaceholder: '/ buscar fórmulas...',
     noMatch: '// sin fórmulas coincidentes',
     notFound: '// fórmula no encontrada',
@@ -50,8 +50,8 @@ export const UI: Record<Lang, Record<string, string>> = {
     needsJS: 'Esta página requiere JavaScript para la visualización interactiva.',
     surface2d: '2D',
     surface3d: '3D',
-    docTitle: 'mathlet · 400 visualizaciones de fórmulas',
-    docDescription: 'Visualización interactiva 2D/3D de 400 fórmulas matemáticas. Para entusiastas, dificultad L1-L5, 14 dominios.',
+    docTitle: 'mathlet · 403 visualizaciones de fórmulas',
+    docDescription: 'Visualización interactiva 2D/3D de 403 fórmulas matemáticas. Para entusiastas, dificultad L1-L5, 14 dominios.',
   },
 };
 

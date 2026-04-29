@@ -282,6 +282,21 @@ function buildParamRow(p: ParamSpec, sig: ReturnType<typeof signal<any>>, sync: 
     val.textContent = String(sig.peek());
     c.oninput = () => { sig.value = c.value; val.textContent = c.value; sync(); };
     row.appendChild(c);
+  } else if (p.kind === 'text') {
+    const inp = document.createElement('input'); inp.type = 'text';
+    inp.value = String(sig.peek());
+    inp.placeholder = (p as any).placeholder ?? '';
+    inp.style.gridColumn = '1 / -1';
+    inp.style.background = 'var(--bg)';
+    inp.style.border = '1px solid var(--border-strong)';
+    inp.style.color = 'var(--accent-3)';
+    inp.style.padding = '6px 8px';
+    inp.style.fontFamily = 'var(--mono)';
+    inp.style.fontSize = '12px';
+    inp.style.borderRadius = '3px';
+    val.textContent = '';
+    inp.oninput = () => { sig.value = inp.value; sync(); };
+    row.appendChild(inp);
   }
   return row;
 }
