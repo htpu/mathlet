@@ -312,3 +312,127 @@ code, kbd, .mono { font-family: var(--mono); }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .brand-link:hover .logo { animation-duration: 3s; }
+
+/* ============ MOBILE RESPONSIVE ============ */
+@media (max-width: 720px) {
+  body { font-size: 13px; }
+
+  /* Topbar */
+  .topbar {
+    flex-wrap: wrap;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .topbar .brand-link { order: 1; }
+  .topbar .lang-switcher { order: 2; margin-left: auto; }
+  .topbar .tagline { display: none; }
+  .topbar .grow { display: none; }
+  .search {
+    width: 100%;
+    order: 4;
+    flex-basis: 100%;
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  /* Filters: smaller chips, scroll horizontal */
+  .filters {
+    padding: 8px 12px;
+    gap: 4px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .chip { padding: 3px 8px; font-size: 11px; }
+
+  /* Breadcrumbs */
+  .breadcrumbs {
+    padding: 6px 12px;
+    font-size: 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  /* Card grid: smaller cards */
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+    padding: 12px;
+  }
+  .card {
+    padding: 10px;
+    border-radius: 4px;
+  }
+  .card .title { font-size: 13px; }
+  .card .tex { font-size: 11px; padding: 4px 6px; }
+  .card .blurb { font-size: 11px; }
+  .card .foot { font-size: 9px; }
+
+  /* Detail page: stack vertically */
+  .detail-bar {
+    flex-wrap: wrap;
+    padding: 8px 10px;
+    gap: 6px;
+    font-size: 10px;
+  }
+  .detail-bar .crumb-current { display: none; }
+  .detail-bar .grow { display: none; }
+  .detail-bar .lang-switcher .lang-btn { padding: 3px 6px; font-size: 10px; }
+  .detail-bar .mode-toggle button { padding: 3px 6px; font-size: 10px; }
+  .detail-bar .nav-arrow { padding: 2px 6px; font-size: 11px; }
+
+  .detail-body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  .detail-body.play { grid-template-rows: 1fr; }
+
+  .notes-pane {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 12px;
+    max-height: 38vh;
+    overflow-y: auto;
+  }
+  .notes-pane h1 { font-size: 15px; }
+  .notes-pane .meta-line { font-size: 10px; margin-bottom: 8px; }
+  .notes-pane .tex-block { padding: 8px; margin: 8px 0; font-size: 12px; }
+  .notes-pane .notes-content { font-size: 12px; }
+
+  .canvas-pane { min-height: 50vh; }
+
+  .params-pane {
+    padding: 8px 12px;
+    max-height: 30vh;
+  }
+  .params-pane.floating {
+    position: absolute;
+    right: 8px; top: 8px; bottom: 8px;
+    width: 200px;
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  .formula-floating {
+    left: 8px; top: 8px;
+    padding: 6px 10px;
+    max-width: 60%;
+    font-size: 11px;
+  }
+
+  .param { padding: 4px 0; font-size: 11px; }
+  .param .label { font-size: 11px; }
+  .param .val { min-width: 50px; font-size: 10px; }
+  .param select, .param input[type="number"] { font-size: 11px; padding: 2px 4px; }
+}
+
+@media (max-width: 420px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+  .params-pane.floating { width: 160px; padding: 6px 8px; }
+  .formula-floating { max-width: 50%; padding: 4px 8px; }
+}
+
+/* Touch-friendly targets */
+@media (pointer: coarse) {
+  .chip, .lang-btn, .nav-arrow, .mode-toggle button {
+    min-height: 32px;
+    padding: 6px 10px;
+  }
+  .param input[type="range"] { height: 28px; }
+}
