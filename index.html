@@ -3,14 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>mathlet · 200 个公式可视化</title>
-  <meta name="description" content="200 个数学公式的交互式 2D/3D 可视化。极客向，按 L1-L5 分级，14 个领域全覆盖。" />
+  <title>mathlet · 400 个公式可视化</title>
+  <meta name="description" content="400 个数学公式的交互式 2D/3D 可视化。极客向，按 L1-L5 分级，14 个领域全覆盖。" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/favicon.svg" />
+  <meta name="theme-color" content="#0a0e14" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous" />
   <link rel="stylesheet" href="/src/styles/theme.css" />
 </head>
 <body>
   <div class="topbar">
-    <div class="brand">▎mathlet<span class="cursor">_</span></div>
+    <a href="/" class="brand-link" title="mathlet">
+      <img src="/logo.svg" class="logo" alt="mathlet" width="28" height="28" />
+      <span class="brand">mathlet<span class="cursor">_</span></span>
+    </a>
     <span class="tagline" style="margin-left:14px;color:var(--fg-mute);font-family:var(--mono);font-size:11px"></span>
     <div class="grow"></div>
     <input id="q" class="search" placeholder="/ 搜索公式..." />

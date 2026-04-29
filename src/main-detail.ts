@@ -1,7 +1,8 @@
 import katex from 'katex';
 import { signal, effect } from './runtime/signal';
 import type { Formula, ParamSpec, ParamValues, Surface } from './formulas/types';
-import { REGISTRY, LOADERS } from './formulas/_registry.generated';
+import { REGISTRY } from './formulas/_registry.generated';
+import { LOADERS } from './formulas/_loaders.generated';
 import { UI, DOMAIN_LABELS_I18N, LANGS, LANG_LABELS, detectLang, setLang, type Lang } from './i18n/strings';
 import { FORMULA_I18N } from './i18n/formulas';
 

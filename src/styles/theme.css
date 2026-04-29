@@ -297,3 +297,18 @@ code, kbd, .mono { font-family: var(--mono); }
 .detail-bar .crumb-current { color: var(--fg); }
 .detail-bar a { transition: color 0.12s; }
 .detail-bar .crumb-sep { color: var(--fg-mute); }
+
+/* Logo + brand link */
+.brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.brand-link:hover .brand { color: var(--accent-2); }
+.brand-link .logo {
+  display: block;
+  animation: spin 12s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.brand-link:hover .logo { animation-duration: 3s; }

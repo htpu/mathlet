@@ -3,7 +3,8 @@ import { resolve, join } from 'node:path';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const FORMULAS_DIR = join(ROOT, 'src/formulas');
-const OUT = join(FORMULAS_DIR, '_registry.generated.ts');
+const META_OUT = join(FORMULAS_DIR, '_registry.generated.ts');
+const LOADERS_OUT = join(FORMULAS_DIR, '_loaders.generated.ts');
 
 interface Entry { domain: string; slug: string; path: string; }
 
@@ -22,62 +23,68 @@ function scan(): Entry[] {
   return out;
 }
 
-function extractMeta(path: string): { domain: string; level: number; tex: string; title: string; blurb: string; surface: string; animated: boolean } | null {
+function extractMeta(path: string) {
   const src = readFileSync(path, 'utf8');
   const m = src.match(/meta:\s*\{([\s\S]*?)\}\s*,\s*params/);
-  if (!m) {
-    const m2 = src.match(/\{[\s\S]*?slug:[\s\S]*?surface:[\s\S]*?\}/);
-    if (!m2) return null;
-  }
   const block = m ? m[1] : '';
   const get = (k: string): string | null => {
     const re = new RegExp(`${k}\\s*:\\s*(?:'([^']*)'|"([^"]*)"|\`([^\`]*)\`|(\\d+))`);
     const r = block.match(re) ?? src.match(re);
     return r ? (r[1] ?? r[2] ?? r[3] ?? r[4]) : null;
   };
-  const slug = get('slug') ?? '';
-  const title = get('title') ?? slug;
-  const domain = get('domain') ?? '';
-  const level = parseInt(get('level') ?? '3');
-  const tex = get('tex') ?? '';
-  const blurb = get('blurb') ?? '';
-  const surface = get('surface') ?? 'canvas2d';
-  const animated = /animated:\s*true/.test(src);
-  return { domain, level, tex, title, blurb, surface, animated };
+  return {
+    slug: get('slug') ?? '',
+    title: get('title') ?? '',
+    domain: get('domain') ?? '',
+    level: parseInt(get('level') ?? '3'),
+    tex: get('tex') ?? '',
+    blurb: get('blurb') ?? '',
+    surface: get('surface') ?? 'canvas2d',
+    animated: /animated:\s*true/.test(src),
+  };
 }
 
 const entries = scan();
-const lines: string[] = [];
-lines.push('// AUTO-GENERATED — do not edit. Run: npm run registry');
-lines.push('import type { Domain, Level, SurfaceKind } from \'./types\';');
-lines.push('');
-lines.push('export interface RegistryEntry {');
-lines.push('  slug: string; title: string; domain: Domain; level: Level;');
-lines.push('  tex: string; blurb: string; surface: SurfaceKind; animated: boolean;');
-lines.push('}');
-lines.push('');
-lines.push('export const REGISTRY: RegistryEntry[] = [');
-
+const records: { slug: string; path: string; meta: ReturnType<typeof extractMeta> }[] = [];
 const seen = new Set<string>();
-const records: { slug: string; path: string }[] = [];
 for (const e of entries) {
   const meta = extractMeta(join(FORMULAS_DIR, e.domain, e.slug + '.ts'));
-  if (!meta) continue;
+  if (!meta.slug) continue;
   if (seen.has(meta.title || e.slug)) continue;
   seen.add(meta.title || e.slug);
-  const slug = e.slug;
-  records.push({ slug, path: e.path });
-  const escapeStr = (s: string) => s.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-  lines.push(`  { slug: '${slug}', title: '${escapeStr(meta.title)}', domain: '${meta.domain}' as Domain, level: ${meta.level} as Level, tex: '${escapeStr(meta.tex)}', blurb: '${escapeStr(meta.blurb)}', surface: '${meta.surface}' as SurfaceKind, animated: ${meta.animated} },`);
+  records.push({ slug: e.slug, path: e.path, meta });
 }
-lines.push('];');
-lines.push('');
-lines.push('export const LOADERS: Record<string, () => Promise<{ default: any }>> = {');
-for (const r of records) {
-  lines.push(`  '${r.slug}': () => import('${r.path}'),`);
-}
-lines.push('};');
-lines.push('');
 
-writeFileSync(OUT, lines.join('\n'));
-console.log(`registry: ${records.length} formulas → ${OUT}`);
+const escapeStr = (s: string) => s.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+
+// Lightweight metadata file
+const metaLines: string[] = [
+  '// AUTO-GENERATED — do not edit. Run: npm run registry',
+  "import type { Domain, Level, SurfaceKind } from './types';",
+  '',
+  'export interface RegistryEntry {',
+  '  slug: string; title: string; domain: Domain; level: Level;',
+  '  tex: string; blurb: string; surface: SurfaceKind; animated: boolean;',
+  '}',
+  '',
+  'export const REGISTRY: RegistryEntry[] = [',
+];
+for (const r of records) {
+  const m = r.meta;
+  metaLines.push(`  { slug: '${r.slug}', title: '${escapeStr(m.title)}', domain: '${m.domain}' as Domain, level: ${m.level} as Level, tex: '${escapeStr(m.tex)}', blurb: '${escapeStr(m.blurb)}', surface: '${m.surface}' as SurfaceKind, animated: ${m.animated} },`);
+}
+metaLines.push('];');
+metaLines.push('');
+writeFileSync(META_OUT, metaLines.join('\n'));
+
+// Loaders file (only imported by detail page)
+const loaderLines: string[] = [
+  '// AUTO-GENERATED — do not edit. Run: npm run registry',
+  'export const LOADERS: Record<string, () => Promise<{ default: any }>> = {',
+];
+for (const r of records) loaderLines.push(`  '${r.slug}': () => import('${r.path}'),`);
+loaderLines.push('};');
+loaderLines.push('');
+writeFileSync(LOADERS_OUT, loaderLines.join('\n'));
+
+console.log(`registry: ${records.length} formulas → metadata + loaders split`);
