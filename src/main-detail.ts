@@ -20,10 +20,15 @@ function el(tag: string, attrs: Record<string, string> = {}, text?: string): HTM
   return e;
 }
 
+function slugToTitle(s: string): string {
+  return s.split('-').map(w => w ? w[0].toUpperCase() + w.slice(1) : '').join(' ');
+}
 function tFormula(slug: string, fallback: { title: string; blurb: string }): { title: string; blurb: string } {
   const l = lang.peek();
   if (l === 'zh') return fallback;
-  return FORMULA_I18N[slug]?.[l] ?? fallback;
+  const i = FORMULA_I18N[slug]?.[l];
+  if (i) return i;
+  return { title: slugToTitle(slug), blurb: '' };
 }
 
 if (!meta) {

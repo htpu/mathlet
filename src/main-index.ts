@@ -72,10 +72,15 @@ function el(tag: string, attrs: Record<string, string> = {}, text?: string): HTM
   return e;
 }
 
+function slugToTitle(s: string): string {
+  return s.split('-').map(w => w ? w[0].toUpperCase() + w.slice(1) : '').join(' ');
+}
 function tFormula(slug: string, fallback: { title: string; blurb: string }): { title: string; blurb: string } {
   const l = lang.peek();
   if (l === 'zh') return fallback;
-  return FORMULA_I18N[slug]?.[l] ?? fallback;
+  const i = FORMULA_I18N[slug]?.[l];
+  if (i) return i;
+  return { title: slugToTitle(slug), blurb: '' };
 }
 
 function applyStaticText() {
@@ -97,41 +102,75 @@ function renderTopbar() {
   bar.querySelector('.lang-switcher')?.remove();
   bar.querySelector('.random-btn')?.remove();
   bar.querySelector('.recent-btn')?.remove();
+  bar.querySelector('.menu-btn')?.remove();
   bar.querySelectorAll('.topbar-link').forEach(n => n.remove());
+
+  const menuBtn = el('button', { class: 'menu-btn', 'aria-label': 'menu', title: 'menu' }, '☰') as HTMLButtonElement;
+  menuBtn.onclick = (ev) => { ev.stopPropagation(); toggleMainMenu(menuBtn); };
+  bar.appendChild(menuBtn);
+}
+
+let mainMenuEl: HTMLElement | null = null;
+function toggleMainMenu(anchor: HTMLElement) {
+  if (mainMenuEl) { mainMenuEl.remove(); mainMenuEl = null; return; }
   const u = UI[lang.peek()];
+  const rndLabel: Record<Lang, string> = { zh: '🎲 随机', en: '🎲 Random', es: '🎲 Aleatorio' };
+  mainMenuEl = el('div', { class: 'main-menu', role: 'menu' });
+  const r = anchor.getBoundingClientRect();
+  mainMenuEl.style.top = `${r.bottom + 6}px`;
+  mainMenuEl.style.right = `${Math.max(8, window.innerWidth - r.right)}px`;
+
+  const close = () => { mainMenuEl?.remove(); mainMenuEl = null; };
+  const item = (label: string, fn: () => void) => {
+    const b = el('button', { class: 'main-menu-item', role: 'menuitem' }, label) as HTMLButtonElement;
+    b.onclick = (ev) => { ev.stopPropagation(); close(); fn(); };
+    return b;
+  };
+
+  mainMenuEl.appendChild(item(rndLabel[lang.peek()], () => {
+    const e = all[Math.floor(Math.random() * all.length)];
+    location.href = `/f/${e.slug}.html`;
+  }));
 
   const recents = getRecents();
   if (recents.length > 0) {
-    const rec = el('button', { class: 'recent-btn', title: RECENT_LABEL[lang.peek()] }, '↺') as HTMLButtonElement;
-    rec.onclick = (ev) => { ev.stopPropagation(); toggleRecentMenu(rec); };
-    bar.appendChild(rec);
+    const recHeader = el('div', { class: 'main-menu-h' }, RECENT_LABEL[lang.peek()]);
+    mainMenuEl.appendChild(recHeader);
+    const recEntries = recents.map(s => all.find(r => r.slug === s)).filter(Boolean) as RegistryEntry[];
+    for (const e of recEntries.slice(0, 6)) {
+      const tr = tFormula(e.slug, { title: e.title, blurb: e.blurb });
+      const a = el('a', { class: 'main-menu-item', href: `/f/${e.slug}.html`, role: 'menuitem' }, tr.title);
+      mainMenuEl.appendChild(a);
+    }
   }
 
-  const about = el('button', { class: 'topbar-link' }, u.aboutLink) as HTMLButtonElement;
-  about.onclick = () => toggleAbout();
-  bar.appendChild(about);
+  mainMenuEl.appendChild(el('div', { class: 'main-menu-sep' }));
+  mainMenuEl.appendChild(item(u.aboutLink, () => toggleAbout()));
+  const fb = el('a', { class: 'main-menu-item', href: 'mailto:htp2008@gmail.com?subject=mathlet%20feedback', role: 'menuitem' }, u.feedbackLink);
+  mainMenuEl.appendChild(fb);
 
-  const fb = el('a', { class: 'topbar-link', href: 'mailto:htp2008@gmail.com?subject=mathlet%20feedback' }, u.feedbackLink);
-  bar.appendChild(fb);
-
-  const rndLabel: Record<Lang, string> = { zh: '🎲 随机', en: '🎲 Random', es: '🎲 Aleatorio' };
-  const rnd = el('button', { class: 'random-btn', title: rndLabel[lang.peek()] }, rndLabel[lang.peek()]) as HTMLButtonElement;
-  rnd.onclick = () => {
-    const e = all[Math.floor(Math.random() * all.length)];
-    location.href = `/f/${e.slug}.html`;
-  };
-  bar.appendChild(rnd);
-  const sw = el('div', { class: 'lang-switcher' });
+  mainMenuEl.appendChild(el('div', { class: 'main-menu-sep' }));
+  const langRow = el('div', { class: 'main-menu-langs' });
   for (const l of LANGS) {
-    const b = el('button', { class: 'lang-btn' + (l === lang.peek() ? ' active' : '') }, LANG_LABELS[l]) as HTMLButtonElement;
-    b.dataset.lang = l;
-    b.setAttribute('aria-label', `Language: ${LANG_FULL[l]}`);
-    b.title = LANG_FULL[l];
-    b.setAttribute('aria-pressed', String(l === lang.peek()));
-    b.onclick = () => { lang.value = l; setLang(l); applyStaticText(); renderFilters(); renderGrid(); renderTopbar(); syncURL(); };
-    sw.appendChild(b);
+    const b = el('button', { class: 'lang-btn' + (l === lang.peek() ? ' active' : ''), title: LANG_FULL[l], 'aria-label': `Language: ${LANG_FULL[l]}`, 'aria-pressed': String(l === lang.peek()) }, LANG_LABELS[l]) as HTMLButtonElement;
+    b.onclick = (ev) => {
+      ev.stopPropagation();
+      lang.value = l; setLang(l); applyStaticText(); renderFilters(); renderGrid(); renderTopbar(); syncURL();
+      close();
+    };
+    langRow.appendChild(b);
   }
-  bar.appendChild(sw);
+  mainMenuEl.appendChild(langRow);
+
+  document.body.appendChild(mainMenuEl);
+  setTimeout(() => {
+    const handler = (ev: MouseEvent) => {
+      if (!mainMenuEl?.contains(ev.target as Node) && ev.target !== anchor) {
+        close(); document.removeEventListener('click', handler);
+      }
+    };
+    document.addEventListener('click', handler);
+  }, 0);
 }
 
 const DOMAIN_TOGGLE_LABEL: Record<Lang, string> = { zh: '领域', en: 'Domain', es: 'Dominio' };

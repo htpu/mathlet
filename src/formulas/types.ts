@@ -2,7 +2,7 @@ export type Domain =
   | 'algebra' | 'geometry' | 'calculus' | 'linalg' | 'ode' | 'pde'
   | 'probability' | 'fractal' | 'topology' | 'numbertheory'
   | 'signals' | 'optimization' | 'vectorfield' | 'cellular'
-  | 'biology';
+  | 'biology' | 'chemistry';
 
 export const DOMAIN_LABELS: Record<Domain, string> = {
   algebra: '代数 / 三角 / 复数',
@@ -20,6 +20,7 @@ export const DOMAIN_LABELS: Record<Domain, string> = {
   vectorfield: '向量场 / 微分几何',
   cellular: '元胞自动机 / 涌现',
   biology: '生物 / 基因 / 分子',
+  chemistry: '化学 / 反应 / 分子',
 };
 
 export type Level = 1 | 2 | 3 | 4 | 5;
