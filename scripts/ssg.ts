@@ -150,6 +150,20 @@ writeFileSync(join(DIST, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.join('\n')}\n</urlset>\n`);
 console.log(`ssg: sitemap.xml (${sitemapUrls.length} urls)`);
 
+// Static landing pages for /domain/<dom>, /level/<n>, /surface/<sf>
+// Avoids _redirects 200-rewrite quirks; Pages serves real index.html.
+const indexHtmlFinal = readFileSync(join(DIST, 'index.html'), 'utf8');
+function writeLanding(path: string) {
+  const dir = join(DIST, path);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, 'index.html'), indexHtmlFinal);
+}
+const allDomains = Array.from(new Set(REGISTRY.map(e => e.domain)));
+for (const d of allDomains) writeLanding(`domain/${d}`);
+for (const lv of [1, 2, 3, 4, 5]) writeLanding(`level/${lv}`);
+for (const sf of ['canvas2d', 'three']) writeLanding(`surface/${sf}`);
+console.log(`ssg: landing pages for ${allDomains.length} domains + 5 levels + 2 surfaces`);
+
 // 404 page
 const notFound = `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>404 · mathlet</title><link rel="stylesheet" href="/assets/theme.css"></head><body style="background:#0a0e14;color:#cbccc6;font-family:ui-monospace,monospace;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:20px"><div style="font-size:48px;color:#ffb454">404</div><div>// 公式未找到</div><a href="/" style="color:#39bae6">← 回索引</a></body></html>`;
 writeFileSync(join(DIST, '404.html'), notFound);
