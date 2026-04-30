@@ -492,6 +492,7 @@ applyStaticText();
 renderFilters();
 renderBreadcrumbs();
 effect(() => { query.value; domains.value; levels.value; surfaces.value; renderGrid(); renderBreadcrumbs(); });
+try { if (sessionStorage.getItem('mathlet:openAbout') === '1') { sessionStorage.removeItem('mathlet:openAbout'); setTimeout(() => toggleAbout(), 100); } } catch {}
 
 const qInput = document.getElementById('q') as HTMLInputElement;
 qInput.value = query.peek();

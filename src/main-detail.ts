@@ -165,10 +165,51 @@ async function bootstrap() {
   function toggleDetailMenu(anchor: HTMLElement) {
     let menu = document.querySelector('.detail-menu') as HTMLElement | null;
     if (menu) { menu.remove(); return; }
-    menu = el('div', { class: 'main-menu detail-menu' });
+    menu = el('div', { class: 'main-menu detail-menu', role: 'menu' });
     const r = anchor.getBoundingClientRect();
     menu.style.top = `${r.bottom + 6}px`;
     menu.style.right = `${Math.max(8, window.innerWidth - r.right)}px`;
+
+    const close = () => { menu!.remove(); };
+    const item = (label: string, fn: () => void) => {
+      const b = el('button', { class: 'main-menu-item', role: 'menuitem' }, label) as HTMLButtonElement;
+      b.onclick = (ev) => { ev.stopPropagation(); close(); fn(); };
+      return b;
+    };
+
+    const rndLabel: Record<string, string> = { zh: '🎲 随机', en: '🎲 Random', es: '🎲 Aleatorio' };
+    const recentLabel: Record<string, string> = { zh: '↺ 最近浏览', en: '↺ Recent', es: '↺ Recientes' };
+    const aboutLabel = (UI[lang.peek()] as any).aboutLink || 'About';
+    const feedbackLabel = (UI[lang.peek()] as any).feedbackLink || 'Feedback';
+
+    menu.appendChild(item(rndLabel[lang.peek()] || rndLabel.en, () => {
+      const e = REGISTRY[Math.floor(Math.random() * REGISTRY.length)];
+      location.href = `/f/${e.slug}.html`;
+    }));
+
+    let recents: string[] = [];
+    try { recents = JSON.parse(localStorage.getItem('mathlet:recents') ?? '[]'); } catch {}
+    if (recents.length > 0) {
+      menu.appendChild(el('div', { class: 'main-menu-h' }, recentLabel[lang.peek()] || recentLabel.en));
+      for (const s of recents.slice(0, 6)) {
+        const re = REGISTRY.find(r => r.slug === s);
+        if (!re) continue;
+        const a = el('a', { class: 'main-menu-item', href: `/f/${re.slug}.html`, role: 'menuitem' }, re.title);
+        menu.appendChild(a);
+      }
+    }
+
+    menu.appendChild(el('div', { class: 'main-menu-sep' }));
+    menu.appendChild(item(aboutLabel, () => {
+      const w = window.open('/', '_self');
+      // about lives only on index; navigate home and signal
+      try { sessionStorage.setItem('mathlet:openAbout', '1'); } catch {}
+      if (!w) location.href = '/';
+    }));
+    const fb = el('a', { class: 'main-menu-item', href: 'mailto:htp2008@gmail.com?subject=mathlet%20feedback', role: 'menuitem' }, feedbackLabel);
+    menu.appendChild(fb);
+
+    menu.appendChild(el('div', { class: 'main-menu-sep' }));
     menu.appendChild(el('div', { class: 'main-menu-h' }, 'Language'));
     const langRow = el('div', { class: 'main-menu-langs' });
     for (const l of LANGS) {
@@ -177,10 +218,11 @@ async function bootstrap() {
       langRow.appendChild(b);
     }
     menu.appendChild(langRow);
+
     document.body.appendChild(menu);
     setTimeout(() => {
-      const close = (ev: MouseEvent) => { if (!menu!.contains(ev.target as Node) && ev.target !== anchor) { menu!.remove(); document.removeEventListener('click', close); } };
-      document.addEventListener('click', close);
+      const handler = (ev: MouseEvent) => { if (!menu!.contains(ev.target as Node) && ev.target !== anchor) { close(); document.removeEventListener('click', handler); } };
+      document.addEventListener('click', handler);
     }, 0);
   }
 
