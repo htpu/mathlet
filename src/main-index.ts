@@ -2,7 +2,7 @@ import katex from 'katex';
 import { signal, effect } from './runtime/signal';
 import type { Domain, Level } from './formulas/types';
 import { REGISTRY, type RegistryEntry } from './formulas/_registry.generated';
-import { UI, DOMAIN_LABELS_I18N, LANGS, LANG_LABELS, detectLang, setLang, type Lang } from './i18n/strings';
+import { UI, DOMAIN_LABELS_I18N, LANGS, LANG_LABELS, LANG_FULL, detectLang, setLang, type Lang } from './i18n/strings';
 import { FORMULA_I18N } from './i18n/formulas';
 
 const all = REGISTRY;
@@ -79,7 +79,8 @@ function renderTopbar() {
   for (const l of LANGS) {
     const b = el('button', { class: 'lang-btn' + (l === lang.peek() ? ' active' : '') }, LANG_LABELS[l]) as HTMLButtonElement;
     b.dataset.lang = l;
-    b.setAttribute('aria-label', `Language: ${LANG_LABELS[l]}`);
+    b.setAttribute('aria-label', `Language: ${LANG_FULL[l]}`);
+    b.title = LANG_FULL[l];
     b.setAttribute('aria-pressed', String(l === lang.peek()));
     b.onclick = () => { lang.value = l; setLang(l); applyStaticText(); renderFilters(); renderGrid(); renderTopbar(); syncURL(); };
     sw.appendChild(b);
@@ -155,8 +156,9 @@ function matches(e: RegistryEntry): boolean {
 }
 
 const FEATURED_SLUGS = [
-  'mandelbrot', 'lorenz', 'julia', 'double-pendulum',
-  'karman-vortex', 'newton-fractal', 'conway-glider', 'ifs-barnsley',
+  'mandelbrot', 'lorenz', 'brian-brain', 'double-pendulum',
+  'brownian-2d', 'newton-fractal', 'conway-glider', 'ifs-barnsley',
+  'anneal', 'replicator',
 ];
 
 const FEATURED_LABEL: Record<Lang, string> = {

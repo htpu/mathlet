@@ -1,6 +1,7 @@
 export type Lang = 'zh' | 'en' | 'es';
 export const LANGS: Lang[] = ['zh', 'en', 'es'];
-export const LANG_LABELS: Record<Lang, string> = { zh: '中文', en: 'English', es: 'Español' };
+export const LANG_LABELS: Record<Lang, string> = { zh: '中', en: 'EN', es: 'ES' };
+export const LANG_FULL: Record<Lang, string> = { zh: '中文', en: 'English', es: 'Español' };
 
 import type { Domain } from '../formulas/types';
 
