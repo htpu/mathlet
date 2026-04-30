@@ -46,7 +46,7 @@ async function bootstrap() {
   const mod = await loader();
   const formula: Formula = mod.default;
   const tr = tFormula(formula.meta.slug, { title: formula.meta.title, blurb: formula.meta.blurb });
-  document.title = `${tr.title} · mathlet`;
+  document.title = `${tr.title} · MATHLET`;
 
   // Track recent visits (max 8, dedupe, most recent first)
   try {

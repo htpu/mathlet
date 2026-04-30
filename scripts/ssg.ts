@@ -84,7 +84,7 @@ for (const e of REGISTRY) {
   const ddom = new JSDOM(detailTpl);
   const dd = ddom.window.document;
   const titleEl = dd.querySelector('title')!;
-  const fullTitle = `${e.title} · mathlet`;
+  const fullTitle = `${e.title} · MATHLET`;
   titleEl.textContent = fullTitle;
   const url = `${SITE}/f/${e.slug}.html`;
   const ogImage = `${SITE}/thumbs/${e.slug}.webp`;
@@ -96,7 +96,7 @@ for (const e of REGISTRY) {
     ['property', 'og:type', 'article'],
     ['property', 'og:url', url],
     ['property', 'og:image', ogImage],
-    ['property', 'og:site_name', 'mathlet'],
+    ['property', 'og:site_name', 'MATHLET'],
     ['name', 'twitter:card', 'summary_large_image'],
     ['name', 'twitter:title', fullTitle],
     ['name', 'twitter:description', e.blurb],
@@ -134,7 +134,7 @@ for (const e of REGISTRY) {
     description: e.blurb,
     image: ogImage,
     url,
-    isPartOf: { '@type': 'WebSite', name: 'mathlet', url: SITE },
+    isPartOf: { '@type': 'WebSite', name: 'MATHLET', url: SITE },
     inLanguage: ['zh-CN', 'en', 'es'],
     keywords: [e.title, DOMAIN_LABELS[e.domain] ?? e.domain, 'math', 'visualization'],
   });
@@ -204,7 +204,7 @@ function writeLanding(path: string, title: string, desc: string, items?: { name:
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'mathlet', item: SITE + '/' },
+        { '@type': 'ListItem', position: 1, name: 'MATHLET', item: SITE + '/' },
         { '@type': 'ListItem', position: 2, name: crumb.name, item: crumb.item },
       ],
     });
@@ -233,8 +233,8 @@ for (const d of allDomains) {
   const dUrl = `${SITE}/domain/${d}/`;
   const items = list.map(e => ({ name: e.title, url: `${SITE}/f/${e.slug}.html` }));
   const slugSet = new Set(list.map(e => e.slug));
-  writeLanding(`domain/${d}`, `${dName} · mathlet (${list.length})`,
-    `${list.length} interactive ${dName} formula visualizations on mathlet. Includes ${sample}, and more — every formula is a live canvas with adjustable parameters.`,
+  writeLanding(`domain/${d}`, `${dName} · MATHLET (${list.length})`,
+    `${list.length} interactive ${dName} formula visualizations on MATHLET. Includes ${sample}, and more — every formula is a live canvas with adjustable parameters.`,
     items, { name: dName, item: dUrl },
     s => slugSet.has(s), `${dName} — ${list.length} interactive visualizations`);
 }
@@ -243,8 +243,8 @@ for (const lv of [1, 2, 3, 4, 5]) {
   const lUrl = `${SITE}/level/${lv}/`;
   const items = list.map(e => ({ name: e.title, url: `${SITE}/f/${e.slug}.html` }));
   const slugSet = new Set(list.map(e => e.slug));
-  writeLanding(`level/${lv}`, `Level ${lv} formulas · mathlet (${list.length})`,
-    `${list.length} interactive math formula visualizations at difficulty L${lv} on mathlet. ${'⭐'.repeat(lv)} L${lv}.`,
+  writeLanding(`level/${lv}`, `Level ${lv} formulas · MATHLET (${list.length})`,
+    `${list.length} interactive math formula visualizations at difficulty L${lv} on MATHLET. ${'⭐'.repeat(lv)} L${lv}.`,
     items, { name: `Level ${lv}`, item: lUrl },
     s => slugSet.has(s), `Level ${lv} — ${list.length} formulas`);
 }
@@ -254,15 +254,15 @@ for (const sf of ['canvas2d', 'three']) {
   const sUrl = `${SITE}/surface/${sf}/`;
   const items = list.map(e => ({ name: e.title, url: `${SITE}/f/${e.slug}.html` }));
   const slugSet = new Set(list.map(e => e.slug));
-  writeLanding(`surface/${sf}`, `${label} interactive math visualizations · mathlet (${list.length})`,
-    `${list.length} ${label} interactive math formula visualizations on mathlet. ${sf === 'three' ? 'Three.js powered with mouse-orbit cameras.' : 'Canvas2D parametric plots, fields, fractals, cellular automata.'}`,
+  writeLanding(`surface/${sf}`, `${label} interactive math visualizations · MATHLET (${list.length})`,
+    `${list.length} ${label} interactive math formula visualizations on MATHLET. ${sf === 'three' ? 'Three.js powered with mouse-orbit cameras.' : 'Canvas2D parametric plots, fields, fractals, cellular automata.'}`,
     items, { name: `${label} formulas`, item: sUrl },
     s => slugSet.has(s), `${label} formulas — ${list.length} interactive visualizations`);
 }
 console.log(`ssg: landing pages for ${allDomains.length} domains + 5 levels + 2 surfaces`);
 
 // 404 page
-const notFound = `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>404 · mathlet</title><link rel="stylesheet" href="/assets/theme.css"></head><body style="background:#0a0e14;color:#cbccc6;font-family:ui-monospace,monospace;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:20px"><div style="font-size:48px;color:#ffb454">404</div><div>// 公式未找到</div><a href="/" style="color:#39bae6">← 回索引</a></body></html>`;
+const notFound = `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>404 · MATHLET</title><link rel="stylesheet" href="/assets/theme.css"></head><body style="background:#0a0e14;color:#cbccc6;font-family:ui-monospace,monospace;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:20px"><div style="font-size:48px;color:#ffb454">404</div><div>// 公式未找到</div><a href="/" style="color:#39bae6">← 回索引</a></body></html>`;
 writeFileSync(join(DIST, '404.html'), notFound);
 
 // Cloudflare Pages: redirect /detail.html-style URLs and ensure SPA fallback

@@ -355,9 +355,11 @@ function makeCard(e: RegistryEntry, featured = false): HTMLAnchorElement {
   (thumb as HTMLImageElement).onerror = () => { thumb.style.display = 'none'; };
   a.appendChild(thumb);
 
+  const lvBadge = el('span', { class: 'card-level-badge', title: `L${e.level}` }, 'L' + e.level);
+  a.appendChild(lvBadge);
   const head = el('div', { class: 'head' });
   head.appendChild(el('div', { class: 'title' }, tr.title));
-  head.appendChild(el('div', { class: 'stars' }, '·'.repeat(e.level)));
+  head.appendChild(el('div', { class: 'card-domain' }, labels[e.domain]));
   a.appendChild(head);
 
   const overlay = el('div', { class: 'card-blurb-overlay' }, tr.blurb);
@@ -576,7 +578,7 @@ function toggleHelp() {
   if (helpEl) { helpEl.remove(); helpEl = null; return; }
   helpEl = el('div', { class: 'help-overlay', role: 'dialog' });
   const box = el('div', { class: 'help-box' });
-  box.appendChild(el('div', { class: 'help-title' }, 'mathlet'));
+  box.appendChild(el('div', { class: 'help-title' }, 'MATHLET'));
   box.appendChild(el('div', {}, HELP_TEXT[lang.peek()]));
   helpEl.appendChild(box);
   helpEl.onclick = () => toggleHelp();
