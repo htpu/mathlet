@@ -386,11 +386,31 @@ function renderGrid() {
     }
     const browseLabel: Record<Lang, string> = { zh: '按领域浏览', en: 'Browse by domain', es: 'Por dominio' };
     root.appendChild(el('h2', { class: 'section-h section-h-hero' }, browseLabel[lang.peek()]));
+    const DOMAIN_THUMB: Record<string, string> = {
+      algebra: 'euler-identity', geometry: 'spirograph', calculus: 'taylor',
+      linalg: 'svd', ode: 'lorenz', pde: 'drum-membrane', probability: 'brownian-2d',
+      fractal: 'mandelbrot', topology: 'mobius', numbertheory: 'ulam-spiral',
+      signals: 'fft', optimization: 'anneal', vectorfield: 'abc-flow',
+      cellular: 'conway-glider', biology: 'alpha-helix', chemistry: 'methane-tetrahedral',
+      quantum: 'schrodinger-1d', graph: 'small-world', crypto: 'elliptic-curve',
+      music: 'harmonic-series', gr: 'gravitational-wave-strain',
+    };
     const tiles = el('div', { class: 'domain-tiles' });
     for (const [dom, list] of byDomain) {
       const a = el('a', { class: 'domain-tile', href: `/domain/${dom}` }) as HTMLAnchorElement;
-      a.appendChild(el('span', { class: 'dt-name' }, labels[dom as keyof typeof labels]));
-      a.appendChild(el('span', { class: 'dt-count' }, String(list.length)));
+      const thumbSlug = DOMAIN_THUMB[dom];
+      if (thumbSlug) {
+        const img = el('img', {
+          class: 'dt-thumb', loading: 'lazy', decoding: 'async',
+          src: `/thumbs/${thumbSlug}.webp`, alt: '', width: '320', height: '200',
+        }) as HTMLImageElement;
+        img.onerror = () => { img.style.display = 'none'; };
+        a.appendChild(img);
+      }
+      const meta = el('div', { class: 'dt-meta' });
+      meta.appendChild(el('span', { class: 'dt-name' }, labels[dom as keyof typeof labels]));
+      meta.appendChild(el('span', { class: 'dt-count' }, String(list.length)));
+      a.appendChild(meta);
       a.onclick = (ev) => {
         ev.preventDefault();
         domains.value = new Set([dom as Domain]);
