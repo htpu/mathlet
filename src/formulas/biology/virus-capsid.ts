@@ -4,7 +4,7 @@ import { i } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let g:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'virus-capsid',title:'病毒衣壳 (二十面体)',domain:'biology',level:3,tex:'\\text{T=}n\\text{ icosahedral capsid}',blurb:'蛋白亚基对称排布，T 数控复杂度。'},
+  meta:{slug:'virus-capsid',title:'病毒衣壳 (二十面体)',domain:'biology',level:3,tex:'\\text{T=}n\\text{ icosahedral capsid}',blurb:'蛋白亚基对称排布，T 数控复杂度。',surface:'three'},
   params:[i('detail','细分',1,0,3)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);

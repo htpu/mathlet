@@ -4,7 +4,7 @@ import { i } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let g:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'microtubule',title:'微管 (Microtubule)',domain:'biology',level:3,tex:'\\text{13 protofilaments, αβ-tubulin dimers}',blurb:'13 条原丝构成的中空管。'},
+  meta:{slug:'microtubule',title:'微管 (Microtubule)',domain:'biology',level:3,tex:'\\text{13 protofilaments, αβ-tubulin dimers}',blurb:'13 条原丝构成的中空管。',surface:'three'},
   params:[i('n','环数',16,5,40)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);

@@ -4,7 +4,7 @@ import { i } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let g:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'beta-barrel',title:'β 桶状结构',domain:'biology',level:4,tex:'\\text{closed parallel β-sheet}',blurb:'GFP / 膜孔蛋白的桶形结构。'},
+  meta:{slug:'beta-barrel',title:'β 桶状结构',domain:'biology',level:4,tex:'\\text{closed parallel β-sheet}',blurb:'GFP / 膜孔蛋白的桶形结构。',surface:'three'},
   params:[i('strands','链数',8,4,20),i('len','链长',16,8,40)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);

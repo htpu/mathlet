@@ -4,7 +4,7 @@ import { i } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let g:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'micelle-3d',title:'胶束 (Micelle)',domain:'biology',level:3,tex:'\\text{spherical surfactant cluster}',blurb:'两亲分子球形聚集，头朝外。'},
+  meta:{slug:'micelle-3d',title:'胶束 (Micelle)',domain:'biology',level:3,tex:'\\text{spherical surfactant cluster}',blurb:'两亲分子球形聚集，头朝外。',surface:'three'},
   params:[i('n','分子数',60,20,200)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);

@@ -4,7 +4,7 @@ import { b } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let g:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'eukaryotic-cell',title:'真核细胞剖面',domain:'biology',level:3,tex:'\\text{nucleus + mito + ER + golgi}',blurb:'胞膜内含细胞核与多种细胞器。'},
+  meta:{slug:'eukaryotic-cell',title:'真核细胞剖面',domain:'biology',level:3,tex:'\\text{nucleus + mito + ER + golgi}',blurb:'胞膜内含细胞核与多种细胞器。',surface:'three'},
   params:[b('cut','剖面',true)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);

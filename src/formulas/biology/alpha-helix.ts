@@ -4,7 +4,7 @@ import { i } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let g:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'alpha-helix',title:'蛋白 α 螺旋',domain:'biology',level:3,tex:'\\text{3.6 residues/turn, 1.5 Å rise}',blurb:'氢键 i→i+4，右手 α 螺旋。'},
+  meta:{slug:'alpha-helix',title:'蛋白 α 螺旋',domain:'biology',level:3,tex:'\\text{3.6 residues/turn, 1.5 Å rise}',blurb:'氢键 i→i+4，右手 α 螺旋。',surface:'three'},
   params:[i('res','残基数',24,5,60)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);

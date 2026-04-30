@@ -4,7 +4,7 @@ import { i } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let g:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'ribosome-3d',title:'核糖体 (大小亚基)',domain:'biology',level:3,tex:'\\text{50S + 30S subunits}',blurb:'蛋白合成机器，两亚基夹合 mRNA。'},
+  meta:{slug:'ribosome-3d',title:'核糖体 (大小亚基)',domain:'biology',level:3,tex:'\\text{50S + 30S subunits}',blurb:'蛋白合成机器，两亚基夹合 mRNA。',surface:'three'},
   params:[i('seed','纹理 seed',7,1,100)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);

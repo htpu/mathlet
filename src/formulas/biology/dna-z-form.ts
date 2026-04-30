@@ -4,7 +4,7 @@ import { i, n } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let group:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'dna-z-form',title:'DNA Z 型左手螺旋',domain:'biology',level:4,tex:'\\text{12 bp/turn, left-handed, zig-zag}',blurb:'高盐 + GC 重复序列下的左手螺旋。'},
+  meta:{slug:'dna-z-form',title:'DNA Z 型左手螺旋',domain:'biology',level:4,tex:'\\text{12 bp/turn, left-handed, zig-zag}',blurb:'高盐 + GC 重复序列下的左手螺旋。',surface:'three'},
   params:[i('bp','碱基对',24,6,60)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);

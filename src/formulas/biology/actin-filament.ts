@@ -4,7 +4,7 @@ import { i } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let g:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'actin-filament',title:'肌动蛋白丝 (F-actin)',domain:'biology',level:3,tex:'\\text{double helix, 13 monomers/turn}',blurb:'两条 G-actin 链缠绕形成丝状结构。'},
+  meta:{slug:'actin-filament',title:'肌动蛋白丝 (F-actin)',domain:'biology',level:3,tex:'\\text{double helix, 13 monomers/turn}',blurb:'两条 G-actin 链缠绕形成丝状结构。',surface:'three'},
   params:[i('n','单体数',40,10,100)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);

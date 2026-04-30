@@ -4,7 +4,7 @@ import { i } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let g:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'rna-hairpin',title:'RNA 茎-环结构',domain:'biology',level:3,tex:'\\text{stem helix + loop}',blurb:'RNA 二级结构：双链茎 + 单链环。'},
+  meta:{slug:'rna-hairpin',title:'RNA 茎-环结构',domain:'biology',level:3,tex:'\\text{stem helix + loop}',blurb:'RNA 二级结构：双链茎 + 单链环。',surface:'three'},
   params:[i('stem','茎长',8,3,15),i('loop','环长',6,3,12)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);

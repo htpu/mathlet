@@ -4,7 +4,7 @@ import { i } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let g:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'mitochondrion',title:'线粒体 (Mitochondrion)',domain:'biology',level:3,tex:'\\text{outer + inner cristae membrane}',blurb:'外膜光滑，内膜折叠成嵴产生 ATP。'},
+  meta:{slug:'mitochondrion',title:'线粒体 (Mitochondrion)',domain:'biology',level:3,tex:'\\text{outer + inner cristae membrane}',blurb:'外膜光滑，内膜折叠成嵴产生 ATP。',surface:'three'},
   params:[i('cristae','嵴数',8,3,16)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);

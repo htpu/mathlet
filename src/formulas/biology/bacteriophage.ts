@@ -4,7 +4,7 @@ import { i } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let g:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'bacteriophage',title:'噬菌体 (Bacteriophage)',domain:'biology',level:3,tex:'\\text{icosahedral head + tail + fibers}',blurb:'T4 噬菌体经典形态：头-颈-尾-纤维。'},
+  meta:{slug:'bacteriophage',title:'噬菌体 (Bacteriophage)',domain:'biology',level:3,tex:'\\text{icosahedral head + tail + fibers}',blurb:'T4 噬菌体经典形态：头-颈-尾-纤维。',surface:'three'},
   params:[i('fibers','尾纤维',6,3,8)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);

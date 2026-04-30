@@ -4,7 +4,7 @@ import { i, b } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let g:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'beta-sheet',title:'蛋白 β 折叠片',domain:'biology',level:3,tex:'\\text{parallel/antiparallel pleated sheet}',blurb:'链间氢键的 zig-zag 平面结构。'},
+  meta:{slug:'beta-sheet',title:'蛋白 β 折叠片',domain:'biology',level:3,tex:'\\text{parallel/antiparallel pleated sheet}',blurb:'链间氢键的 zig-zag 平面结构。',surface:'three'},
   params:[i('strands','链数',5,2,10),i('len','链长',12,5,30),b('anti','反平行',true)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);

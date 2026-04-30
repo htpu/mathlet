@@ -4,7 +4,7 @@ import { i } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let g:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'lipid-bilayer',title:'磷脂双层',domain:'biology',level:3,tex:'\\text{two leaflets, hydrophobic core}',blurb:'磷脂头朝外，疏水尾对齐。'},
+  meta:{slug:'lipid-bilayer',title:'磷脂双层',domain:'biology',level:3,tex:'\\text{two leaflets, hydrophobic core}',blurb:'磷脂头朝外，疏水尾对齐。',surface:'three'},
   params:[i('n','分子数 (每层边)',8,3,20)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);

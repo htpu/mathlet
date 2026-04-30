@@ -5,7 +5,7 @@ import { addLights, clearScene, getThree } from '../../render/three';
 import { mulberry32 } from '../../render/numerics';
 let last=''; let g:THREE.Group|null=null;
 const f:Formula = {
-  meta:{slug:'protein-random-fold',title:'蛋白随机折叠',domain:'biology',level:4,tex:'\\text{self-avoiding walk}',blurb:'随机角度自洽行走模拟肽链折叠。'},
+  meta:{slug:'protein-random-fold',title:'蛋白随机折叠',domain:'biology',level:4,tex:'\\text{self-avoiding walk}',blurb:'随机角度自洽行走模拟肽链折叠。',surface:'three'},
   params:[i('seed','seed',42,1,200),i('len','长度',80,20,200)],
   render(s,p){
     if(s.kind!=='three') return; const c=getThree(s);
