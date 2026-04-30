@@ -1,0 +1,8 @@
+name = "mathlet-popularity"
+main = "src/index.ts"
+compatibility_date = "2026-04-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mathlet-visits"
+database_id = "e41b8099-4239-45c1-a1b6-0b81d61403fc"

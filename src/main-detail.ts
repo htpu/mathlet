@@ -51,6 +51,16 @@ async function bootstrap() {
     localStorage.setItem(key, JSON.stringify(next));
   } catch {}
 
+  // Popularity ping (fire & forget; worker dedupes & rate-limits server-side)
+  try {
+    fetch('https://mathlet-popularity.htp2008.workers.dev/v', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ slug }),
+      keepalive: true,
+    }).catch(() => {});
+  } catch {}
+
   const urlParams = new URLSearchParams(location.search);
   const initialMode = urlParams.get('mode') === 'play' ? 'play' : 'study';
   const mode = signal<'study' | 'play'>(initialMode);
@@ -93,7 +103,7 @@ async function bootstrap() {
   const idx = same.findIndex(r => r.slug === slug);
   const prev = idx > 0 ? same[idx - 1] : null;
   const next = idx >= 0 && idx < same.length - 1 ? same[idx + 1] : null;
-  const langSuffix = () => lang.peek() !== 'zh' ? `?lang=${lang.peek()}` : '';
+  const langSuffix = () => '';
 
   const homeLabel = lang.peek() === 'zh' ? '全部' : lang.peek() === 'es' ? 'Todo' : 'All';
   const home = el('a', { href: '/' + langSuffix() }, homeLabel);

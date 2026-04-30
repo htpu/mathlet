@@ -155,7 +155,12 @@ const notFound = `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 writeFileSync(join(DIST, '404.html'), notFound);
 
 // Cloudflare Pages: redirect /detail.html-style URLs and ensure SPA fallback
-writeFileSync(join(DIST, '_redirects'), '/detail /404 301\n');
+writeFileSync(join(DIST, '_redirects'),
+`/detail /404 301
+/domain/* /index.html 200
+/level/* /index.html 200
+/surface/* /index.html 200
+`);
 writeFileSync(join(DIST, '_headers'), `/assets/*
   Cache-Control: public, max-age=31536000, immutable
 /f/*

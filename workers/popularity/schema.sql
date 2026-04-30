@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS visits (
+  slug TEXT PRIMARY KEY,
+  count INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_count_desc ON visits(count DESC);

@@ -105,14 +105,14 @@ export const DOMAIN_LABELS_I18N: Record<Lang, Record<Domain, string>> = {
 const STORAGE_KEY = 'mathlet:lang';
 
 export function detectLang(): Lang {
+  if (typeof localStorage !== 'undefined') {
+    const v = localStorage.getItem(STORAGE_KEY);
+    if (v === 'en' || v === 'es' || v === 'zh') return v;
+  }
   if (typeof location !== 'undefined') {
     const url = new URL(location.href);
     const u = url.searchParams.get('lang');
     if (u === 'en' || u === 'es' || u === 'zh') return u;
-  }
-  if (typeof localStorage !== 'undefined') {
-    const v = localStorage.getItem(STORAGE_KEY);
-    if (v === 'en' || v === 'es' || v === 'zh') return v;
   }
   if (typeof navigator !== 'undefined') {
     const n = (navigator.language || '').toLowerCase();

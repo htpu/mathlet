@@ -10,20 +10,59 @@ const lang = signal<Lang>(detectLang());
 setLang(lang.peek());
 
 const params = new URLSearchParams(location.search);
+function parsePath(): { dom?: Domain; lv?: Level; sf?: string } {
+  const m = location.pathname.match(/^\/(domain|level|surface)\/([^/]+)\/?$/);
+  if (!m) return {};
+  const [, kind, val] = m;
+  if (kind === 'domain') return { dom: val as Domain };
+  if (kind === 'level') { const n = parseInt(val); return n >= 1 && n <= 5 ? { lv: n as Level } : {}; }
+  if (kind === 'surface') return { sf: val };
+  return {};
+}
+const initial = parsePath();
 const query = signal<string>(params.get('q') ?? '');
-const domains = signal<Set<Domain>>(new Set((params.get('domain')?.split(',').filter(Boolean) ?? []) as Domain[]));
-const levels = signal<Set<Level>>(new Set((params.get('level')?.split(',').filter(Boolean).map(Number).filter(n => n >= 1 && n <= 5) as Level[]) ?? []));
-const surfaces = signal<Set<string>>(new Set(params.get('surface')?.split(',').filter(Boolean) ?? []));
+const domains = signal<Set<Domain>>(new Set(
+  initial.dom ? [initial.dom]
+  : ((params.get('domain')?.split(',').filter(Boolean) ?? []) as Domain[])
+));
+const levels = signal<Set<Level>>(new Set(
+  initial.lv ? [initial.lv]
+  : ((params.get('level')?.split(',').filter(Boolean).map(Number).filter(n => n >= 1 && n <= 5) as Level[]) ?? [])
+));
+const surfaces = signal<Set<string>>(new Set(
+  initial.sf ? [initial.sf]
+  : (params.get('surface')?.split(',').filter(Boolean) ?? [])
+));
 
 function syncURL() {
+  const q = query.peek();
+  const ds = [...domains.peek()];
+  const ls = [...levels.peek()];
+  const ss = [...surfaces.peek()];
+  // Single-filter clean paths
+  if (!q && ds.length === 0 && ls.length === 0 && ss.length === 0) {
+    history.replaceState(null, '', '/');
+    return;
+  }
+  if (!q && ds.length === 1 && ls.length === 0 && ss.length === 0) {
+    history.replaceState(null, '', `/domain/${ds[0]}`);
+    return;
+  }
+  if (!q && ds.length === 0 && ls.length === 1 && ss.length === 0) {
+    history.replaceState(null, '', `/level/${ls[0]}`);
+    return;
+  }
+  if (!q && ds.length === 0 && ls.length === 0 && ss.length === 1) {
+    history.replaceState(null, '', `/surface/${ss[0]}`);
+    return;
+  }
+  // Fallback: query string on root
   const u = new URLSearchParams();
-  if (query.peek()) u.set('q', query.peek());
-  if (domains.peek().size) u.set('domain', [...domains.peek()].join(','));
-  if (levels.peek().size) u.set('level', [...levels.peek()].join(','));
-  if (surfaces.peek().size) u.set('surface', [...surfaces.peek()].join(','));
-  if (lang.peek() !== 'zh') u.set('lang', lang.peek());
-  const s = u.toString();
-  history.replaceState(null, '', s ? `?${s}` : location.pathname);
+  if (q) u.set('q', q);
+  if (ds.length) u.set('domain', ds.join(','));
+  if (ls.length) u.set('level', ls.join(','));
+  if (ss.length) u.set('surface', ss.join(','));
+  history.replaceState(null, '', `/?${u.toString()}`);
 }
 
 function el(tag: string, attrs: Record<string, string> = {}, text?: string): HTMLElement {
@@ -72,7 +111,7 @@ function renderTopbar() {
   const rnd = el('button', { class: 'random-btn', title: rndLabel[lang.peek()] }, rndLabel[lang.peek()]) as HTMLButtonElement;
   rnd.onclick = () => {
     const e = all[Math.floor(Math.random() * all.length)];
-    location.href = `/f/${e.slug}.html` + (lang.peek() !== 'zh' ? `?lang=${lang.peek()}` : '');
+    location.href = `/f/${e.slug}.html`;
   };
   bar.appendChild(rnd);
   const sw = el('div', { class: 'lang-switcher' });
@@ -173,6 +212,20 @@ const RECENT_LABEL: Record<Lang, string> = {
   es: '↺ Recientes',
 };
 
+const POPULAR_LABEL: Record<Lang, string> = {
+  zh: '🔥 热门',
+  en: '🔥 Popular',
+  es: '🔥 Popular',
+};
+
+let popularSlugs: string[] = [];
+fetch('/popular.json').then(r => r.ok ? r.json() : []).then((d: { slug: string }[]) => {
+  if (Array.isArray(d) && d.length > 0) {
+    popularSlugs = d.map(x => x.slug).slice(0, 8);
+    if (isUnfiltered()) renderGrid();
+  }
+}).catch(() => {});
+
 function getRecents(): string[] {
   try { return JSON.parse(localStorage.getItem('mathlet:recents') ?? '[]'); }
   catch { return []; }
@@ -183,7 +236,7 @@ function makeCard(e: RegistryEntry, featured = false): HTMLAnchorElement {
   const tr = tFormula(e.slug, { title: e.title, blurb: e.blurb });
   const a = document.createElement('a');
   a.className = 'card' + (featured ? ' card-featured' : '');
-  a.href = `/f/${e.slug}.html` + (lang.peek() !== 'zh' ? `?lang=${lang.peek()}` : '');
+  a.href = `/f/${e.slug}.html`;
   a.setAttribute('aria-label', `${tr.title} — ${labels[e.domain]} — L${e.level}`);
 
   const head = el('div', { class: 'head' });
@@ -234,14 +287,37 @@ function renderGrid() {
     hero.appendChild(el('p', { class: 'hero-body' }, u.heroBody));
     root.appendChild(hero);
 
-    // Recents (if any)
+    // Popular (if data loaded)
+    if (popularSlugs.length > 0) {
+      const popEntries = popularSlugs.map(s => all.find(r => r.slug === s)).filter(Boolean) as RegistryEntry[];
+      if (popEntries.length > 0) {
+        root.appendChild(el('h2', { class: 'section-h' }, POPULAR_LABEL[lang.peek()]));
+        const row = el('div', { class: 'grid-row' });
+        for (const e of popEntries) row.appendChild(makeCard(e));
+        root.appendChild(row);
+      }
+    }
+
+    // Recents (collapsed by default)
     const recents = getRecents();
     const recEntries = recents.map(s => all.find(r => r.slug === s)).filter(Boolean) as RegistryEntry[];
     if (recEntries.length > 0) {
-      root.appendChild(el('h2', { class: 'section-h' }, RECENT_LABEL[lang.peek()]));
-      const recRow = el('div', { class: 'grid-row' });
+      let recCollapsed = true;
+      try { recCollapsed = localStorage.getItem('mathlet:recents-open') !== '1'; } catch {}
+      const recH = el('h2', { class: 'section-h' }) as HTMLHeadingElement;
+      const caret = el('button', { class: 'section-caret', 'aria-label': 'toggle' }, recCollapsed ? '▸' : '▾') as HTMLButtonElement;
+      recH.appendChild(caret);
+      recH.appendChild(el('span', { class: 'section-label' }, RECENT_LABEL[lang.peek()] + ` (${recEntries.length})`));
+      root.appendChild(recH);
+      const recRow = el('div', { class: 'grid-row' + (recCollapsed ? ' collapsed' : '') });
       for (const e of recEntries) recRow.appendChild(makeCard(e));
       root.appendChild(recRow);
+      caret.onclick = () => {
+        recCollapsed = !recCollapsed;
+        recRow.classList.toggle('collapsed', recCollapsed);
+        caret.textContent = recCollapsed ? '▸' : '▾';
+        try { localStorage.setItem('mathlet:recents-open', recCollapsed ? '0' : '1'); } catch {}
+      };
     }
 
     // Featured strip
@@ -292,7 +368,7 @@ function renderGrid() {
       const visible = list.slice(0, PER_SECTION);
       for (const e of visible) row.appendChild(makeCard(e));
       if (list.length > PER_SECTION) {
-        const more = el('a', { class: 'card card-more', href: `/?domain=${dom}` + (lang.peek() !== 'zh' ? `&lang=${lang.peek()}` : '') }) as HTMLAnchorElement;
+        const more = el('a', { class: 'card card-more', href: `/domain/${dom}` }) as HTMLAnchorElement;
         more.textContent = moreLabel[lang.peek()](list.length - PER_SECTION);
         more.onclick = (ev) => { ev.preventDefault(); goDomain(dom); };
         row.appendChild(more);
