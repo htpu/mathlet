@@ -131,6 +131,8 @@ async function bootstrap() {
   bar.appendChild(nextBtn);
   const resetBtn = el('button', { class: 'nav-arrow' }, UI[lang.peek()].reset) as HTMLButtonElement;
   bar.appendChild(resetBtn);
+  const diceBtn = el('button', { class: 'nav-arrow', title: 'randomise parameters' }, '🎲') as HTMLButtonElement;
+  bar.appendChild(diceBtn);
   const snapBtn = el('button', { class: 'nav-arrow' }, UI[lang.peek()].snapshot) as HTMLButtonElement;
   bar.appendChild(snapBtn);
   const shareBtn = el('button', { class: 'nav-arrow', title: 'copy link with current params' }, '🔗') as HTMLButtonElement;
@@ -269,6 +271,28 @@ async function bootstrap() {
     syncURL(); rebuildParams();
   });
 
+  const randomizeParam = (p: ParamSpec): unknown => {
+    if (p.kind === 'number') {
+      if (p.logScale && p.min > 0 && p.max > 0) {
+        const lo = Math.log(p.min), hi = Math.log(p.max);
+        return Math.exp(lo + Math.random() * (hi - lo));
+      }
+      const v = p.min + Math.random() * (p.max - p.min);
+      return p.step ? Math.round(v / p.step) * p.step : v;
+    }
+    if (p.kind === 'int') return Math.floor(p.min + Math.random() * (p.max - p.min + 1));
+    if (p.kind === 'bool') return Math.random() < 0.5;
+    if (p.kind === 'select') return p.options[Math.floor(Math.random() * p.options.length)].value;
+    return p.default;
+  };
+  diceBtn.addEventListener('click', () => {
+    for (const p of formula.params) {
+      if (p.kind === 'color' || p.kind === 'text') continue;
+      paramSignals[p.key].value = randomizeParam(p);
+    }
+    syncURL(); rebuildParams();
+  });
+
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   let surface: Surface;
   function resize() {
@@ -320,6 +344,7 @@ async function bootstrap() {
     if ((e.target as HTMLElement).tagName === 'INPUT') return;
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.key === 'r') { for (const p of formula.params) paramSignals[p.key].value = p.default; syncURL(); rebuildParams(); }
+    else if (e.key === 'd') { diceBtn.click(); }
     else if (e.key === 'ArrowLeft' && prev) location.href = `/f/${prev.slug}.html`;
     else if (e.key === 'ArrowRight' && next) location.href = `/f/${next.slug}.html`;
     else if (e.key === 'k' && globalPrev) location.href = `/f/${globalPrev.slug}.html`;
@@ -328,7 +353,7 @@ async function bootstrap() {
     else if (e.key === 'G' && globalNext) location.href = `/f/${REGISTRY[REGISTRY.length-1].slug}.html`;
     else if (e.key === '?') {
       e.preventDefault();
-      const lines = ['mathlet detail · keyboard', '', '← → prev/next in same domain+level', 'j / k  next/prev across all formulas', 'g / G  first / last formula', 'r  reset params', '/  search (top)', 'esc  close'];
+      const lines = ['mathlet detail · keyboard', '', '← → prev/next in same domain+level', 'j / k  next/prev across all formulas', 'g / G  first / last formula', 'r  reset params', 'd  randomise params', '/  search (top)', 'esc  close'];
       const o = document.createElement('div');
       o.style.cssText = 'position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;cursor:pointer';
       const b = document.createElement('div');
