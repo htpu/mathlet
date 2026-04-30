@@ -144,10 +144,23 @@ async function bootstrap() {
       setTimeout(() => { shareBtn.textContent = orig; }, 1200);
     } catch {}
   });
-  const menuBtn = el('button', { class: 'nav-arrow menu-btn-detail', 'aria-label': 'menu' }, '☰') as HTMLButtonElement;
-  menuBtn.onclick = (ev) => { ev.stopPropagation(); toggleDetailMenu(menuBtn); };
-  bar.appendChild(menuBtn);
   root.appendChild(bar);
+  // Wire topbar (logo + search + menu) — search goes to /?q=
+  const qInput = document.getElementById('q-detail') as HTMLInputElement | null;
+  if (qInput) {
+    qInput.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter') {
+        const v = qInput.value.trim();
+        location.href = v ? `/?q=${encodeURIComponent(v)}` : '/';
+      }
+    });
+  }
+  const topbarEl = document.querySelector('.topbar');
+  if (topbarEl && !topbarEl.querySelector('.menu-btn')) {
+    const menuBtn = el('button', { class: 'menu-btn', 'aria-label': 'menu', title: 'menu' }, '☰') as HTMLButtonElement;
+    menuBtn.onclick = (ev) => { ev.stopPropagation(); toggleDetailMenu(menuBtn); };
+    topbarEl.appendChild(menuBtn);
+  }
 
   function toggleDetailMenu(anchor: HTMLElement) {
     let menu = document.querySelector('.detail-menu') as HTMLElement | null;

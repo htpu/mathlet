@@ -36,20 +36,21 @@ code, kbd, .mono { font-family: var(--mono); }
 /* Top bar */
 .topbar {
   position: sticky; top: 0; z-index: 30;
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 20px;
-  background: var(--bg-elev);
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px;
+  background: rgba(13,16,23,0.92);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(6px);
-  background: rgba(13,16,23,0.92);
+  flex-wrap: nowrap;
 }
+.topbar .brand-link { flex-shrink: 0; }
 .topbar .brand {
   font-family: var(--mono); font-weight: 700; color: var(--accent);
   letter-spacing: -0.5px;
 }
 .topbar .brand .cursor { color: var(--accent-3); animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
-.topbar .grow { flex: 1; }
+.topbar .grow { display: none; }
 .search {
   background: var(--bg);
   border: 1px solid var(--border-strong);
@@ -57,7 +58,8 @@ code, kbd, .mono { font-family: var(--mono); }
   padding: 6px 10px;
   border-radius: 4px;
   font-family: var(--mono);
-  width: 280px;
+  flex: 1;
+  min-width: 0;
 }
 .search:focus { outline: none; border-color: var(--accent-2); }
 
@@ -611,21 +613,14 @@ body.mode-play .detail-body { grid-template-rows: 1fr; height: 100vh; }
 
   /* Topbar */
   .topbar {
-    flex-wrap: wrap;
-    padding: 8px 12px;
+    flex-wrap: nowrap;
+    padding: 8px 10px;
     gap: 8px;
   }
-  .topbar .brand-link { order: 1; }
-  .topbar .lang-switcher { order: 2; margin-left: auto; }
+  .topbar .brand span.brand { display: none; }
   .topbar .tagline { display: none; }
   .topbar .grow { display: none; }
-  .search {
-    width: 100%;
-    order: 4;
-    flex-basis: 100%;
-    font-size: 13px;
-    padding: 8px 10px;
-  }
+  .search { font-size: 13px; padding: 6px 10px; }
 
   /* Filters: smaller chips, scroll horizontal with right fade */
   .filters {
