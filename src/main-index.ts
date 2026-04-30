@@ -271,16 +271,24 @@ function renderGrid() {
       renderFilters(); renderBreadcrumbs(); syncURL();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+    let collapsed: Set<string>;
+    try { collapsed = new Set(JSON.parse(localStorage.getItem('mathlet:collapsed') ?? '[]')); }
+    catch { collapsed = new Set(); }
+    const persist = () => localStorage.setItem('mathlet:collapsed', JSON.stringify([...collapsed]));
+
     for (const [dom, list] of byDomain) {
-      const h = el('h2', { class: 'section-h section-h-link' }) as HTMLHeadingElement;
-      h.setAttribute('role', 'button');
-      h.setAttribute('tabindex', '0');
-      h.appendChild(el('span', {}, labels[dom as keyof typeof labels]));
-      h.appendChild(el('span', { class: 'section-count' }, ` (${list.length})`));
-      h.onclick = () => goDomain(dom);
-      h.onkeydown = (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); goDomain(dom); } };
+      const h = el('h2', { class: 'section-h' }) as HTMLHeadingElement;
+      const caret = el('button', { class: 'section-caret', 'aria-label': 'toggle' }, collapsed.has(dom) ? '▸' : '▾') as HTMLButtonElement;
+      h.appendChild(caret);
+      const label = el('span', { class: 'section-label', role: 'button', tabindex: '0' }) as HTMLElement;
+      label.appendChild(el('span', {}, labels[dom as keyof typeof labels]));
+      label.appendChild(el('span', { class: 'section-count' }, ` (${list.length})`));
+      label.onclick = () => goDomain(dom);
+      label.onkeydown = (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); goDomain(dom); } };
+      h.appendChild(label);
       root.appendChild(h);
-      const row = el('div', { class: 'grid-row' });
+
+      const row = el('div', { class: 'grid-row' + (collapsed.has(dom) ? ' collapsed' : '') });
       const visible = list.slice(0, PER_SECTION);
       for (const e of visible) row.appendChild(makeCard(e));
       if (list.length > PER_SECTION) {
@@ -290,6 +298,12 @@ function renderGrid() {
         row.appendChild(more);
       }
       root.appendChild(row);
+
+      caret.onclick = () => {
+        if (collapsed.has(dom)) { collapsed.delete(dom); row.classList.remove('collapsed'); caret.textContent = '▾'; }
+        else { collapsed.add(dom); row.classList.add('collapsed'); caret.textContent = '▸'; }
+        persist();
+      };
     }
     return;
   }
