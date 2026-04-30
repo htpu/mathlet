@@ -96,9 +96,16 @@ function renderTopbar() {
   if (!bar) return;
   bar.querySelector('.lang-switcher')?.remove();
   bar.querySelector('.random-btn')?.remove();
-  bar.querySelector('.topbar-link')?.remove();
+  bar.querySelector('.recent-btn')?.remove();
   bar.querySelectorAll('.topbar-link').forEach(n => n.remove());
   const u = UI[lang.peek()];
+
+  const recents = getRecents();
+  if (recents.length > 0) {
+    const rec = el('button', { class: 'recent-btn', title: RECENT_LABEL[lang.peek()] }, '↺') as HTMLButtonElement;
+    rec.onclick = (ev) => { ev.stopPropagation(); toggleRecentMenu(rec); };
+    bar.appendChild(rec);
+  }
 
   const about = el('button', { class: 'topbar-link' }, u.aboutLink) as HTMLButtonElement;
   about.onclick = () => toggleAbout();
@@ -127,28 +134,12 @@ function renderTopbar() {
   bar.appendChild(sw);
 }
 
+const DOMAIN_TOGGLE_LABEL: Record<Lang, string> = { zh: '领域', en: 'Domain', es: 'Dominio' };
+
 function renderFilters() {
   const root = document.getElementById('filters')!;
   root.replaceChildren();
   const labels = DOMAIN_LABELS_I18N[lang.peek()];
-
-  const dWrap = document.createElement('div');
-  dWrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px';
-  for (const [d, label] of Object.entries(labels)) {
-    const b = el('button', { class: 'chip' }, label) as HTMLButtonElement;
-    const apply = () => { const on = domains.peek().has(d as Domain); b.classList.toggle('active', on); b.setAttribute('aria-pressed', String(on)); };
-    apply();
-    b.onclick = () => {
-      const s = new Set(domains.peek());
-      if (s.has(d as Domain)) s.delete(d as Domain); else s.add(d as Domain);
-      domains.value = s; apply(); syncURL();
-    };
-    dWrap.appendChild(b);
-  }
-  root.appendChild(dWrap);
-
-  const sep = document.createElement('div'); sep.style.flexBasis = '100%'; sep.style.height = '4px';
-  root.appendChild(sep);
 
   const lWrap = document.createElement('div'); lWrap.style.cssText = 'display:flex;gap:6px';
   for (const lv of [1, 2, 3, 4, 5] as Level[]) {
@@ -179,6 +170,50 @@ function renderFilters() {
     sWrap.appendChild(b);
   }
   root.appendChild(sWrap);
+
+  // Domain dropdown trigger (collapsed by default)
+  const gap2 = document.createElement('div'); gap2.style.width = '8px'; root.appendChild(gap2);
+  const domBtn = el('button', { class: 'chip chip-domain' }) as HTMLButtonElement;
+  const setDomBtnLabel = () => {
+    const n = domains.peek().size;
+    domBtn.textContent = n === 0 ? `${DOMAIN_TOGGLE_LABEL[lang.peek()]} ▾` : `${DOMAIN_TOGGLE_LABEL[lang.peek()]} (${n}) ▾`;
+    domBtn.classList.toggle('active', n > 0);
+    domBtn.setAttribute('aria-pressed', String(n > 0));
+  };
+  setDomBtnLabel();
+  domBtn.onclick = (ev) => { ev.stopPropagation(); toggleDomainPopover(domBtn, labels, setDomBtnLabel); };
+  root.appendChild(domBtn);
+}
+
+let domPopoverEl: HTMLElement | null = null;
+function toggleDomainPopover(anchor: HTMLElement, labels: Record<string, string>, onChange: () => void) {
+  if (domPopoverEl) { domPopoverEl.remove(); domPopoverEl = null; return; }
+  domPopoverEl = el('div', { class: 'domain-popover' });
+  const r = anchor.getBoundingClientRect();
+  domPopoverEl.style.top = `${r.bottom + 6}px`;
+  domPopoverEl.style.left = `${Math.max(8, r.left)}px`;
+  for (const [d, label] of Object.entries(labels)) {
+    const b = el('button', { class: 'chip' }, label) as HTMLButtonElement;
+    const apply = () => { const on = domains.peek().has(d as Domain); b.classList.toggle('active', on); b.setAttribute('aria-pressed', String(on)); };
+    apply();
+    b.onclick = (ev) => {
+      ev.stopPropagation();
+      const s = new Set(domains.peek());
+      if (s.has(d as Domain)) s.delete(d as Domain); else s.add(d as Domain);
+      domains.value = s; apply(); onChange(); syncURL();
+    };
+    domPopoverEl.appendChild(b);
+  }
+  document.body.appendChild(domPopoverEl);
+  setTimeout(() => {
+    const close = (ev: MouseEvent) => {
+      if (!domPopoverEl?.contains(ev.target as Node) && ev.target !== anchor) {
+        domPopoverEl?.remove(); domPopoverEl = null;
+        document.removeEventListener('click', close);
+      }
+    };
+    document.addEventListener('click', close);
+  }, 0);
 }
 
 function matches(e: RegistryEntry): boolean {
@@ -237,7 +272,8 @@ function makeCard(e: RegistryEntry, featured = false): HTMLAnchorElement {
   const a = document.createElement('a');
   a.className = 'card' + (featured ? ' card-featured' : '');
   a.href = `/f/${e.slug}.html`;
-  a.setAttribute('aria-label', `${tr.title} — ${labels[e.domain]} — L${e.level}`);
+  a.setAttribute('aria-label', `${tr.title} — ${labels[e.domain]} — L${e.level} — ${tr.blurb}`);
+  a.title = tr.blurb;
 
   const head = el('div', { class: 'head' });
   head.appendChild(el('div', { class: 'title' }, tr.title));
@@ -261,11 +297,12 @@ function makeCard(e: RegistryEntry, featured = false): HTMLAnchorElement {
   (thumb as HTMLImageElement).onerror = () => { thumb.style.display = 'none'; };
   a.appendChild(thumb);
 
-  a.appendChild(el('div', { class: 'blurb' }, tr.blurb));
+  // Blurb overlays thumb on hover only
+  const overlay = el('div', { class: 'card-blurb-overlay' }, tr.blurb);
+  a.appendChild(overlay);
 
   const foot = el('div', { class: 'foot' });
   foot.appendChild(el('span', { class: 'domain-tag' }, labels[e.domain]));
-  foot.appendChild(el('span', { class: 'surf-tag' }, e.surface === 'three' ? UI[lang.peek()].surface3d : UI[lang.peek()].surface2d));
   a.appendChild(foot);
 
   return a;
@@ -287,48 +324,16 @@ function renderGrid() {
     hero.appendChild(el('p', { class: 'hero-body' }, u.heroBody));
     root.appendChild(hero);
 
-    // Popular (if data loaded)
-    if (popularSlugs.length > 0) {
-      const popEntries = popularSlugs.map(s => all.find(r => r.slug === s)).filter(Boolean) as RegistryEntry[];
-      if (popEntries.length > 0) {
-        root.appendChild(el('h2', { class: 'section-h' }, POPULAR_LABEL[lang.peek()]));
-        const row = el('div', { class: 'grid-row' });
-        for (const e of popEntries) row.appendChild(makeCard(e));
-        root.appendChild(row);
-      }
+    // Discover: Popular when data exists, else Featured (one section, not three)
+    const discoverSlugs = popularSlugs.length > 0 ? popularSlugs : FEATURED_SLUGS;
+    const discoverLabel = popularSlugs.length > 0 ? POPULAR_LABEL[lang.peek()] : FEATURED_LABEL[lang.peek()];
+    const discoverEntries = discoverSlugs.map(s => all.find(r => r.slug === s)).filter(Boolean) as RegistryEntry[];
+    if (discoverEntries.length > 0) {
+      root.appendChild(el('h2', { class: 'section-h section-h-hero' }, discoverLabel));
+      const row = el('div', { class: 'featured-row' });
+      for (const e of discoverEntries) row.appendChild(makeCard(e, true));
+      root.appendChild(row);
     }
-
-    // Recents (collapsed by default)
-    const recents = getRecents();
-    const recEntries = recents.map(s => all.find(r => r.slug === s)).filter(Boolean) as RegistryEntry[];
-    if (recEntries.length > 0) {
-      let recCollapsed = true;
-      try { recCollapsed = localStorage.getItem('mathlet:recents-open') !== '1'; } catch {}
-      const recH = el('h2', { class: 'section-h' }) as HTMLHeadingElement;
-      const caret = el('button', { class: 'section-caret', 'aria-label': 'toggle' }, recCollapsed ? '▸' : '▾') as HTMLButtonElement;
-      recH.appendChild(caret);
-      recH.appendChild(el('span', { class: 'section-label' }, RECENT_LABEL[lang.peek()] + ` (${recEntries.length})`));
-      root.appendChild(recH);
-      const recRow = el('div', { class: 'grid-row' + (recCollapsed ? ' collapsed' : '') });
-      for (const e of recEntries) recRow.appendChild(makeCard(e));
-      root.appendChild(recRow);
-      caret.onclick = () => {
-        recCollapsed = !recCollapsed;
-        recRow.classList.toggle('collapsed', recCollapsed);
-        caret.textContent = recCollapsed ? '▸' : '▾';
-        try { localStorage.setItem('mathlet:recents-open', recCollapsed ? '0' : '1'); } catch {}
-      };
-    }
-
-    // Featured strip
-    const featuredHeader = el('h2', { class: 'section-h' }, FEATURED_LABEL[lang.peek()]);
-    root.appendChild(featuredHeader);
-    const featRow = el('div', { class: 'featured-row' });
-    for (const slug of FEATURED_SLUGS) {
-      const e = all.find(r => r.slug === slug);
-      if (e) featRow.appendChild(makeCard(e, true));
-    }
-    root.appendChild(featRow);
 
     // Group by domain
     const byDomain = new Map<string, RegistryEntry[]>();
@@ -463,6 +468,31 @@ const HELP_TEXT: Record<Lang, string> = {
   en: '/ search · ? help · 🎲 random · esc to close',
   es: '/ buscar · ? ayuda · 🎲 aleatorio · esc para cerrar',
 };
+let recentMenuEl: HTMLElement | null = null;
+function toggleRecentMenu(anchor: HTMLElement) {
+  if (recentMenuEl) { recentMenuEl.remove(); recentMenuEl = null; return; }
+  const recents = getRecents();
+  const entries = recents.map(s => all.find(r => r.slug === s)).filter(Boolean) as RegistryEntry[];
+  if (entries.length === 0) return;
+  recentMenuEl = el('div', { class: 'recent-menu' });
+  const r = anchor.getBoundingClientRect();
+  recentMenuEl.style.top = `${r.bottom + 6}px`;
+  recentMenuEl.style.left = `${Math.max(8, r.left)}px`;
+  recentMenuEl.appendChild(el('div', { class: 'recent-menu-h' }, RECENT_LABEL[lang.peek()]));
+  for (const e of entries) {
+    const tr = tFormula(e.slug, { title: e.title, blurb: e.blurb });
+    const a = el('a', { class: 'recent-menu-item', href: `/f/${e.slug}.html` }, tr.title);
+    recentMenuEl.appendChild(a);
+  }
+  document.body.appendChild(recentMenuEl);
+  setTimeout(() => {
+    const close = (ev: MouseEvent) => {
+      if (!recentMenuEl?.contains(ev.target as Node)) { recentMenuEl?.remove(); recentMenuEl = null; document.removeEventListener('click', close); }
+    };
+    document.addEventListener('click', close);
+  }, 0);
+}
+
 let aboutEl: HTMLElement | null = null;
 function toggleAbout() {
   if (aboutEl) { aboutEl.remove(); aboutEl = null; return; }
