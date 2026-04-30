@@ -73,6 +73,20 @@ for (const e of REGISTRY) {
   a.innerHTML = `<div class="title">${escape(e.title)}</div>`;
   grid.appendChild(a);
 }
+// Inject hreflang alternates pointing to / variants.
+const idxHead = doc.head;
+for (const [lc, href] of Object.entries({
+  'zh-CN': 'https://math.htpu.net/',
+  'en': 'https://math.htpu.net/?lang=en',
+  'es': 'https://math.htpu.net/?lang=es',
+  'x-default': 'https://math.htpu.net/',
+})) {
+  const a = doc.createElement('link');
+  a.setAttribute('rel', 'alternate');
+  a.setAttribute('hreflang', lc);
+  a.setAttribute('href', href);
+  idxHead.appendChild(a);
+}
 writeFileSync(join(DIST, 'index.html'), dom.serialize());
 console.log('ssg: index.html prerendered');
 
@@ -116,13 +130,19 @@ for (const e of REGISTRY) {
       dd.head.appendChild(m);
     }
   }
-  // hreflang alternates: same URL serves all langs (lang chosen via JS),
-  // so all hreflang point to the same canonical URL plus x-default.
-  for (const lc of ['zh-CN', 'en', 'es', 'x-default']) {
+  // hreflang alternates with distinct ?lang= URLs so Google can index per-language.
+  // zh-CN (default) → bare URL; en/es → ?lang=en|es; x-default → bare URL.
+  const altMap: Record<string, string> = {
+    'zh-CN': url,
+    'en': `${url}?lang=en`,
+    'es': `${url}?lang=es`,
+    'x-default': url,
+  };
+  for (const [lc, href] of Object.entries(altMap)) {
     const alt = dd.createElement('link');
     alt.setAttribute('rel', 'alternate');
     alt.setAttribute('hreflang', lc);
-    alt.setAttribute('href', url);
+    alt.setAttribute('href', href);
     dd.head.appendChild(alt);
   }
   const ld = dd.createElement('script');
@@ -150,15 +170,22 @@ console.log(`ssg: ${REGISTRY.length} detail pages prerendered`);
 // sitemap.xml
 const today = new Date().toISOString().slice(0, 10);
 const _allDomainsSm = Array.from(new Set(REGISTRY.map(e => e.domain)));
+const altLinks = (u: string) =>
+  `<xhtml:link rel="alternate" hreflang="zh-CN" href="${u}"/>` +
+  `<xhtml:link rel="alternate" hreflang="en" href="${u}?lang=en"/>` +
+  `<xhtml:link rel="alternate" hreflang="es" href="${u}?lang=es"/>` +
+  `<xhtml:link rel="alternate" hreflang="x-default" href="${u}"/>`;
+const urlEntry = (u: string, prio: string, freq = 'weekly') =>
+  `<url><loc>${u}</loc><lastmod>${today}</lastmod><changefreq>${freq}</changefreq><priority>${prio}</priority>${altLinks(u)}</url>`;
 const sitemapUrls = [
-  `<url><loc>${SITE}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
-  ..._allDomainsSm.map(d => `<url><loc>${SITE}/domain/${d}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`),
-  ...[1,2,3,4,5].map(lv => `<url><loc>${SITE}/level/${lv}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>`),
-  ...['canvas2d','three'].map(sf => `<url><loc>${SITE}/surface/${sf}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>`),
-  ...REGISTRY.map(e => `<url><loc>${SITE}/f/${e.slug}.html</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`),
+  urlEntry(`${SITE}/`, '1.0'),
+  ..._allDomainsSm.map(d => urlEntry(`${SITE}/domain/${d}/`, '0.7')),
+  ...[1,2,3,4,5].map(lv => urlEntry(`${SITE}/level/${lv}/`, '0.6')),
+  ...['canvas2d','three'].map(sf => urlEntry(`${SITE}/surface/${sf}/`, '0.6')),
+  ...REGISTRY.map(e => urlEntry(`${SITE}/f/${e.slug}.html`, '0.8', 'monthly')),
 ];
 writeFileSync(join(DIST, 'sitemap.xml'),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.join('\n')}\n</urlset>\n`);
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${sitemapUrls.join('\n')}\n</urlset>\n`);
 console.log(`ssg: sitemap.xml (${sitemapUrls.length} urls)`);
 
 // Static landing pages for /domain/<dom>, /level/<n>, /surface/<sf>
@@ -192,6 +219,13 @@ function writeLanding(path: string, title: string, desc: string, items?: { name:
   mkdirSync(dir, { recursive: true });
   const url = `${SITE}${path.startsWith('/') ? path : '/' + path}/`;
   let html = patchMeta(_landingShellHtml, title, desc, url);
+  // Strip inherited hreflang (index.html's) and inject this landing's own.
+  html = html.replace(/<link rel="alternate" hreflang="[^"]*" href="[^"]*"\s*\/?>/g, '');
+  const lang = `<link rel="alternate" hreflang="zh-CN" href="${url}"/>` +
+               `<link rel="alternate" hreflang="en" href="${url}?lang=en"/>` +
+               `<link rel="alternate" hreflang="es" href="${url}?lang=es"/>` +
+               `<link rel="alternate" hreflang="x-default" href="${url}"/>`;
+  html = html.replace('</head>', `${lang}</head>`);
   // Inject filtered cards back into #grid; optionally prepend landing-intro.
   const cardsHtml = filter
     ? [..._cardHtml.entries()].filter(([s]) => filter(s)).map(([, h]) => h).join('')
