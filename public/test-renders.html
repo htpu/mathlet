@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>render audit</title>
+<style>body{font-family:monospace;background:#0a0e14;color:#cbccc6;padding:20px}
+.fail{color:#f07178}.pass{color:#c2d94c}
+iframe{width:600px;height:400px;border:1px solid #333}
+#out{white-space:pre;font-size:11px}
+</style></head>
+<body>
+<h2>Render Audit</h2>
+<div id="status">starting...</div>
+<iframe id="frm"></iframe>
+<div id="out"></div>
+<script type="module">
+import { REGISTRY } from '/assets/_registry.generated-base.js';
+</script>
+<script>
+async function go() {
+  const r = await fetch('/all-slugs.json');
+  const slugs = await r.json();
+  const frm = document.getElementById('frm');
+  const out = document.getElementById('out');
+  const status = document.getElementById('status');
+  const fails = [], passes = [];
+  for (let i = 0; i < slugs.length; i++) {
+    const slug = slugs[i];
+    status.textContent = `${i+1}/${slugs.length} ${slug}`;
+    frm.src = `/f/${slug}?mode=play`;
+    await new Promise(r => frm.onload = r);
+    await new Promise(r => setTimeout(r, 1800));
+    let result = 'unknown';
+    try {
+      const doc = frm.contentDocument;
+      const cv = doc.querySelector('canvas');
+      if (!cv) { result = 'no-canvas'; fails.push([slug, result]); continue; }
+      const ctx = cv.getContext('2d');
+      let nonBg = 0;
+      let stdev = 0;
+      try {
+        const W = Math.min(200, cv.width);
+        const H = Math.min(200, cv.height);
+        const img = ctx.getImageData(0, 0, W, H).data;
+        let sum = 0, sumSq = 0, n = 0;
+        for (let k = 0; k < img.length; k += 4) {
+          const v = (img[k] + img[k+1] + img[k+2]) / 3;
+          // bg is rgb(10,14,20) => ~14.7
+          if (Math.abs(v - 14.7) > 5) nonBg++;
+          sum += v; sumSq += v*v; n++;
+        }
+        const mean = sum/n;
+        stdev = Math.sqrt(sumSq/n - mean*mean);
+      } catch (e) {
+        // 3D canvas (webgl) — getImageData on webgl ctx: try toDataURL trick
+        try {
+          const url = cv.toDataURL('image/png');
+          // length proxy for content
+          stdev = url.length > 5000 ? 999 : 0;
+          nonBg = stdev > 0 ? 1000 : 0;
+        } catch { result = 'webgl-error'; }
+      }
+      if (nonBg < 50 && stdev < 2) {
+        result = `EMPTY (nonBg=${nonBg}, stdev=${stdev.toFixed(2)})`;
+        fails.push([slug, result]);
+      } else {
+        passes.push(slug);
+      }
+    } catch (e) {
+      fails.push([slug, 'exception:' + e.message]);
+    }
+    if (i % 20 === 0) {
+      out.textContent = `Passed: ${passes.length}\nFailed: ${fails.length}\n\n` +
+        fails.map(([s,r]) => `  ${s}: ${r}`).join('\n');
+    }
+  }
+  status.textContent = `DONE: ${passes.length} pass, ${fails.length} fail`;
+  out.textContent = `Passed: ${passes.length}\nFailed: ${fails.length}\n\n` +
+    fails.map(([s,r]) => `  ${s}: ${r}`).join('\n');
+  window._auditResult = { passes, fails };
+}
+go();
+</script>
+</body></html>

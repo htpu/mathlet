@@ -134,7 +134,7 @@ export const LOADERS: Record<string, () => Promise<{ default: any }>> = {
   'icosahedron': () => import('./geometry/icosahedron'),
   'lattice-gcd': () => import('./geometry/lattice-gcd'),
   'lemniscate': () => import('./geometry/lemniscate'),
-  'limaçon': () => import('./geometry/limaçon'),
+  'limacon': () => import('./geometry/limacon'),
   'parametric-curves': () => import('./geometry/parametric-curves'),
   'polar-rose': () => import('./geometry/polar-rose'),
   'regular-polygon': () => import('./geometry/regular-polygon'),

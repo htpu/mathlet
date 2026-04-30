@@ -3,6 +3,6 @@ function gln(x:number){const c=[76.18009172947146,-86.50532032941677,24.01409824
 export default fn1d({
   meta:{slug:'gamma-function',title:'Γ 函数',domain:'algebra',level:3,tex:'\\Gamma(x)=\\int_0^\\infty t^{x-1}e^{-t}dt',blurb:'阶乘的连续推广，Γ(n)=(n-1)!。'},
   params:[],
-  fn:()=>x=>x>0?Math.exp(gln(x)):NaN,
-  view:{cx:2,cy:2,scale:30},
+  fn:()=>x=>{if(x<=0) return NaN; const v=Math.exp(gln(x)); return Math.min(20, v);},
+  view:{cx:2,cy:5,scale:25},
 });

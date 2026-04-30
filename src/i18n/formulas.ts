@@ -875,7 +875,7 @@ Object.assign(FORMULA_I18N, {
   'witch-of-agnesi':{en:{title:'Witch of Agnesi',blurb:'Geometric form of the Cauchy distribution.'},es:{title:'Bruja de Agnesi',blurb:'Forma geométrica de la distribución de Cauchy.'}},
   cissoid:{en:{title:'Cissoid of Diocles',blurb:'Curve from the doubling-the-cube problem.'},es:{title:'Cisoide de Diocles',blurb:'Curva del problema de la duplicación del cubo.'}},
   'folium-descartes':{en:{title:'Folium of Descartes',blurb:'Parametric form.'},es:{title:'Folium de Descartes',blurb:'Forma paramétrica.'}},
-  'limaçon':{en:{title:'Pascal limaçon',blurb:'a<b inner loop, a=b cardioid, a>b convex.'},es:{title:'Caracol de Pascal',blurb:'a<b lazo interior, a=b cardioide, a>b convexo.'}},
+  'limacon':{en:{title:'Pascal limaçon',blurb:'a<b inner loop, a=b cardioid, a>b convex.'},es:{title:'Caracol de Pascal',blurb:'a<b lazo interior, a=b cardioide, a>b convexo.'}},
   'heart-curve':{en:{title:'Heart parametric curve',blurb:'Classic closed heart shape.'},es:{title:'Curva paramétrica corazón',blurb:'Forma de corazón cerrada clásica.'}},
   trochoid:{en:{title:'Trochoid (curtate / prolate)',blurb:'Generalized cycloid for d ≠ r.'},es:{title:'Trocoide (curtada / prolata)',blurb:'Cicloide generalizada para d ≠ r.'}},
   'lattice-gcd':{en:{title:'Lattice gcd view',blurb:'Color integer lattice points by gcd.'},es:{title:'Vista de mcd en la red',blurb:'Colorea puntos enteros por su mcd.'}},

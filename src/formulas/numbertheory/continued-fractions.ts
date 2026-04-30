@@ -3,7 +3,7 @@ import { n, i } from '../types';
 import { clear, drawAxes, setupView, fillCircle, text } from '../../render/canvas2d';
 export default {
   meta:{slug:'continued-fractions',title:'连分数收敛子',domain:'numbertheory',level:3,tex:'x=a_0+\\cfrac{1}{a_1+\\cfrac{1}{a_2+\\dots}}',blurb:'展示 √2/π/φ 的部分商序列与有理逼近。'},
-  params:[i('which','数','golden' as any,0,2),i('depth','深度',12,1,40)],
+  params:[i('which','数 (0=√2, 1=π, 2=φ)',2,0,2),i('depth','深度',12,1,40)],
   render(s,pa){
     if(s.kind!=='canvas2d') return;
     const targets=[Math.SQRT2, Math.PI, (1+Math.sqrt(5))/2];

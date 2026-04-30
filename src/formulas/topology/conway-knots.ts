@@ -4,7 +4,7 @@ import { i, n } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let mesh:THREE.Mesh|null=null;
 export default {
-  meta:{slug:'conway-knots',title:'扭结家族（torus knots）',domain:'topology',level:4,tex:'(p,q)\\text{-torus knot}',blurb:'p, q 互素 → 不同纽结类型。'},
+  meta:{slug:'conway-knots',title:'扭结家族（torus knots）',domain:'topology',level:4,tex:'(p,q)\\text{-torus knot}',blurb:'p, q 互素 → 不同纽结类型。',surface:'three'},
   params:[i('p','p',2,1,7),i('q','q',5,1,11),n('R','R',1.2,0.5,2,0.01)],
   render(s,pa){
     if(s.kind!=='three') return;

@@ -188,11 +188,12 @@ async function bootstrap() {
     if (surface && surface.kind === 'canvas2d') { surface.width = r.width; surface.height = r.height; surface.dpr = dpr; }
     else if (surface && surface.kind === 'three') { surface.width = r.width; surface.height = r.height; }
   }
-  if (formula.meta.surface === 'canvas2d') {
+  // Default to canvas2d when surface is undefined/missing.
+  if (formula.meta.surface === 'three') {
+    surface = { kind: 'three', canvas, width: 0, height: 0 };
+  } else {
     const ctx = canvas.getContext('2d')!;
     surface = { kind: 'canvas2d', ctx, canvas, width: 0, height: 0, dpr };
-  } else {
-    surface = { kind: 'three', canvas, width: 0, height: 0 };
   }
   resize();
   formula.init?.(surface, getValues());

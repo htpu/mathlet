@@ -4,7 +4,7 @@ import { i } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let group:THREE.Group|null=null;
 export default {
-  meta:{slug:'genus-surface',title:'亏格曲面 (g-torus)',domain:'topology',level:4,tex:'\\chi=2-2g',blurb:'g 个洞拼接 = 亏格 g 曲面。'},
+  meta:{slug:'genus-surface',title:'亏格曲面 (g-torus)',domain:'topology',level:4,tex:'\\chi=2-2g',blurb:'g 个洞拼接 = 亏格 g 曲面。',surface:'three'},
   params:[i('g','亏格',2,1,5)],
   render(s,p){
     if(s.kind!=='three') return;

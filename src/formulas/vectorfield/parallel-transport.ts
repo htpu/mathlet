@@ -4,7 +4,7 @@ import { n } from '../types';
 import { addLights, clearScene, getThree } from '../../render/three';
 let last=''; let arrows:THREE.Group|null=null;
 export default {
-  meta:{slug:'parallel-transport',title:'球面上平行移动',domain:'vectorfield',level:5,tex:'\\nabla_X Y=0',blurb:'沿大圆移动向量保持平行 → Holonomy。'},
+  meta:{slug:'parallel-transport',title:'球面上平行移动',domain:'vectorfield',level:5,tex:'\\nabla_X Y=0',blurb:'沿大圆移动向量保持平行 → Holonomy。',surface:'three'},
   params:[n('phi','起始纬',0.5,-1.4,1.4,0.01),n('range','弧长',2,0.5,4,0.01)],
   render(s,p){
     if(s.kind!=='three') return;
