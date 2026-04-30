@@ -1237,3 +1237,55 @@ Object.assign(FORMULA_I18N, {
   'schwarzschild-metric': { en: { title: 'Schwarzschild metric component', blurb: 'Gravitational time-dilation factor vs r/rs.' } },
   'time-dilation-gr': { en: { title: 'Gravitational time dilation', blurb: 'External time dilates relative to proper time.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  // graph
+  'barabasi-albert': { en: { title: 'BA scale-free network', blurb: 'Preferential attachment yields power-law degrees.' } },
+  'bfs-traversal': { en: { title: 'BFS traversal', blurb: 'Concentric rings of visit levels.' } },
+  'bipartite-matching': { en: { title: 'Bipartite matching', blurb: 'Optimal pairing across two sides.' } },
+  'convex-hull': { en: { title: 'Convex hull (Graham scan)', blurb: 'Smallest convex polygon enclosing the points.' } },
+  'degree-distribution': { en: { title: 'Power-law degree distribution', blurb: 'Signature of scale-free networks.' } },
+  'eulerian-path': { en: { title: 'Eulerian path (Königsberg)', blurb: '7 bridges: 4 odd-degree vertices → no Eulerian path.' } },
+  'force-directed': { en: { title: 'Force-directed graph layout', blurb: 'Springs pull edges, charges repel all.' } },
+  'graph-coloring': { en: { title: 'Greedy graph coloring', blurb: 'Adjacent vertices get different colors.' } },
+  'hamiltonian-cube': { en: { title: 'Hamiltonian cycle on cube', blurb: 'Visits all 8 vertices once.' } },
+  'pagerank-power': { en: { title: 'PageRank power iteration', blurb: 'Error decays exponentially in iterations.' } },
+  'random-graph': { en: { title: 'Erdős-Rényi random graph', blurb: 'Connected when p > log(n)/n.' } },
+  'small-world': { en: { title: 'Small-world (Watts-Strogatz)', blurb: 'Regular ring + random rewiring → small world.' } },
+  'spanning-tree': { en: { title: 'Min spanning tree (Kruskal)', blurb: 'Add cheapest non-cycle edges in order.' } },
+  'tsp-greedy': { en: { title: 'TSP nearest-neighbor', blurb: 'Fast but not optimal heuristic.' } },
+
+  // music
+  'adsr-envelope': { en: { title: 'ADSR envelope', blurb: 'Synthesizer amplitude envelope.' } },
+  'beating': { en: { title: 'Beat tones', blurb: 'Close frequencies superimpose into envelope beats.' } },
+  'chord-spectrum': { en: { title: 'Triad chord waveform', blurb: 'Major triad superposition.' } },
+  'doppler-music': { en: { title: 'Doppler pitch shift', blurb: 'Moving source frequency change.' } },
+  'equal-temperament': { en: { title: '12-tone equal temperament', blurb: 'Geometric frequency spacing on A4=440Hz.' } },
+  'fm-synthesis': { en: { title: 'FM synthesis', blurb: 'Modulator distorts carrier into new harmonics.' } },
+  'harmonic-series': { en: { title: 'Harmonic series', blurb: 'Integer-multiple frequencies summed.' } },
+  'just-vs-equal': { en: { title: 'Just vs equal temperament (cents)', blurb: 'Per-degree pitch deviation in cents.' } },
+  'pythagorean-tuning': { en: { title: 'Pythagorean tuning', blurb: 'Stack fifths, fold into one octave.' } },
+  'sine-square-saw': { en: { title: 'Waveform comparison', blurb: 'Basic synthesizer waveforms.' } },
+
+  // others
+  'simplex': { en: { title: '2D simplex feasible region', blurb: 'Objective line sweeps optimal vertex.' } },
+  'maxwell-boltzmann': { en: { title: 'Maxwell-Boltzmann speed distribution', blurb: 'Gas molecule speed PDF.' } },
+  'beat-pattern': { en: { title: 'Beat pattern', blurb: 'Two close frequencies superpose into envelope beats.' } },
+
+  // quantum
+  'blackbody-quantum': { en: { title: 'Quantized radiation energy', blurb: "Planck quantization resolved the ultraviolet catastrophe." } },
+  'bose-condensate': { en: { title: 'BEC condensate fraction', blurb: 'Below Tc, condensate emerges.' } },
+  'double-slit': { en: { title: 'Quantum double-slit', blurb: 'Electron/photon diffraction fringes.' } },
+  'fermi-golden': { en: { title: "Fermi's golden rule", blurb: 'Transition rate ∝ |matrix element|² × density of states.' } },
+  'gaussian-wavepacket': { en: { title: 'Gaussian wavepacket (real part)', blurb: 'Localized packet with mean momentum ℏk.' } },
+  'heisenberg-uncertainty': { en: { title: 'Heisenberg uncertainty', blurb: 'Lower bound on σx · σp.' } },
+  'hydrogen-energy': { en: { title: 'Hydrogen Rydberg levels', blurb: 'Hydrogen energy levels by principal quantum number.' } },
+  'hydrogen-radial': { en: { title: 'Hydrogen radial wavefunction', blurb: 'Radial part in Bohr-radius units.' } },
+  'infinite-well': { en: { title: 'Infinite square well', blurb: 'Stationary states in a 1D box.' } },
+  'qho-3d': { en: { title: '2D harmonic oscillator |ψ|²', blurb: '2D QHO probability density surface.' } },
+  'qho-energy-levels': { en: { title: 'QHO energy levels', blurb: 'Equally-spaced ladder of energies.' } },
+  'qho-wavefn': { en: { title: 'QHO wavefunction |ψn|²', blurb: 'Quantum harmonic oscillator stationary states.' } },
+  'quantum-tunneling': { en: { title: 'Quantum tunneling transmission', blurb: 'Transmission probability through a square barrier.' } },
+  'spin-half': { en: { title: 'Bloch sphere (spin-½)', blurb: 'Quantum state geometry on the Bloch sphere.' } },
+  'stern-gerlach': { en: { title: 'Stern-Gerlach measurement', blurb: 'Spin projection probability vs angle θ.' } },
+});
