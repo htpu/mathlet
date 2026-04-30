@@ -61,6 +61,8 @@ const indexHtml = readFileSync(join(DIST, 'index.html'), 'utf8');
 const dom = new JSDOM(indexHtml);
 const doc = dom.window.document;
 const grid = doc.querySelector('#grid')!;
+// Minimal SSG cards: href + title only (runtime overwrites with thumbnail cards).
+// Crawlers still see one anchor per formula for link-graph + ItemList signal.
 for (const e of REGISTRY) {
   const a = doc.createElement('a');
   a.className = 'card';
@@ -68,11 +70,7 @@ for (const e of REGISTRY) {
   a.setAttribute('data-domain', e.domain);
   a.setAttribute('data-level', String(e.level));
   a.setAttribute('data-surface', e.surface);
-  a.innerHTML = `
-    <div class="head"><div class="title">${escape(e.title)}</div><div class="stars">${'⭐'.repeat(e.level)}</div></div>
-    <div class="tex">${renderKaTeX(e.tex)}</div>
-    <div class="blurb">${escape(e.blurb)}</div>
-    <div class="foot"><span class="domain-tag">${escape(DOMAIN_LABELS[e.domain] ?? e.domain)}</span><span class="surf-tag">${e.surface === 'three' ? '3D' : '2D'}</span></div>`;
+  a.innerHTML = `<div class="title">${escape(e.title)}</div>`;
   grid.appendChild(a);
 }
 writeFileSync(join(DIST, 'index.html'), dom.serialize());
