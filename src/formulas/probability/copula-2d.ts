@@ -9,7 +9,7 @@ export default {
     if(s.kind!=='canvas2d') return;
     const {ctx,width,height,dpr}=s; ctx.setTransform(dpr,0,0,dpr,0,0);
     ctx.fillStyle='#0a0e14'; ctx.fillRect(0,0,width,height);
-    const r=mulberry32(7);
+    const r=mulberry32((Date.now()^Math.floor(Math.random()*0xffffffff))>>>0);
     const rho=p.rho as number;
     const pad=24;
     function erf(x:number){const t=1/(1+0.3275911*Math.abs(x)); const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x); return x>=0?y:-y;}

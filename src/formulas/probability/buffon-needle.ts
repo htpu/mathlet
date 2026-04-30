@@ -12,7 +12,7 @@ export default {
     const lines=8; const d=height/lines, L=d*0.7;
     ctx.strokeStyle='#2d3340'; ctx.lineWidth=1;
     for(let i=0;i<=lines;i++){ctx.beginPath(); ctx.moveTo(0,i*d); ctx.lineTo(width,i*d); ctx.stroke();}
-    const r=mulberry32(7);
+    const r=mulberry32((Date.now()^Math.floor(Math.random()*0xffffffff))>>>0);
     let cross=0;
     for(let i=0;i<(p.N as number);i++){const cx=r()*width, cy=r()*height; const ang=r()*Math.PI;
       const x1=cx-L/2*Math.cos(ang), y1=cy-L/2*Math.sin(ang);

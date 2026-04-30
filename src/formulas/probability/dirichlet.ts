@@ -9,7 +9,7 @@ export default {
     if(s.kind!=='canvas2d') return;
     const {ctx,width,height,dpr}=s; ctx.setTransform(dpr,0,0,dpr,0,0);
     ctx.fillStyle='#0a0e14'; ctx.fillRect(0,0,width,height);
-    const r=mulberry32(7);
+    const r=mulberry32((Date.now()^Math.floor(Math.random()*0xffffffff))>>>0);
     function gamma(a:number){if(a<1) return gamma(a+1)*Math.pow(r(),1/a); const d=a-1/3, c=1/Math.sqrt(9*d);
       while(true){let z=Math.sqrt(-2*Math.log(r()))*Math.cos(2*Math.PI*r()); let v=1+c*z; if(v<=0) continue; v=v*v*v; const u=r();
         if(u<1-0.0331*z**4) return d*v;

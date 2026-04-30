@@ -10,7 +10,7 @@ export default {
     const {ctx,width,height,dpr}=s; ctx.setTransform(dpr,0,0,dpr,0,0);
     ctx.fillStyle='#0a0e14'; ctx.fillRect(0,0,width,height);
     const rows=p.rows as number, balls=p.balls as number;
-    const r=mulberry32(7);
+    const r=mulberry32((Date.now()^Math.floor(Math.random()*0xffffffff))>>>0);
     const counts=new Array(rows+1).fill(0);
     for(let b=0;b<balls;b++){let k=0; for(let i=0;i<rows;i++) if(r()<0.5) k++; counts[k]++;}
     const max=Math.max(...counts);

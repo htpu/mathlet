@@ -8,7 +8,7 @@ export default {
   render(s,p){
     if(s.kind!=='canvas2d') return;
     const v={cx:0,cy:0,scale:Math.min(s.width,s.height)/((p.n as number)*5)};
-    const r=mulberry32(7);
+    const r=mulberry32((Date.now()^Math.floor(Math.random()*0xffffffff))>>>0);
     const Ts:number[]=[];
     for(let k=0;k<(p.runs as number);k++){const seen=new Set<number>(); let t=0; while(seen.size<(p.n as number)){t++; seen.add(Math.floor(r()*(p.n as number)));} Ts.push(t);}
     Ts.sort((a,b)=>a-b);

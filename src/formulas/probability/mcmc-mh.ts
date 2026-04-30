@@ -10,7 +10,7 @@ export default {
     if(s.kind!=='canvas2d') return;
     const sig=`${p.reset}`;
     if(last!==sig){chain=[[0,0]]; last=sig;}
-    const r=mulberry32(7+chain.length);
+    const r=mulberry32(((Date.now()+chain.length)^Math.floor(Math.random()*0xffffffff))>>>0);
     const target=(x:number,y:number)=>{
       const a=Math.exp(-((x-1.2)**2+(y-0.5)**2)/0.4);
       const b=Math.exp(-((x+1)**2+(y+0.8)**2)/0.6);

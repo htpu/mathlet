@@ -9,7 +9,7 @@ export default {
     if(s.kind!=='canvas2d') return;
     const {ctx,width,height,dpr}=s; ctx.setTransform(dpr,0,0,dpr,0,0);
     ctx.fillStyle='#0a0e14'; ctx.fillRect(0,0,width,height);
-    const r=mulberry32(7);
+    const r=mulberry32((Date.now()^Math.floor(Math.random()*0xffffffff))>>>0);
     const N=p.N as number;
     const data:number[]=[];
     for(let i=0;i<N;i++){if(p.dist==='normal') data.push(gaussian(r));

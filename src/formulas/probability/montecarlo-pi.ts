@@ -10,7 +10,7 @@ export default {
     const v={cx:0,cy:0,scale:Math.min(s.width,s.height)/2.4};
     clear(s); setupView(s,v); drawAxes(s,v,{grid:false});
     strokeCircle(s,v,0,0,1,'#39bae6');
-    const r=mulberry32(7);
+    const r=mulberry32((Date.now()^Math.floor(Math.random()*0xffffffff))>>>0);
     let inside=0;
     for(let i=0;i<(p.N as number);i++){const x=r()*2-1, y=r()*2-1; const k=x*x+y*y<=1; if(k) inside++;
       fillCircle(s,v,x,y,1.5, k?'rgba(57,186,230,0.6)':'rgba(240,113,120,0.6)');}
