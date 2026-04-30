@@ -29,7 +29,13 @@ async function processSlug(browser: Browser, slug: string, idx: number, total: n
   try {
     await page.goto(`${URL_BASE}/f/${slug}.html?mode=play`, { waitUntil: 'networkidle', timeout: 20000 });
     await page.waitForSelector('canvas', { timeout: 5000 });
-    await page.waitForTimeout(400);
+    await page.addStyleTag({ content: `
+      .params-pane, .params-pane.floating, .formula-floating,
+      .detail-bar, .notes-pane, .breadcrumbs, .topbar { display: none !important; }
+      .canvas-pane, .canvas-wrap { inset: 0 !important; position: fixed !important; }
+      body { margin: 0 !important; padding: 0 !important; }
+    ` });
+    await page.waitForTimeout(500);
     const canvas = page.locator('canvas').first();
     for (let f = 0; f < FRAMES; f++) {
       const buf = await canvas.screenshot({ type: 'png' });

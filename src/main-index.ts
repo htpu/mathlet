@@ -57,6 +57,17 @@ function renderTopbar() {
   if (!bar) return;
   bar.querySelector('.lang-switcher')?.remove();
   bar.querySelector('.random-btn')?.remove();
+  bar.querySelector('.topbar-link')?.remove();
+  bar.querySelectorAll('.topbar-link').forEach(n => n.remove());
+  const u = UI[lang.peek()];
+
+  const about = el('button', { class: 'topbar-link' }, u.aboutLink) as HTMLButtonElement;
+  about.onclick = () => toggleAbout();
+  bar.appendChild(about);
+
+  const fb = el('a', { class: 'topbar-link', href: 'mailto:htp2008@gmail.com?subject=mathlet%20feedback' }, u.feedbackLink);
+  bar.appendChild(fb);
+
   const rndLabel: Record<Lang, string> = { zh: '🎲 随机', en: '🎲 Random', es: '🎲 Aleatorio' };
   const rnd = el('button', { class: 'random-btn', title: rndLabel[lang.peek()] }, rndLabel[lang.peek()]) as HTMLButtonElement;
   rnd.onclick = () => {
@@ -215,6 +226,12 @@ function renderGrid() {
   root.replaceChildren();
 
   if (isUnfiltered()) {
+    const u = UI[lang.peek()];
+    const hero = el('section', { class: 'hero' });
+    hero.appendChild(el('h1', { class: 'hero-title' }, u.heroTitle));
+    hero.appendChild(el('p', { class: 'hero-body' }, u.heroBody));
+    root.appendChild(hero);
+
     // Recents (if any)
     const recents = getRecents();
     const recEntries = recents.map(s => all.find(r => r.slug === s)).filter(Boolean) as RegistryEntry[];
@@ -354,6 +371,25 @@ const HELP_TEXT: Record<Lang, string> = {
   en: '/ search · ? help · 🎲 random · esc to close',
   es: '/ buscar · ? ayuda · 🎲 aleatorio · esc para cerrar',
 };
+let aboutEl: HTMLElement | null = null;
+function toggleAbout() {
+  if (aboutEl) { aboutEl.remove(); aboutEl = null; return; }
+  const u = UI[lang.peek()];
+  aboutEl = el('div', { class: 'help-overlay', role: 'dialog' });
+  const box = el('div', { class: 'help-box about-box' });
+  box.appendChild(el('div', { class: 'help-title' }, u.aboutTitle));
+  box.appendChild(el('p', { class: 'about-body' }, u.aboutBody));
+  const links = el('div', { class: 'about-links' });
+  const repo = el('a', { href: 'https://github.com/htpu/mathlet', target: '_blank', rel: 'noopener' }, 'GitHub →');
+  const fb = el('a', { href: 'mailto:htp2008@gmail.com?subject=mathlet%20feedback' }, 'Feedback ✉');
+  links.appendChild(repo);
+  links.appendChild(fb);
+  box.appendChild(links);
+  aboutEl.appendChild(box);
+  aboutEl.onclick = (ev) => { if (ev.target === aboutEl) toggleAbout(); };
+  document.body.appendChild(aboutEl);
+}
+
 let helpEl: HTMLElement | null = null;
 function toggleHelp() {
   if (helpEl) { helpEl.remove(); helpEl = null; return; }

@@ -20,6 +20,12 @@ export const UI: Record<Lang, Record<string, string>> = {
     surface3d: '3D',
     docTitle: 'mathlet · 423 个公式可视化',
     docDescription: '423 个数学公式的交互式 2D/3D 可视化。极客向，按 L1-L5 分级，14 个领域全覆盖。',
+    heroTitle: '把数学公式变成可以把玩的可视化。',
+    heroBody: '423 个交互式 2D/3D 演示，覆盖代数、几何、微积分、PDE、分形、拓扑、信号、向量场、元胞自动机等 14 个领域，按 L1–L5 分级。每个公式都是一个可调参数的实时画布——拖动滑块，立刻看到形状变化。',
+    aboutLink: 'About',
+    feedbackLink: 'Feedback',
+    aboutTitle: '关于 mathlet',
+    aboutBody: 'mathlet 是一个开源的交互式数学公式可视化集合。每个公式都用 TypeScript + Canvas/Three.js 写成，参数实时同步到 URL，可分享。代码与公式贡献欢迎 PR。',
   },
   en: {
     siteTagline: '423 formulas · pick one and start playing',
@@ -36,6 +42,12 @@ export const UI: Record<Lang, Record<string, string>> = {
     surface3d: '3D',
     docTitle: 'mathlet · 423 formula visualizations',
     docDescription: 'Interactive 2D/3D visualization of 423 mathematical formulas. Geek-oriented, L1-L5 difficulty, 14 domains.',
+    heroTitle: 'Math formulas you can actually play with.',
+    heroBody: '423 interactive 2D/3D visualizations across 14 domains — algebra, geometry, calculus, PDEs, fractals, topology, signals, vector fields, cellular automata, and more. Graded L1–L5. Every formula is a live canvas with adjustable parameters — drag a slider, watch the shape change.',
+    aboutLink: 'About',
+    feedbackLink: 'Feedback',
+    aboutTitle: 'About mathlet',
+    aboutBody: 'mathlet is an open-source collection of interactive math formula visualizations. Each formula is written in TypeScript with Canvas or Three.js, with parameters synced to the URL for sharing. PRs for new formulas and code welcome.',
   },
   es: {
     siteTagline: '423 fórmulas · elige una y empieza a jugar',
@@ -52,6 +64,12 @@ export const UI: Record<Lang, Record<string, string>> = {
     surface3d: '3D',
     docTitle: 'mathlet · 423 visualizaciones de fórmulas',
     docDescription: 'Visualización interactiva 2D/3D de 423 fórmulas matemáticas. Para entusiastas, dificultad L1-L5, 14 dominios.',
+    heroTitle: 'Fórmulas matemáticas con las que puedes jugar.',
+    heroBody: '423 visualizaciones interactivas 2D/3D en 14 dominios — álgebra, geometría, cálculo, EDPs, fractales, topología, señales, campos vectoriales, autómatas celulares y más. Niveles L1–L5. Cada fórmula es un lienzo en vivo con parámetros ajustables — mueve un control y mira cómo cambia la forma.',
+    aboutLink: 'Acerca',
+    feedbackLink: 'Feedback',
+    aboutTitle: 'Acerca de mathlet',
+    aboutBody: 'mathlet es una colección open-source de visualizaciones interactivas de fórmulas matemáticas. Cada fórmula está escrita en TypeScript con Canvas o Three.js, con parámetros sincronizados a la URL para compartir. Se agradecen PRs.',
   },
 };
 

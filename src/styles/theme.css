@@ -170,6 +170,47 @@ code, kbd, .mono { font-family: var(--mono); }
   font-weight: 600;
   margin-bottom: 12px;
 }
+.about-box { max-width: 520px; cursor: default; font-family: var(--sans); font-size: 14px; line-height: 1.6; }
+.about-body { color: var(--fg-dim); margin-bottom: 16px; }
+.about-links { display: flex; gap: 16px; font-family: var(--mono); font-size: 13px; }
+.about-links a { color: var(--accent-2); }
+.about-links a:hover { color: var(--accent); }
+.topbar-link {
+  background: transparent;
+  border: 0;
+  color: var(--fg-dim);
+  font-family: var(--mono);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  margin-left: 4px;
+  text-decoration: none;
+  transition: color 0.12s;
+}
+.topbar-link:hover { color: var(--accent); }
+.hero {
+  padding: 28px 20px 8px;
+  max-width: 880px;
+}
+.hero-title {
+  font-family: var(--mono);
+  font-size: 22px;
+  color: var(--fg);
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+.hero-body {
+  color: var(--fg-dim);
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+}
+@media (max-width: 720px) {
+  .hero { padding: 16px 12px 4px; }
+  .hero-title { font-size: 17px; }
+  .hero-body { font-size: 12px; }
+  .topbar-link { font-size: 11px; padding: 3px 6px; }
+}
 .card {
   display: block;
   background: var(--bg-elev);
