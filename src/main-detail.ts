@@ -252,6 +252,7 @@ async function bootstrap() {
   function applyMode() {
     const m = mode.peek();
     body.classList.toggle('play', m === 'play');
+    document.body.classList.toggle('mode-play', m === 'play');
     paramsPane.classList.toggle('floating', m === 'play');
     if (m === 'play') {
       if (paramsPane.parentElement !== canvasWrap) canvasWrap.appendChild(paramsPane);

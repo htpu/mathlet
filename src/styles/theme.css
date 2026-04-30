@@ -440,12 +440,14 @@ code, kbd, .mono { font-family: var(--mono); }
 }
 .notes-pane .tex-block {
   margin: 14px 0;
-  padding: 12px;
+  padding: 18px 16px;
   background: var(--bg);
   border-left: 3px solid var(--accent);
   border-radius: 3px;
   overflow-x: auto;
+  font-size: 17px;
 }
+.notes-pane .tex-block .katex-display { font-size: 1.15em; margin: 0; }
 .notes-pane .meta-line {
   font-family: var(--mono); font-size: 11px; color: var(--fg-mute); margin-bottom: 14px;
 }
@@ -484,7 +486,13 @@ code, kbd, .mono { font-family: var(--mono); }
   background: var(--bg-elev);
   box-shadow: 0 4px 16px rgba(0,0,0,0.4);
   max-height: none;
+  padding: 14px 16px;
+  opacity: 0.35;
+  transition: opacity 0.2s;
+  overflow-y: auto;
 }
+.params-pane.floating:hover,
+.params-pane.floating:focus-within { opacity: 1; }
 .formula-floating {
   position: absolute; left: 16px; top: 16px;
   background: var(--bg-elev);
@@ -493,7 +501,21 @@ code, kbd, .mono { font-family: var(--mono); }
   padding: 10px 14px;
   max-width: 50%;
   box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  opacity: 0.55;
+  transition: opacity 0.2s;
 }
+.formula-floating:hover { opacity: 1; }
+/* Play mode: hide breadcrumb / topbar to give canvas full bleed */
+body.mode-play .breadcrumbs { display: none; }
+body.mode-play .detail-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  background: rgba(13,16,23,0.6);
+  backdrop-filter: blur(8px);
+  opacity: 0.25;
+  transition: opacity 0.2s;
+}
+body.mode-play .detail-bar:hover { opacity: 1; }
+body.mode-play .detail-body { grid-template-rows: 1fr; height: 100vh; }
 .formula-floating .title { color: var(--accent); font-family: var(--mono); font-size: 12px; margin-bottom: 4px; }
 
 .param {
