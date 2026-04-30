@@ -2,7 +2,8 @@ export type Domain =
   | 'algebra' | 'geometry' | 'calculus' | 'linalg' | 'ode' | 'pde'
   | 'probability' | 'fractal' | 'topology' | 'numbertheory'
   | 'signals' | 'optimization' | 'vectorfield' | 'cellular'
-  | 'biology' | 'chemistry';
+  | 'biology' | 'chemistry'
+  | 'quantum' | 'graph' | 'crypto' | 'music' | 'gr';
 
 export const DOMAIN_LABELS: Record<Domain, string> = {
   algebra: '代数 / 三角 / 复数',
@@ -21,6 +22,11 @@ export const DOMAIN_LABELS: Record<Domain, string> = {
   cellular: '元胞自动机 / 涌现',
   biology: '生物 / 基因 / 分子',
   chemistry: '化学 / 反应 / 分子',
+  quantum: '量子 / 波函数',
+  graph: '图论 / 算法',
+  crypto: '密码 / 编码',
+  music: '音乐 / 声学',
+  gr: '广义相对论 / 微分几何',
 };
 
 export type Level = 1 | 2 | 3 | 4 | 5;

@@ -16,7 +16,7 @@ const DOMAIN_LABELS: Record<string, string> = {
   linalg: '线性代数', ode: 'ODE / 动力系统', pde: 'PDE / 物理场',
   probability: '概率 / 统计', fractal: '分形 / 混沌', topology: '拓扑 / 流形',
   numbertheory: '数论 / 离散', signals: '信号 / 变换', optimization: '优化 / 数值',
-  vectorfield: '向量场 / 微分几何', cellular: '元胞自动机 / 涌现', biology: '生物 / 基因 / 分子', chemistry: '化学 / 反应 / 分子',
+  vectorfield: '向量场 / 微分几何', cellular: '元胞自动机 / 涌现', biology: '生物 / 基因 / 分子', chemistry: '化学 / 反应 / 分子', quantum: '量子 / 波函数', graph: '图论 / 算法', crypto: '密码 / 编码', music: '音乐 / 声学', gr: '广义相对论 / 微分几何',
 };
 
 const regSrc = readFileSync(join(ROOT, 'src/formulas/_registry.generated.ts'), 'utf8');
