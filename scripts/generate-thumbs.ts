@@ -8,9 +8,9 @@ const URL_BASE = process.env.THUMB_URL ?? 'http://localhost:4173';
 const OUT_DIR = 'public/thumbs';
 const FRAMES = 24;
 const FRAME_INTERVAL_MS = 80;
-const VIEWPORT = { width: 400, height: 300 };
+const VIEWPORT = { width: 400, height: 250 };
 const THUMB_W = 320;
-const THUMB_H = 240;
+const THUMB_H = 200;
 const WORKERS = 4;
 const FORCE = process.argv.includes('--force');
 
@@ -48,7 +48,7 @@ async function processSlug(browser: Browser, slug: string, idx: number, total: n
     const scaleR = spawnSync('ffmpeg', [
       '-y', '-loglevel', 'error',
       '-i', join(tmpDir, 'f%03d.png'),
-      '-vf', `scale=${THUMB_W}:${THUMB_H}:force_original_aspect_ratio=decrease,pad=${THUMB_W}:${THUMB_H}:(ow-iw)/2:(oh-ih)/2:color=0x0a0e14`,
+      '-vf', `scale=${THUMB_W}:${THUMB_H}:force_original_aspect_ratio=increase,crop=${THUMB_W}:${THUMB_H}`,
       join(scaledDir, 's%03d.png'),
     ], { stdio: 'pipe' });
     if (scaleR.status !== 0) {

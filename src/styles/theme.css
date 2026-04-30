@@ -120,7 +120,7 @@ code, kbd, .mono { font-family: var(--mono); }
   border-bottom-color: var(--border-strong);
   margin-top: 8px;
 }
-.card-featured .thumb { aspect-ratio: 16 / 9; opacity: 1; }
+.card-featured .thumb { aspect-ratio: 16 / 10; opacity: 1; }
 .card-more {
   display: flex;
   align-items: center;
@@ -293,15 +293,21 @@ code, kbd, .mono { font-family: var(--mono); }
 .card .thumb {
   display: block;
   width: 100%;
-  height: auto;
   aspect-ratio: 16 / 10;
+  height: auto;
+  min-height: 0;
   margin: 8px 0 0;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 3px;
   object-fit: cover;
+  object-position: center;
   opacity: 0.92;
   transition: opacity 0.15s;
+}
+@supports not (aspect-ratio: 16/10) {
+  .card .thumb { height: 130px; }
+  .card-featured .thumb { height: 180px; }
 }
 .card:hover .thumb { opacity: 1; }
 .card .tex {
