@@ -238,9 +238,18 @@ function toggleDomainPopover(anchor: HTMLElement, labels: Record<string, string>
     apply();
     b.onclick = (ev) => {
       ev.stopPropagation();
-      const s = new Set(domains.peek());
-      if (s.has(d as Domain)) s.delete(d as Domain); else s.add(d as Domain);
-      domains.value = s; apply(); onChange(); syncURL();
+      const cur = domains.peek();
+      // Single-select: clicking active clears, otherwise replace.
+      domains.value = cur.has(d as Domain) ? new Set() : new Set([d as Domain]);
+      // Refresh all chip states in popover.
+      domPopoverEl?.querySelectorAll('button').forEach(btn => {
+        const lbl = btn.textContent || '';
+        const dKey = Object.entries(labels).find(([, l]) => l === lbl)?.[0];
+        const on = !!dKey && domains.peek().has(dKey as Domain);
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-pressed', String(on));
+      });
+      onChange(); syncURL();
     };
     domPopoverEl.appendChild(b);
   }
