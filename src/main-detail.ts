@@ -186,7 +186,8 @@ async function bootstrap() {
   canvasWrap.appendChild(canvas);
   canvasPane.appendChild(canvasWrap);
   const paramsPane = el('div', { class: 'params-pane' });
-  canvasPane.appendChild(paramsPane);
+  // Default home: under formula in notes pane (study mode)
+  notesPane.appendChild(paramsPane);
   const formulaFloating = el('div', { class: 'formula-floating' });
   formulaFloating.style.display = 'none';
   formulaFloating.appendChild(el('div', { class: 'title' }, tr.title));
@@ -247,6 +248,11 @@ async function bootstrap() {
     const m = mode.peek();
     body.classList.toggle('play', m === 'play');
     paramsPane.classList.toggle('floating', m === 'play');
+    if (m === 'play') {
+      if (paramsPane.parentElement !== canvasWrap) canvasWrap.appendChild(paramsPane);
+    } else {
+      if (paramsPane.parentElement !== notesPane) notesPane.appendChild(paramsPane);
+    }
     notesPane.style.display = m === 'play' ? 'none' : '';
     formulaFloating.style.display = m === 'play' ? '' : 'none';
     studyBtn.classList.toggle('active', m === 'study');
