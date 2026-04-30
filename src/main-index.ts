@@ -386,26 +386,44 @@ function renderGrid() {
     }
     const browseLabel: Record<Lang, string> = { zh: '按领域浏览', en: 'Browse by domain', es: 'Por dominio' };
     root.appendChild(el('h2', { class: 'section-h section-h-hero' }, browseLabel[lang.peek()]));
-    const DOMAIN_THUMB: Record<string, string> = {
-      algebra: 'euler-identity', geometry: 'spirograph', calculus: 'taylor',
-      linalg: 'svd', ode: 'lorenz', pde: 'drum-membrane', probability: 'brownian-2d',
-      fractal: 'mandelbrot', topology: 'mobius', numbertheory: 'ulam-spiral',
-      signals: 'fft', optimization: 'anneal', vectorfield: 'abc-flow',
-      cellular: 'conway-glider', biology: 'alpha-helix', chemistry: 'methane-tetrahedral',
-      quantum: 'schrodinger-1d', graph: 'small-world', crypto: 'elliptic-curve',
-      music: 'harmonic-series', gr: 'gravitational-wave-strain',
+    const DOMAIN_THUMBS: Record<string, string[]> = {
+      algebra: ['euler-identity', 'sigmoid', 'planck-radiation', 'rocket-equation'],
+      geometry: ['spirograph', 'lemniscate', 'superellipse', 'icosahedron'],
+      calculus: ['taylor', 'riemann-sum', 'gradient-descent', 'lhopital'],
+      linalg: ['svd', 'pca', 'projection', 'reflection'],
+      ode: ['lorenz', 'rossler', 'double-pendulum', 'halvorsen'],
+      pde: ['drum-membrane', 'heat-2d', 'kdv-soliton', 'diffusion-2d'],
+      probability: ['brownian-2d', 'galton-board', 'dirichlet', 'clt'],
+      fractal: ['mandelbrot', 'julia', 'newton-fractal', 'ifs-barnsley'],
+      topology: ['mobius', 'klein-bottle', 'torus', 'genus-surface'],
+      numbertheory: ['ulam-spiral', 'sieve', 'goldbach', 'collatz'],
+      signals: ['fft', 'spectrogram', 'lissajous', 'sinc'],
+      optimization: ['anneal', 'ackley', 'rastrigin', 'himmelblau'],
+      vectorfield: ['abc-flow', 'double-vortex', 'dipole-field', 'karman-vortex'],
+      cellular: ['conway-glider', 'lenia', 'sandpile', 'brian-brain'],
+      biology: ['alpha-helix', 'dna-double-helix', 'beta-barrel', 'actin-filament'],
+      chemistry: ['methane-tetrahedral', 'water-molecule', 'sn2-reaction', 'reaction-energy-profile'],
+      quantum: ['gaussian-wavepacket', 'spin-half', 'stern-gerlach', 'quantum-tunneling'],
+      graph: ['small-world', 'degree-distribution', 'pagerank-power', 'force-directed'],
+      crypto: ['elliptic-curve', 'merkle-tree', 'hash-avalanche', 'prime-counting'],
+      music: ['harmonic-series', 'beating', 'chord-spectrum', 'fm-synthesis'],
+      gr: ['gravitational-wave-strain', 'schwarzschild-funnel', 'time-dilation-gr', 'light-deflection'],
     };
     const tiles = el('div', { class: 'domain-tiles' });
     for (const [dom, list] of byDomain) {
       const a = el('a', { class: 'domain-tile', href: `/domain/${dom}` }) as HTMLAnchorElement;
-      const thumbSlug = DOMAIN_THUMB[dom];
-      if (thumbSlug) {
-        const img = el('img', {
-          class: 'dt-thumb', loading: 'lazy', decoding: 'async',
-          src: `/thumbs/${thumbSlug}.webp`, alt: '', width: '320', height: '200',
-        }) as HTMLImageElement;
-        img.onerror = () => { img.style.display = 'none'; };
-        a.appendChild(img);
+      const slugs = DOMAIN_THUMBS[dom];
+      if (slugs && slugs.length) {
+        const mosaic = el('div', { class: 'dt-mosaic' });
+        for (const sl of slugs.slice(0, 4)) {
+          const img = el('img', {
+            class: 'dt-mosaic-cell', loading: 'lazy', decoding: 'async',
+            src: `/thumbs/${sl}.webp`, alt: '', width: '160', height: '100',
+          }) as HTMLImageElement;
+          img.onerror = () => { img.style.display = 'none'; };
+          mosaic.appendChild(img);
+        }
+        a.appendChild(mosaic);
       }
       const meta = el('div', { class: 'dt-meta' });
       meta.appendChild(el('span', { class: 'dt-name' }, labels[dom as keyof typeof labels]));

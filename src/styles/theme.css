@@ -458,6 +458,24 @@ code, kbd, .mono { font-family: var(--mono); }
   object-fit: cover; opacity: 0.92; transition: opacity 0.15s;
 }
 .domain-tile:hover .dt-thumb { opacity: 1; }
+.domain-tile .dt-mosaic {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border-bottom: 1px solid var(--border);
+  aspect-ratio: 16 / 10;
+  width: 100%;
+}
+.domain-tile .dt-mosaic-cell {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  background: var(--bg);
+  opacity: 0.9;
+  transition: opacity 0.15s;
+  display: block;
+}
+.domain-tile:hover .dt-mosaic-cell { opacity: 1; }
 .domain-tile .dt-meta {
   display: flex; justify-content: space-between; align-items: baseline;
   padding: 8px 10px; font-size: 12px;
