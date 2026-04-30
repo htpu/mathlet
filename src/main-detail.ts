@@ -312,11 +312,34 @@ async function bootstrap() {
     a.href = url; a.download = `${slug}.png`; a.click();
   });
 
+  // Global registry navigation (across all formulas, not just same domain+level)
+  const allIdx = REGISTRY.findIndex(r => r.slug === slug);
+  const globalPrev = allIdx > 0 ? REGISTRY[allIdx - 1] : null;
+  const globalNext = allIdx >= 0 && allIdx < REGISTRY.length - 1 ? REGISTRY[allIdx + 1] : null;
   document.addEventListener('keydown', e => {
     if ((e.target as HTMLElement).tagName === 'INPUT') return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.key === 'r') { for (const p of formula.params) paramSignals[p.key].value = p.default; syncURL(); rebuildParams(); }
-    else if (e.key === 'ArrowLeft' && prev) location.href = `/f/${prev.slug}.html` + langSuffix();
-    else if (e.key === 'ArrowRight' && next) location.href = `/f/${next.slug}.html` + langSuffix();
+    else if (e.key === 'ArrowLeft' && prev) location.href = `/f/${prev.slug}.html`;
+    else if (e.key === 'ArrowRight' && next) location.href = `/f/${next.slug}.html`;
+    else if (e.key === 'k' && globalPrev) location.href = `/f/${globalPrev.slug}.html`;
+    else if (e.key === 'j' && globalNext) location.href = `/f/${globalNext.slug}.html`;
+    else if (e.key === 'g' && globalPrev) location.href = `/f/${REGISTRY[0].slug}.html`;
+    else if (e.key === 'G' && globalNext) location.href = `/f/${REGISTRY[REGISTRY.length-1].slug}.html`;
+    else if (e.key === '?') {
+      e.preventDefault();
+      const lines = ['mathlet detail · keyboard', '', '← → prev/next in same domain+level', 'j / k  next/prev across all formulas', 'g / G  first / last formula', 'r  reset params', '/  search (top)', 'esc  close'];
+      const o = document.createElement('div');
+      o.style.cssText = 'position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;cursor:pointer';
+      const b = document.createElement('div');
+      b.style.cssText = 'background:#0d1017;border:1px solid #3a3f4b;border-radius:6px;padding:24px 32px;font-family:ui-monospace,monospace;font-size:13px;color:#cbccc6;white-space:pre-line;line-height:1.6;max-width:90vw';
+      b.textContent = lines.join('\n');
+      o.appendChild(b);
+      o.onclick = () => o.remove();
+      document.addEventListener('keydown', function close(ev) { if (ev.key === 'Escape') { o.remove(); document.removeEventListener('keydown', close); } });
+      document.body.appendChild(o);
+    }
+    else if (e.key === 'Escape') document.querySelectorAll('[style*="z-index:1000"], .help-overlay').forEach(n => n.remove());
   });
 }
 
