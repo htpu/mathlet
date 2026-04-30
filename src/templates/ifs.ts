@@ -28,7 +28,8 @@ export function ifs(opts: IFSOpts): Formula {
       const cum = maps.map(m => (acc += m.w / total));
       const rand = mulberry32(42);
       let x = 0, y = 0;
-      const N = opts.iterations ?? 80000;
+      const pn = (p.iters ?? p.n ?? p.points);
+      const N = typeof pn === 'number' ? pn : (opts.iterations ?? 80000);
       const v = opts.view;
       const sx = (xi: number) => width / 2 + (xi - v.cx) * v.scale;
       const sy = (yi: number) => height / 2 - (yi - v.cy) * v.scale;

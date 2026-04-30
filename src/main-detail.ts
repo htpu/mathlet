@@ -110,11 +110,11 @@ async function bootstrap() {
   home.style.color = 'var(--accent-2)';
   bar.appendChild(home);
   bar.appendChild(el('span', { class: 'crumb-sep' }, '›'));
-  const domainLink = el('a', { href: `/?domain=${formula.meta.domain}` + (lang.peek() !== 'zh' ? `&lang=${lang.peek()}` : '') }, DOMAIN_LABELS_I18N[lang.peek()][formula.meta.domain]);
+  const domainLink = el('a', { href: `/domain/${formula.meta.domain}` }, DOMAIN_LABELS_I18N[lang.peek()][formula.meta.domain]);
   domainLink.style.color = 'var(--accent-2)';
   bar.appendChild(domainLink);
   bar.appendChild(el('span', { class: 'crumb-sep' }, '›'));
-  const lvlLink = el('a', { href: `/?domain=${formula.meta.domain}&level=${formula.meta.level}` + (lang.peek() !== 'zh' ? `&lang=${lang.peek()}` : '') }, '⭐'.repeat(formula.meta.level) + ' L' + formula.meta.level);
+  const lvlLink = el('a', { href: `/level/${formula.meta.level}` }, '⭐'.repeat(formula.meta.level) + ' L' + formula.meta.level);
   lvlLink.style.color = 'var(--accent)';
   bar.appendChild(lvlLink);
   bar.appendChild(el('span', { class: 'crumb-sep' }, '›'));
