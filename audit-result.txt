@@ -1,3 +1,6 @@
-passes: 403
-fails: 0
+passes: 570
+fails: 3
 
+neutral-substitution-rate: nonBg=0/57120, stdev=0.00, mean=14.7
+contact-process: nonBg=0/57120, stdev=0.00, mean=14.7
+cesaro-fractal: nonBg=0/57750, stdev=0.00, mean=14.7
