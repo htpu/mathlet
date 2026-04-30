@@ -151,17 +151,45 @@ writeFileSync(join(DIST, 'sitemap.xml'),
 console.log(`ssg: sitemap.xml (${sitemapUrls.length} urls)`);
 
 // Static landing pages for /domain/<dom>, /level/<n>, /surface/<sf>
-// Avoids _redirects 200-rewrite quirks; Pages serves real index.html.
+// Each gets unique title/description/canonical/OG meta for SEO.
 const indexHtmlFinal = readFileSync(join(DIST, 'index.html'), 'utf8');
-function writeLanding(path: string) {
+function patchMeta(html: string, title: string, desc: string, url: string): string {
+  let out = html;
+  out = out.replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`);
+  out = out.replace(/<meta name="description" content="[^"]*"/, `<meta name="description" content="${desc.replace(/"/g, '&quot;')}"`);
+  out = out.replace(/<meta property="og:title" content="[^"]*"/, `<meta property="og:title" content="${title}"`);
+  out = out.replace(/<meta property="og:description" content="[^"]*"/, `<meta property="og:description" content="${desc.replace(/"/g, '&quot;')}"`);
+  out = out.replace(/<meta property="og:url" content="[^"]*"/, `<meta property="og:url" content="${url}"`);
+  out = out.replace(/<link rel="canonical" href="[^"]*"/, `<link rel="canonical" href="${url}"`);
+  out = out.replace(/<meta name="twitter:title" content="[^"]*"/, `<meta name="twitter:title" content="${title}"`);
+  out = out.replace(/<meta name="twitter:description" content="[^"]*"/, `<meta name="twitter:description" content="${desc.replace(/"/g, '&quot;')}"`);
+  return out;
+}
+function writeLanding(path: string, title: string, desc: string) {
   const dir = join(DIST, path);
   mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, 'index.html'), indexHtmlFinal);
+  const url = `${SITE}${path.startsWith('/') ? path : '/' + path}/`;
+  writeFileSync(join(dir, 'index.html'), patchMeta(indexHtmlFinal, title, desc, url));
 }
+
 const allDomains = Array.from(new Set(REGISTRY.map(e => e.domain)));
-for (const d of allDomains) writeLanding(`domain/${d}`);
-for (const lv of [1, 2, 3, 4, 5]) writeLanding(`level/${lv}`);
-for (const sf of ['canvas2d', 'three']) writeLanding(`surface/${sf}`);
+for (const d of allDomains) {
+  const list = REGISTRY.filter(e => e.domain === d);
+  const sample = list.slice(0, 5).map(e => e.title).join(', ');
+  writeLanding(`domain/${d}`, `${DOMAIN_LABELS[d] ?? d} · mathlet (${list.length})`,
+    `${list.length} interactive ${DOMAIN_LABELS[d] ?? d} formula visualizations on mathlet. Includes ${sample}, and more — every formula is a live canvas with adjustable parameters.`);
+}
+for (const lv of [1, 2, 3, 4, 5]) {
+  const list = REGISTRY.filter(e => e.level === lv);
+  writeLanding(`level/${lv}`, `Level ${lv} formulas · mathlet (${list.length})`,
+    `${list.length} interactive math formula visualizations at difficulty L${lv} on mathlet. ${'⭐'.repeat(lv)} L${lv}.`);
+}
+for (const sf of ['canvas2d', 'three']) {
+  const list = REGISTRY.filter(e => e.surface === sf);
+  const label = sf === 'three' ? '3D' : '2D';
+  writeLanding(`surface/${sf}`, `${label} interactive math visualizations · mathlet (${list.length})`,
+    `${list.length} ${label} interactive math formula visualizations on mathlet. ${sf === 'three' ? 'Three.js powered with mouse-orbit cameras.' : 'Canvas2D parametric plots, fields, fractals, cellular automata.'}`);
+}
 console.log(`ssg: landing pages for ${allDomains.length} domains + 5 levels + 2 surfaces`);
 
 // 404 page
