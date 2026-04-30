@@ -28,7 +28,8 @@ function extractMeta(path: string) {
   const m = src.match(/meta:\s*\{([\s\S]*?)\}\s*,\s*params/);
   const block = m ? m[1] : '';
   const get = (k: string): string | null => {
-    const re = new RegExp(`${k}\\s*:\\s*(?:'([^']*)'|"([^"]*)"|\`([^\`]*)\`|(\\d+))`);
+    // Allow escaped quotes inside single/double/backtick strings.
+    const re = new RegExp(`${k}\\s*:\\s*(?:'((?:[^'\\\\]|\\\\.)*)'|"((?:[^"\\\\]|\\\\.)*)"|\`((?:[^\`\\\\]|\\\\.)*)\`|(\\d+))`);
     const r = block.match(re) ?? src.match(re);
     return r ? (r[1] ?? r[2] ?? r[3] ?? r[4]) : null;
   };
@@ -55,7 +56,11 @@ for (const e of entries) {
   records.push({ slug: e.slug, path: e.path, meta });
 }
 
-const escapeStr = (s: string) => s.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+// Captured bytes from source already contain escape sequences (\\, \').
+// Backslashes pass through. But tex may originate from a "double-quoted"
+// source string with literal single quotes inside, which would break our
+// single-quoted output. Escape any unescaped ' character.
+const escapeStr = (s: string) => s.replace(/(^|[^\\])'/g, "$1\\'");
 
 // Lightweight metadata file
 const metaLines: string[] = [
