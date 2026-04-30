@@ -67,8 +67,6 @@ async function bootstrap() {
   } catch {}
 
   const urlParams = new URLSearchParams(location.search);
-  const initialMode = urlParams.get('mode') === 'play' ? 'play' : 'study';
-  const mode = signal<'study' | 'play'>(initialMode);
 
   const paramSignals: Record<string, ReturnType<typeof signal<any>>> = {};
   for (const p of formula.params) {
@@ -91,7 +89,6 @@ async function bootstrap() {
 
   function syncURL() {
     const u = new URLSearchParams();
-    if (mode.peek() === 'play') u.set('mode', 'play');
     if (lang.peek() !== 'zh') u.set('lang', lang.peek());
     for (const p of formula.params) {
       const v = paramSignals[p.key].peek();
@@ -126,22 +123,6 @@ async function bootstrap() {
   bar.appendChild(el('span', { class: 'crumb-current' }, tr.title));
   bar.appendChild(el('div', { class: 'grow' }));
 
-  const modeToggle = el('div', { class: 'mode-toggle' });
-  const studyBtn = el('button', { 'data-mode': 'study' }, UI[lang.peek()].studyMode) as HTMLButtonElement;
-  const playBtn = el('button', { 'data-mode': 'play' }, UI[lang.peek()].playMode) as HTMLButtonElement;
-  modeToggle.appendChild(studyBtn);
-  modeToggle.appendChild(playBtn);
-  bar.appendChild(modeToggle);
-
-  const langSwitcher = el('div', { class: 'lang-switcher' });
-  for (const l of LANGS) {
-    const b = el('button', { class: 'lang-btn' + (l === lang.peek() ? ' active' : '') }, LANG_LABELS[l]) as HTMLButtonElement;
-    b.dataset.lang = l;
-    b.onclick = () => { lang.value = l; setLang(l); syncURL(); location.reload(); };
-    langSwitcher.appendChild(b);
-  }
-  bar.appendChild(langSwitcher);
-
   const prevBtn = el('button', { class: 'nav-arrow' }, prev ? '←' : '·') as HTMLButtonElement;
   if (!prev) { prevBtn.disabled = true; prevBtn.style.opacity = '.4'; prevBtn.style.cursor = 'default'; }
   bar.appendChild(prevBtn);
@@ -163,7 +144,32 @@ async function bootstrap() {
       setTimeout(() => { shareBtn.textContent = orig; }, 1200);
     } catch {}
   });
+  const menuBtn = el('button', { class: 'nav-arrow menu-btn-detail', 'aria-label': 'menu' }, '☰') as HTMLButtonElement;
+  menuBtn.onclick = (ev) => { ev.stopPropagation(); toggleDetailMenu(menuBtn); };
+  bar.appendChild(menuBtn);
   root.appendChild(bar);
+
+  function toggleDetailMenu(anchor: HTMLElement) {
+    let menu = document.querySelector('.detail-menu') as HTMLElement | null;
+    if (menu) { menu.remove(); return; }
+    menu = el('div', { class: 'main-menu detail-menu' });
+    const r = anchor.getBoundingClientRect();
+    menu.style.top = `${r.bottom + 6}px`;
+    menu.style.right = `${Math.max(8, window.innerWidth - r.right)}px`;
+    menu.appendChild(el('div', { class: 'main-menu-h' }, 'Language'));
+    const langRow = el('div', { class: 'main-menu-langs' });
+    for (const l of LANGS) {
+      const b = el('button', { class: 'lang-btn' + (l === lang.peek() ? ' active' : ''), title: l, 'aria-pressed': String(l === lang.peek()) }, LANG_LABELS[l]) as HTMLButtonElement;
+      b.onclick = (ev) => { ev.stopPropagation(); lang.value = l; setLang(l); location.reload(); };
+      langRow.appendChild(b);
+    }
+    menu.appendChild(langRow);
+    document.body.appendChild(menu);
+    setTimeout(() => {
+      const close = (ev: MouseEvent) => { if (!menu!.contains(ev.target as Node) && ev.target !== anchor) { menu!.remove(); document.removeEventListener('click', close); } };
+      document.addEventListener('click', close);
+    }, 0);
+  }
 
   if (prev) prevBtn.addEventListener('click', () => { location.href = `/f/${prev.slug}.html` + langSuffix(); });
   if (next) nextBtn.addEventListener('click', () => { location.href = `/f/${next.slug}.html` + langSuffix(); });
@@ -193,14 +199,6 @@ async function bootstrap() {
   const paramsPane = el('div', { class: 'params-pane' });
   // Default home: under formula in notes pane (study mode)
   notesPane.appendChild(paramsPane);
-  const formulaFloating = el('div', { class: 'formula-floating' });
-  formulaFloating.style.display = 'none';
-  formulaFloating.appendChild(el('div', { class: 'title' }, tr.title));
-  const ftex = el('div');
-  try { ftex.innerHTML = katex.renderToString(formula.meta.tex, { throwOnError: false, displayMode: false, output: 'html' }); }
-  catch { const c = el('code'); c.textContent = formula.meta.tex; ftex.appendChild(c); }
-  formulaFloating.appendChild(ftex);
-  canvasWrap.appendChild(formulaFloating);
   body.appendChild(canvasPane);
 
   function rebuildParams() {
@@ -249,25 +247,7 @@ async function bootstrap() {
     effect(() => { for (const k of Object.keys(paramSignals)) paramSignals[k].value; requestRender(); });
   }
 
-  function applyMode() {
-    const m = mode.peek();
-    body.classList.toggle('play', m === 'play');
-    document.body.classList.toggle('mode-play', m === 'play');
-    paramsPane.classList.toggle('floating', m === 'play');
-    if (m === 'play') {
-      if (paramsPane.parentElement !== canvasWrap) canvasWrap.appendChild(paramsPane);
-    } else {
-      if (paramsPane.parentElement !== notesPane) notesPane.appendChild(paramsPane);
-    }
-    notesPane.style.display = m === 'play' ? 'none' : '';
-    formulaFloating.style.display = m === 'play' ? '' : 'none';
-    studyBtn.classList.toggle('active', m === 'study');
-    playBtn.classList.toggle('active', m === 'play');
-    setTimeout(() => { resize(); requestRender(); }, 0);
-  }
-  applyMode();
-  studyBtn.addEventListener('click', () => { mode.value = 'study'; syncURL(); applyMode(); });
-  playBtn.addEventListener('click', () => { mode.value = 'play'; syncURL(); applyMode(); });
+  setTimeout(() => { resize(); requestRender(); }, 0);
 
   snapBtn.addEventListener('click', () => {
     const url = canvas.toDataURL('image/png');
@@ -277,8 +257,7 @@ async function bootstrap() {
 
   document.addEventListener('keydown', e => {
     if ((e.target as HTMLElement).tagName === 'INPUT') return;
-    if (e.key === 'h') { mode.value = mode.peek() === 'play' ? 'study' : 'play'; syncURL(); applyMode(); }
-    else if (e.key === 'r') { for (const p of formula.params) paramSignals[p.key].value = p.default; syncURL(); rebuildParams(); }
+    if (e.key === 'r') { for (const p of formula.params) paramSignals[p.key].value = p.default; syncURL(); rebuildParams(); }
     else if (e.key === 'ArrowLeft' && prev) location.href = `/f/${prev.slug}.html` + langSuffix();
     else if (e.key === 'ArrowRight' && next) location.href = `/f/${next.slug}.html` + langSuffix();
   });
