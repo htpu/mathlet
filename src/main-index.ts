@@ -1,4 +1,3 @@
-import katex from 'katex';
 import { signal, effect } from './runtime/signal';
 import type { Domain, Level } from './formulas/types';
 import { REGISTRY, type RegistryEntry } from './formulas/_registry.generated';
@@ -289,9 +288,8 @@ function matches(e: RegistryEntry): boolean {
 }
 
 const FEATURED_SLUGS = [
-  'mandelbrot', 'lorenz', 'brian-brain', 'double-pendulum',
-  'brownian-2d', 'newton-fractal', 'conway-glider', 'ifs-barnsley',
-  'anneal', 'replicator',
+  'mandelbrot', 'lorenz', 'double-pendulum',
+  'brownian-2d', 'newton-fractal', 'conway-glider',
 ];
 
 const FEATURED_LABEL: Record<Lang, string> = {
@@ -334,16 +332,6 @@ function makeCard(e: RegistryEntry, featured = false): HTMLAnchorElement {
   a.setAttribute('aria-label', `${tr.title} — ${labels[e.domain]} — L${e.level} — ${tr.blurb}`);
   a.title = tr.blurb;
 
-  const head = el('div', { class: 'head' });
-  head.appendChild(el('div', { class: 'title' }, tr.title));
-  head.appendChild(el('div', { class: 'stars' }, '⭐'.repeat(e.level)));
-  a.appendChild(head);
-
-  const tex = el('div', { class: 'tex' });
-  try { tex.innerHTML = katex.renderToString(e.tex, { throwOnError: false, output: 'html' }); }
-  catch { const code = el('code'); code.textContent = e.tex; tex.appendChild(code); }
-  a.appendChild(tex);
-
   const thumb = el('img', {
     class: 'thumb',
     loading: 'lazy',
@@ -356,13 +344,13 @@ function makeCard(e: RegistryEntry, featured = false): HTMLAnchorElement {
   (thumb as HTMLImageElement).onerror = () => { thumb.style.display = 'none'; };
   a.appendChild(thumb);
 
-  // Blurb overlays thumb on hover only
+  const head = el('div', { class: 'head' });
+  head.appendChild(el('div', { class: 'title' }, tr.title));
+  head.appendChild(el('div', { class: 'stars' }, '·'.repeat(e.level)));
+  a.appendChild(head);
+
   const overlay = el('div', { class: 'card-blurb-overlay' }, tr.blurb);
   a.appendChild(overlay);
-
-  const foot = el('div', { class: 'foot' });
-  foot.appendChild(el('span', { class: 'domain-tag' }, labels[e.domain]));
-  a.appendChild(foot);
 
   return a;
 }
@@ -377,14 +365,8 @@ function renderGrid() {
   root.replaceChildren();
 
   if (isUnfiltered()) {
-    const u = UI[lang.peek()];
-    const hero = el('section', { class: 'hero' });
-    hero.appendChild(el('h1', { class: 'hero-title' }, u.heroTitle));
-    hero.appendChild(el('p', { class: 'hero-body' }, u.heroBody));
-    root.appendChild(hero);
-
     // Discover: Popular when data exists, else Featured (one section, not three)
-    const discoverSlugs = popularSlugs.length > 0 ? popularSlugs : FEATURED_SLUGS;
+    const discoverSlugs = popularSlugs.length > 0 ? popularSlugs.slice(0, 6) : FEATURED_SLUGS;
     const discoverLabel = popularSlugs.length > 0 ? POPULAR_LABEL[lang.peek()] : FEATURED_LABEL[lang.peek()];
     const discoverEntries = discoverSlugs.map(s => all.find(r => r.slug === s)).filter(Boolean) as RegistryEntry[];
     if (discoverEntries.length > 0) {
@@ -412,8 +394,14 @@ function renderGrid() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
     let collapsed: Set<string>;
-    try { collapsed = new Set(JSON.parse(localStorage.getItem('mathlet:collapsed') ?? '[]')); }
-    catch { collapsed = new Set(); }
+    const stored = localStorage.getItem('mathlet:collapsed');
+    if (stored === null) {
+      // Default: collapse all except top 3 domains by size
+      const sorted = [...byDomain.entries()].sort((a, b) => b[1].length - a[1].length);
+      collapsed = new Set(sorted.slice(3).map(([d]) => d));
+    } else {
+      try { collapsed = new Set(JSON.parse(stored)); } catch { collapsed = new Set(); }
+    }
     const persist = () => localStorage.setItem('mathlet:collapsed', JSON.stringify([...collapsed]));
 
     for (const [dom, list] of byDomain) {
