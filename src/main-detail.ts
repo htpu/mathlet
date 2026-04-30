@@ -194,7 +194,8 @@ async function bootstrap() {
       for (const s of recents.slice(0, 6)) {
         const re = REGISTRY.find(r => r.slug === s);
         if (!re) continue;
-        const a = el('a', { class: 'main-menu-item', href: `/f/${re.slug}.html`, role: 'menuitem' }, re.title);
+        const trr = tFormula(re.slug, { title: re.title, blurb: re.blurb });
+        const a = el('a', { class: 'main-menu-item', href: `/f/${re.slug}.html`, role: 'menuitem' }, trr.title);
         menu.appendChild(a);
       }
     }
@@ -242,7 +243,8 @@ async function bootstrap() {
   notesPane.appendChild(texBlock);
   const notesContent = el('div', { class: 'notes-content' });
   notesContent.appendChild(el('p', {}, tr.blurb));
-  if (formula.meta.notes) notesContent.appendChild(el('p', {}, formula.meta.notes));
+  // Notes are zh-only metadata; only render when current lang is zh.
+  if (formula.meta.notes && lang.peek() === 'zh') notesContent.appendChild(el('p', {}, formula.meta.notes));
   notesPane.appendChild(notesContent);
   body.appendChild(notesPane);
 
