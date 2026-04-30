@@ -241,13 +241,35 @@ function renderGrid() {
       if (!byDomain.has(e.domain)) byDomain.set(e.domain, []);
       byDomain.get(e.domain)!.push(e);
     }
+    const PER_SECTION = 6;
+    const moreLabel: Record<Lang, (n: number) => string> = {
+      zh: n => `更多 ${n} 个 →`,
+      en: n => `more ${n} →`,
+      es: n => `${n} más →`,
+    };
+    const goDomain = (dom: string) => {
+      domains.value = new Set([dom as Domain]);
+      renderFilters(); renderBreadcrumbs(); syncURL();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
     for (const [dom, list] of byDomain) {
-      const h = el('h2', { class: 'section-h' });
+      const h = el('h2', { class: 'section-h section-h-link' }) as HTMLHeadingElement;
+      h.setAttribute('role', 'button');
+      h.setAttribute('tabindex', '0');
       h.appendChild(el('span', {}, labels[dom as keyof typeof labels]));
       h.appendChild(el('span', { class: 'section-count' }, ` (${list.length})`));
+      h.onclick = () => goDomain(dom);
+      h.onkeydown = (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); goDomain(dom); } };
       root.appendChild(h);
       const row = el('div', { class: 'grid-row' });
-      for (const e of list) row.appendChild(makeCard(e));
+      const visible = list.slice(0, PER_SECTION);
+      for (const e of visible) row.appendChild(makeCard(e));
+      if (list.length > PER_SECTION) {
+        const more = el('a', { class: 'card card-more', href: `/?domain=${dom}` + (lang.peek() !== 'zh' ? `&lang=${lang.peek()}` : '') }) as HTMLAnchorElement;
+        more.textContent = moreLabel[lang.peek()](list.length - PER_SECTION);
+        more.onclick = (ev) => { ev.preventDefault(); goDomain(dom); };
+        row.appendChild(more);
+      }
       root.appendChild(row);
     }
     return;
