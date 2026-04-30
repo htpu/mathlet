@@ -151,8 +151,12 @@ console.log(`ssg: ${REGISTRY.length} detail pages prerendered`);
 
 // sitemap.xml
 const today = new Date().toISOString().slice(0, 10);
+const _allDomainsSm = Array.from(new Set(REGISTRY.map(e => e.domain)));
 const sitemapUrls = [
   `<url><loc>${SITE}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
+  ..._allDomainsSm.map(d => `<url><loc>${SITE}/domain/${d}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`),
+  ...[1,2,3,4,5].map(lv => `<url><loc>${SITE}/level/${lv}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>`),
+  ...['canvas2d','three'].map(sf => `<url><loc>${SITE}/surface/${sf}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>`),
   ...REGISTRY.map(e => `<url><loc>${SITE}/f/${e.slug}.html</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`),
 ];
 writeFileSync(join(DIST, 'sitemap.xml'),
@@ -174,30 +178,65 @@ function patchMeta(html: string, title: string, desc: string, url: string): stri
   out = out.replace(/<meta name="twitter:description" content="[^"]*"/, `<meta name="twitter:description" content="${desc.replace(/"/g, '&quot;')}"`);
   return out;
 }
-function writeLanding(path: string, title: string, desc: string) {
+function writeLanding(path: string, title: string, desc: string, items?: { name: string; url: string }[], crumb?: { name: string; item: string }) {
   const dir = join(DIST, path);
   mkdirSync(dir, { recursive: true });
   const url = `${SITE}${path.startsWith('/') ? path : '/' + path}/`;
-  writeFileSync(join(dir, 'index.html'), patchMeta(indexHtmlFinal, title, desc, url));
+  let html = patchMeta(indexHtmlFinal, title, desc, url);
+  const ld: object[] = [];
+  if (crumb) {
+    ld.push({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'mathlet', item: SITE + '/' },
+        { '@type': 'ListItem', position: 2, name: crumb.name, item: crumb.item },
+      ],
+    });
+  }
+  if (items && items.length) {
+    ld.push({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      itemListElement: items.slice(0, 10).map((it, i) => ({
+        '@type': 'ListItem', position: i + 1, name: it.name, url: it.url,
+      })),
+    });
+  }
+  if (ld.length) {
+    const tags = ld.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</script>`).join('');
+    html = html.replace('</head>', `${tags}</head>`);
+  }
+  writeFileSync(join(dir, 'index.html'), html);
 }
 
 const allDomains = Array.from(new Set(REGISTRY.map(e => e.domain)));
 for (const d of allDomains) {
   const list = REGISTRY.filter(e => e.domain === d);
   const sample = list.slice(0, 5).map(e => e.title).join(', ');
-  writeLanding(`domain/${d}`, `${DOMAIN_LABELS[d] ?? d} · mathlet (${list.length})`,
-    `${list.length} interactive ${DOMAIN_LABELS[d] ?? d} formula visualizations on mathlet. Includes ${sample}, and more — every formula is a live canvas with adjustable parameters.`);
+  const dName = DOMAIN_LABELS[d] ?? d;
+  const dUrl = `${SITE}/domain/${d}/`;
+  const items = list.map(e => ({ name: e.title, url: `${SITE}/f/${e.slug}.html` }));
+  writeLanding(`domain/${d}`, `${dName} · mathlet (${list.length})`,
+    `${list.length} interactive ${dName} formula visualizations on mathlet. Includes ${sample}, and more — every formula is a live canvas with adjustable parameters.`,
+    items, { name: dName, item: dUrl });
 }
 for (const lv of [1, 2, 3, 4, 5]) {
   const list = REGISTRY.filter(e => e.level === lv);
+  const lUrl = `${SITE}/level/${lv}/`;
+  const items = list.map(e => ({ name: e.title, url: `${SITE}/f/${e.slug}.html` }));
   writeLanding(`level/${lv}`, `Level ${lv} formulas · mathlet (${list.length})`,
-    `${list.length} interactive math formula visualizations at difficulty L${lv} on mathlet. ${'⭐'.repeat(lv)} L${lv}.`);
+    `${list.length} interactive math formula visualizations at difficulty L${lv} on mathlet. ${'⭐'.repeat(lv)} L${lv}.`,
+    items, { name: `Level ${lv}`, item: lUrl });
 }
 for (const sf of ['canvas2d', 'three']) {
   const list = REGISTRY.filter(e => e.surface === sf);
   const label = sf === 'three' ? '3D' : '2D';
+  const sUrl = `${SITE}/surface/${sf}/`;
+  const items = list.map(e => ({ name: e.title, url: `${SITE}/f/${e.slug}.html` }));
   writeLanding(`surface/${sf}`, `${label} interactive math visualizations · mathlet (${list.length})`,
-    `${list.length} ${label} interactive math formula visualizations on mathlet. ${sf === 'three' ? 'Three.js powered with mouse-orbit cameras.' : 'Canvas2D parametric plots, fields, fractals, cellular automata.'}`);
+    `${list.length} ${label} interactive math formula visualizations on mathlet. ${sf === 'three' ? 'Three.js powered with mouse-orbit cameras.' : 'Canvas2D parametric plots, fields, fractals, cellular automata.'}`,
+    items, { name: `${label} formulas`, item: sUrl });
 }
 console.log(`ssg: landing pages for ${allDomains.length} domains + 5 levels + 2 surfaces`);
 
