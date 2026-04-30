@@ -8,7 +8,7 @@ import type { Domain } from '../formulas/types';
 export const UI: Record<Lang, Record<string, string>> = {
   zh: {
     siteTagline: '573 个公式 · 点开任意一个开始把玩',
-    searchPlaceholder: '/ 搜索公式...',
+    searchPlaceholder: 'search formulas...',
     noMatch: '// 没有匹配的公式',
     notFound: '// 公式未找到',
     backToIndex: '← 索引',
@@ -30,7 +30,7 @@ export const UI: Record<Lang, Record<string, string>> = {
   },
   en: {
     siteTagline: '573 formulas · pick one and start playing',
-    searchPlaceholder: '/ search formulas...',
+    searchPlaceholder: 'search formulas...',
     noMatch: '// no matching formulas',
     notFound: '// formula not found',
     backToIndex: '← index',
@@ -52,7 +52,7 @@ export const UI: Record<Lang, Record<string, string>> = {
   },
   es: {
     siteTagline: '573 fórmulas · elige una y empieza a jugar',
-    searchPlaceholder: '/ buscar fórmulas...',
+    searchPlaceholder: 'buscar fórmulas...',
     noMatch: '// sin fórmulas coincidentes',
     notFound: '// fórmula no encontrada',
     backToIndex: '← índice',
