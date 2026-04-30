@@ -255,13 +255,33 @@ function toggleDomainPopover(anchor: HTMLElement, labels: Record<string, string>
   }, 0);
 }
 
+function parseQuery(raw: string): { text: string; domain?: string; level?: number; surface?: string } {
+  const out: { text: string; domain?: string; level?: number; surface?: string } = { text: '' };
+  const rest: string[] = [];
+  for (const tok of raw.trim().split(/\s+/)) {
+    if (!tok) continue;
+    const m = tok.match(/^(domain|level|surface|d|l|s):(.+)$/i);
+    if (m) {
+      const k = m[1].toLowerCase(), v = m[2].toLowerCase();
+      if (k === 'domain' || k === 'd') out.domain = v;
+      else if (k === 'level' || k === 'l') out.level = parseInt(v);
+      else if (k === 'surface' || k === 's') out.surface = (v === '3d' ? 'three' : v === '2d' ? 'canvas2d' : v);
+    } else { rest.push(tok); }
+  }
+  out.text = rest.join(' ').toLowerCase();
+  return out;
+}
+
 function matches(e: RegistryEntry): boolean {
-  const q = query.peek().trim().toLowerCase();
-  if (q) {
+  const parsed = parseQuery(query.peek());
+  if (parsed.text) {
     const tr = tFormula(e.slug, { title: e.title, blurb: e.blurb });
     const hay = (e.title + ' ' + tr.title + ' ' + e.slug + ' ' + e.blurb + ' ' + tr.blurb + ' ' + e.tex).toLowerCase();
-    if (!hay.includes(q)) return false;
+    if (!hay.includes(parsed.text)) return false;
   }
+  if (parsed.domain && e.domain !== parsed.domain) return false;
+  if (parsed.level !== undefined && !isNaN(parsed.level) && e.level !== parsed.level) return false;
+  if (parsed.surface && e.surface !== parsed.surface) return false;
   if (domains.peek().size && !domains.peek().has(e.domain)) return false;
   if (levels.peek().size && !levels.peek().has(e.level)) return false;
   if (surfaces.peek().size && !surfaces.peek().has(e.surface)) return false;
@@ -504,9 +524,9 @@ qInput.addEventListener('input', e => {
 });
 
 const HELP_TEXT: Record<Lang, string> = {
-  zh: '/ 搜索 · ? 帮助 · 🎲 随机 · esc 关闭',
-  en: '/ search · ? help · 🎲 random · esc to close',
-  es: '/ buscar · ? ayuda · 🎲 aleatorio · esc para cerrar',
+  zh: '/ 搜索 · ? 帮助 · esc 关闭\n\n搜索语法: 关键字 + 前缀\n  domain:fractal  d:bio\n  level:3  l:5\n  surface:3d  s:2d\n例: julia d:fractal l:4',
+  en: '/ search · ? help · esc to close\n\nSearch syntax: keyword + prefix\n  domain:fractal  d:bio\n  level:3  l:5\n  surface:3d  s:2d\nex: julia d:fractal l:4',
+  es: '/ buscar · ? ayuda · esc para cerrar\n\nSintaxis: palabra + prefijo\n  domain:fractal  d:bio\n  level:3  l:5\n  surface:3d  s:2d\nej: julia d:fractal l:4',
 };
 let recentMenuEl: HTMLElement | null = null;
 function toggleRecentMenu(anchor: HTMLElement) {
