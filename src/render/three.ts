@@ -12,7 +12,7 @@ const ctxMap = new WeakMap<HTMLCanvasElement, ThreeContext>();
 export function getThree(s: ThreeSurface): ThreeContext {
   let ctx = ctxMap.get(s.canvas);
   if (!ctx) {
-    const renderer = new THREE.WebGLRenderer({ canvas: s.canvas, antialias: true, alpha: false });
+    const renderer = new THREE.WebGLRenderer({ canvas: s.canvas, antialias: true, alpha: false, preserveDrawingBuffer: true });
     renderer.setClearColor(0x000000, 1);
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, 1, 0.01, 1000);

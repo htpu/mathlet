@@ -35,7 +35,10 @@ async function processSlug(browser: Browser, slug: string, idx: number, total: n
       .canvas-pane, .canvas-wrap { inset: 0 !important; position: fixed !important; }
       body { margin: 0 !important; padding: 0 !important; }
     ` });
-    await page.waitForTimeout(500);
+    // Force re-measure now that UI panels are hidden (canvas may have
+    // initialized at zero/wrong size before).
+    await page.evaluate(() => window.dispatchEvent(new Event('resize')));
+    await page.waitForTimeout(800);
     const canvas = page.locator('canvas').first();
     for (let f = 0; f < FRAMES; f++) {
       const buf = await canvas.screenshot({ type: 'png' });
