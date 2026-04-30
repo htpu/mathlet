@@ -6,7 +6,7 @@ import type { Domain } from '../formulas/types';
 
 export const UI: Record<Lang, Record<string, string>> = {
   zh: {
-    siteTagline: '423 个公式可视化',
+    siteTagline: '423 个公式 · 点开任意一个开始把玩',
     searchPlaceholder: '/ 搜索公式...',
     noMatch: '// 没有匹配的公式',
     notFound: '// 公式未找到',
@@ -22,7 +22,7 @@ export const UI: Record<Lang, Record<string, string>> = {
     docDescription: '423 个数学公式的交互式 2D/3D 可视化。极客向，按 L1-L5 分级，14 个领域全覆盖。',
   },
   en: {
-    siteTagline: '423 formula visualizations',
+    siteTagline: '423 formulas · pick one and start playing',
     searchPlaceholder: '/ search formulas...',
     noMatch: '// no matching formulas',
     notFound: '// formula not found',
@@ -38,7 +38,7 @@ export const UI: Record<Lang, Record<string, string>> = {
     docDescription: 'Interactive 2D/3D visualization of 423 mathematical formulas. Geek-oriented, L1-L5 difficulty, 14 domains.',
   },
   es: {
-    siteTagline: '423 visualizaciones de fórmulas',
+    siteTagline: '423 fórmulas · elige una y empieza a jugar',
     searchPlaceholder: '/ buscar fórmulas...',
     noMatch: '// sin fórmulas coincidentes',
     notFound: '// fórmula no encontrada',

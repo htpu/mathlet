@@ -40,8 +40,10 @@ function tFormula(slug: string, fallback: { title: string; blurb: string }): { t
 }
 
 function applyStaticText() {
-  const u = UI[lang.peek()];
+  const l = lang.peek();
+  const u = UI[l];
   document.title = u.docTitle;
+  document.documentElement.lang = l === 'zh' ? 'zh-CN' : l;
   const desc = document.querySelector('meta[name=description]');
   if (desc) desc.setAttribute('content', u.docDescription);
   const qInput = document.getElementById('q') as HTMLInputElement | null;
@@ -152,6 +154,11 @@ function renderGrid() {
     head.appendChild(el('div', { class: 'stars' }, '⭐'.repeat(e.level)));
     a.appendChild(head);
 
+    const tex = el('div', { class: 'tex' });
+    try { tex.innerHTML = katex.renderToString(e.tex, { throwOnError: false, output: 'html' }); }
+    catch { const code = el('code'); code.textContent = e.tex; tex.appendChild(code); }
+    a.appendChild(tex);
+
     const thumb = el('img', {
       class: 'thumb',
       loading: 'lazy',
@@ -159,15 +166,10 @@ function renderGrid() {
       src: `/thumbs/${e.slug}.webp`,
       alt: '',
       width: '320',
-      height: '240',
+      height: '200',
     });
     (thumb as HTMLImageElement).onerror = () => { thumb.style.display = 'none'; };
     a.appendChild(thumb);
-
-    const tex = el('div', { class: 'tex' });
-    try { tex.innerHTML = katex.renderToString(e.tex, { throwOnError: false, output: 'html' }); }
-    catch { const code = el('code'); code.textContent = e.tex; tex.appendChild(code); }
-    a.appendChild(tex);
 
     a.appendChild(el('div', { class: 'blurb' }, tr.blurb));
 
@@ -237,7 +239,12 @@ effect(() => { query.value; domains.value; levels.value; surfaces.value; renderG
 
 const qInput = document.getElementById('q') as HTMLInputElement;
 qInput.value = query.peek();
-qInput.addEventListener('input', e => { query.value = (e.target as HTMLInputElement).value; syncURL(); });
+let qDeb: number | undefined;
+qInput.addEventListener('input', e => {
+  const v = (e.target as HTMLInputElement).value;
+  clearTimeout(qDeb);
+  qDeb = window.setTimeout(() => { query.value = v; syncURL(); }, 120);
+});
 
 document.addEventListener('keydown', e => {
   if (e.key === '/' && document.activeElement?.tagName !== 'INPUT') {
