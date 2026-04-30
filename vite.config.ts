@@ -26,6 +26,12 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         detail: resolve(__dirname, 'detail.html'),
       },
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/three/')) return 'three';
+          if (id.includes('node_modules/katex/')) return 'katex';
+        },
+      },
     },
   },
 });

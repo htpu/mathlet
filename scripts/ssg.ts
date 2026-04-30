@@ -118,6 +118,15 @@ for (const e of REGISTRY) {
       dd.head.appendChild(m);
     }
   }
+  // hreflang alternates: same URL serves all langs (lang chosen via JS),
+  // so all hreflang point to the same canonical URL plus x-default.
+  for (const lc of ['zh-CN', 'en', 'es', 'x-default']) {
+    const alt = dd.createElement('link');
+    alt.setAttribute('rel', 'alternate');
+    alt.setAttribute('hreflang', lc);
+    alt.setAttribute('href', url);
+    dd.head.appendChild(alt);
+  }
   const ld = dd.createElement('script');
   ld.setAttribute('type', 'application/ld+json');
   ld.textContent = JSON.stringify({
