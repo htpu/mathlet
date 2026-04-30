@@ -79,18 +79,59 @@ writeFileSync(join(DIST, 'index.html'), dom.serialize());
 console.log('ssg: index.html prerendered');
 
 // Detail pages: copy detail.html → f/<slug>.html with title/meta prefilled
+const SITE = 'https://math.htpu.net';
 const detailTpl = readFileSync(join(DIST, 'detail.html'), 'utf8');
 mkdirSync(join(DIST, 'f'), { recursive: true });
 for (const e of REGISTRY) {
   const ddom = new JSDOM(detailTpl);
   const dd = ddom.window.document;
   const titleEl = dd.querySelector('title')!;
-  titleEl.textContent = `${e.title} · mathlet`;
-  // Add a meta description
-  const descMeta = dd.createElement('meta');
-  descMeta.setAttribute('name', 'description');
-  descMeta.setAttribute('content', e.blurb);
-  dd.head.appendChild(descMeta);
+  const fullTitle = `${e.title} · mathlet`;
+  titleEl.textContent = fullTitle;
+  const url = `${SITE}/f/${e.slug}.html`;
+  const ogImage = `${SITE}/thumbs/${e.slug}.webp`;
+  const metas: [string, string, string][] = [
+    ['name', 'description', e.blurb],
+    ['link', 'canonical', url],
+    ['property', 'og:title', fullTitle],
+    ['property', 'og:description', e.blurb],
+    ['property', 'og:type', 'article'],
+    ['property', 'og:url', url],
+    ['property', 'og:image', ogImage],
+    ['property', 'og:site_name', 'mathlet'],
+    ['name', 'twitter:card', 'summary_large_image'],
+    ['name', 'twitter:title', fullTitle],
+    ['name', 'twitter:description', e.blurb],
+    ['name', 'twitter:image', ogImage],
+    ['name', 'keywords', `${e.title}, ${DOMAIN_LABELS[e.domain] ?? e.domain}, math, visualization, formula, ${e.surface}, mathlet`],
+  ];
+  for (const [k, v, c] of metas) {
+    if (k === 'link') {
+      const link = dd.createElement('link');
+      link.setAttribute('rel', v);
+      link.setAttribute('href', c);
+      dd.head.appendChild(link);
+    } else {
+      const m = dd.createElement('meta');
+      m.setAttribute(k, v);
+      m.setAttribute('content', c);
+      dd.head.appendChild(m);
+    }
+  }
+  const ld = dd.createElement('script');
+  ld.setAttribute('type', 'application/ld+json');
+  ld.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: e.title,
+    description: e.blurb,
+    image: ogImage,
+    url,
+    isPartOf: { '@type': 'WebSite', name: 'mathlet', url: SITE },
+    inLanguage: ['zh-CN', 'en', 'es'],
+    keywords: [e.title, DOMAIN_LABELS[e.domain] ?? e.domain, 'math', 'visualization'],
+  });
+  dd.head.appendChild(ld);
   // Server-side noscript fallback with formula info
   const noscript = dd.createElement('noscript');
   noscript.innerHTML = `<div style="padding:40px;color:#cbccc6"><h1>${escape(e.title)}</h1><p>${escape(e.blurb)}</p><div style="padding:20px;background:#0d1017;border-left:3px solid #ffb454">${renderKaTeX(e.tex, true)}</div><p style="color:#707a8c">该页面需要 JavaScript 进行交互式可视化。</p></div>`;
@@ -98,6 +139,16 @@ for (const e of REGISTRY) {
   writeFileSync(join(DIST, 'f', `${e.slug}.html`), ddom.serialize());
 }
 console.log(`ssg: ${REGISTRY.length} detail pages prerendered`);
+
+// sitemap.xml
+const today = new Date().toISOString().slice(0, 10);
+const sitemapUrls = [
+  `<url><loc>${SITE}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
+  ...REGISTRY.map(e => `<url><loc>${SITE}/f/${e.slug}.html</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`),
+];
+writeFileSync(join(DIST, 'sitemap.xml'),
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.join('\n')}\n</urlset>\n`);
+console.log(`ssg: sitemap.xml (${sitemapUrls.length} urls)`);
 
 // 404 page
 const notFound = `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>404 · mathlet</title><link rel="stylesheet" href="/assets/theme.css"></head><body style="background:#0a0e14;color:#cbccc6;font-family:ui-monospace,monospace;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:20px"><div style="font-size:48px;color:#ffb454">404</div><div>// 公式未找到</div><a href="/" style="color:#39bae6">← 回索引</a></body></html>`;

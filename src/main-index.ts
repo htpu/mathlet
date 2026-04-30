@@ -152,6 +152,18 @@ function renderGrid() {
     head.appendChild(el('div', { class: 'stars' }, '⭐'.repeat(e.level)));
     a.appendChild(head);
 
+    const thumb = el('img', {
+      class: 'thumb',
+      loading: 'lazy',
+      decoding: 'async',
+      src: `/thumbs/${e.slug}.webp`,
+      alt: '',
+      width: '320',
+      height: '240',
+    });
+    (thumb as HTMLImageElement).onerror = () => { thumb.style.display = 'none'; };
+    a.appendChild(thumb);
+
     const tex = el('div', { class: 'tex' });
     try { tex.innerHTML = katex.renderToString(e.tex, { throwOnError: false, output: 'html' }); }
     catch { const code = el('code'); code.textContent = e.tex; tex.appendChild(code); }

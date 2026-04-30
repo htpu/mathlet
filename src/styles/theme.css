@@ -112,6 +112,17 @@ code, kbd, .mono { font-family: var(--mono); }
   font-size: 15px;
 }
 .card .stars { color: var(--accent); font-size: 11px; letter-spacing: 1px; white-space: nowrap; }
+.card .thumb {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  margin: 10px 0 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  object-fit: cover;
+}
 .card .tex {
   margin: 8px 0;
   padding: 6px 8px;
