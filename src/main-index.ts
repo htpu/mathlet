@@ -55,8 +55,15 @@ function applyStaticText() {
 function renderTopbar() {
   const bar = document.querySelector('.topbar');
   if (!bar) return;
-  const oldSwitcher = bar.querySelector('.lang-switcher');
-  if (oldSwitcher) oldSwitcher.remove();
+  bar.querySelector('.lang-switcher')?.remove();
+  bar.querySelector('.random-btn')?.remove();
+  const rndLabel: Record<Lang, string> = { zh: '🎲 随机', en: '🎲 Random', es: '🎲 Aleatorio' };
+  const rnd = el('button', { class: 'random-btn', title: rndLabel[lang.peek()] }, rndLabel[lang.peek()]) as HTMLButtonElement;
+  rnd.onclick = () => {
+    const e = all[Math.floor(Math.random() * all.length)];
+    location.href = `/f/${e.slug}.html` + (lang.peek() !== 'zh' ? `?lang=${lang.peek()}` : '');
+  };
+  bar.appendChild(rnd);
   const sw = el('div', { class: 'lang-switcher' });
   for (const l of LANGS) {
     const b = el('button', { class: 'lang-btn' + (l === lang.peek() ? ' active' : '') }, LANG_LABELS[l]) as HTMLButtonElement;
@@ -134,52 +141,103 @@ function matches(e: RegistryEntry): boolean {
   return true;
 }
 
+const FEATURED_SLUGS = [
+  'mandelbrot', 'lorenz', 'julia', 'double-pendulum',
+  'karman-vortex', 'newton-fractal', 'conway-glider', 'ifs-barnsley',
+];
+
+const FEATURED_LABEL: Record<Lang, string> = {
+  zh: '★ 精选',
+  en: '★ Featured',
+  es: '★ Destacados',
+};
+
+function makeCard(e: RegistryEntry, featured = false): HTMLAnchorElement {
+  const labels = DOMAIN_LABELS_I18N[lang.peek()];
+  const tr = tFormula(e.slug, { title: e.title, blurb: e.blurb });
+  const a = document.createElement('a');
+  a.className = 'card' + (featured ? ' card-featured' : '');
+  a.href = `/f/${e.slug}.html` + (lang.peek() !== 'zh' ? `?lang=${lang.peek()}` : '');
+  a.setAttribute('aria-label', `${tr.title} — ${labels[e.domain]} — L${e.level}`);
+
+  const head = el('div', { class: 'head' });
+  head.appendChild(el('div', { class: 'title' }, tr.title));
+  head.appendChild(el('div', { class: 'stars' }, '⭐'.repeat(e.level)));
+  a.appendChild(head);
+
+  const tex = el('div', { class: 'tex' });
+  try { tex.innerHTML = katex.renderToString(e.tex, { throwOnError: false, output: 'html' }); }
+  catch { const code = el('code'); code.textContent = e.tex; tex.appendChild(code); }
+  a.appendChild(tex);
+
+  const thumb = el('img', {
+    class: 'thumb',
+    loading: 'lazy',
+    decoding: 'async',
+    src: `/thumbs/${e.slug}.webp`,
+    alt: '',
+    width: '320',
+    height: '200',
+  });
+  (thumb as HTMLImageElement).onerror = () => { thumb.style.display = 'none'; };
+  a.appendChild(thumb);
+
+  a.appendChild(el('div', { class: 'blurb' }, tr.blurb));
+
+  const foot = el('div', { class: 'foot' });
+  foot.appendChild(el('span', { class: 'domain-tag' }, labels[e.domain]));
+  foot.appendChild(el('span', { class: 'surf-tag' }, e.surface === 'three' ? UI[lang.peek()].surface3d : UI[lang.peek()].surface2d));
+  a.appendChild(foot);
+
+  return a;
+}
+
+function isUnfiltered(): boolean {
+  return !query.peek() && domains.peek().size === 0 && levels.peek().size === 0 && surfaces.peek().size === 0;
+}
+
 function renderGrid() {
   const root = document.getElementById('grid')!;
-  const items = all.filter(matches);
   const labels = DOMAIN_LABELS_I18N[lang.peek()];
   root.replaceChildren();
+
+  if (isUnfiltered()) {
+    // Featured strip
+    const featuredHeader = el('h2', { class: 'section-h' }, FEATURED_LABEL[lang.peek()]);
+    root.appendChild(featuredHeader);
+    const featRow = el('div', { class: 'featured-row' });
+    for (const slug of FEATURED_SLUGS) {
+      const e = all.find(r => r.slug === slug);
+      if (e) featRow.appendChild(makeCard(e, true));
+    }
+    root.appendChild(featRow);
+
+    // Group by domain
+    const byDomain = new Map<string, RegistryEntry[]>();
+    for (const e of all) {
+      if (!byDomain.has(e.domain)) byDomain.set(e.domain, []);
+      byDomain.get(e.domain)!.push(e);
+    }
+    for (const [dom, list] of byDomain) {
+      const h = el('h2', { class: 'section-h' });
+      h.appendChild(el('span', {}, labels[dom as keyof typeof labels]));
+      h.appendChild(el('span', { class: 'section-count' }, ` (${list.length})`));
+      root.appendChild(h);
+      const row = el('div', { class: 'grid-row' });
+      for (const e of list) row.appendChild(makeCard(e));
+      root.appendChild(row);
+    }
+    return;
+  }
+
+  const items = all.filter(matches);
   if (items.length === 0) {
     root.appendChild(el('div', { class: 'empty' }, UI[lang.peek()].noMatch));
     return;
   }
-  for (const e of items) {
-    const tr = tFormula(e.slug, { title: e.title, blurb: e.blurb });
-    const a = document.createElement('a');
-    a.className = 'card';
-    a.href = `/f/${e.slug}.html` + (lang.peek() !== 'zh' ? `?lang=${lang.peek()}` : '');
-
-    const head = el('div', { class: 'head' });
-    head.appendChild(el('div', { class: 'title' }, tr.title));
-    head.appendChild(el('div', { class: 'stars' }, '⭐'.repeat(e.level)));
-    a.appendChild(head);
-
-    const tex = el('div', { class: 'tex' });
-    try { tex.innerHTML = katex.renderToString(e.tex, { throwOnError: false, output: 'html' }); }
-    catch { const code = el('code'); code.textContent = e.tex; tex.appendChild(code); }
-    a.appendChild(tex);
-
-    const thumb = el('img', {
-      class: 'thumb',
-      loading: 'lazy',
-      decoding: 'async',
-      src: `/thumbs/${e.slug}.webp`,
-      alt: '',
-      width: '320',
-      height: '200',
-    });
-    (thumb as HTMLImageElement).onerror = () => { thumb.style.display = 'none'; };
-    a.appendChild(thumb);
-
-    a.appendChild(el('div', { class: 'blurb' }, tr.blurb));
-
-    const foot = el('div', { class: 'foot' });
-    foot.appendChild(el('span', { class: 'domain-tag' }, labels[e.domain]));
-    foot.appendChild(el('span', { class: 'surf-tag' }, e.surface === 'three' ? UI[lang.peek()].surface3d : UI[lang.peek()].surface2d));
-    a.appendChild(foot);
-
-    root.appendChild(a);
-  }
+  const flat = el('div', { class: 'grid-row' });
+  for (const e of items) flat.appendChild(makeCard(e));
+  root.appendChild(flat);
 }
 
 function renderBreadcrumbs() {
