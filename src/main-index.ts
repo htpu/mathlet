@@ -68,6 +68,8 @@ function renderTopbar() {
   for (const l of LANGS) {
     const b = el('button', { class: 'lang-btn' + (l === lang.peek() ? ' active' : '') }, LANG_LABELS[l]) as HTMLButtonElement;
     b.dataset.lang = l;
+    b.setAttribute('aria-label', `Language: ${LANG_LABELS[l]}`);
+    b.setAttribute('aria-pressed', String(l === lang.peek()));
     b.onclick = () => { lang.value = l; setLang(l); applyStaticText(); renderFilters(); renderGrid(); renderTopbar(); syncURL(); };
     sw.appendChild(b);
   }
@@ -83,7 +85,7 @@ function renderFilters() {
   dWrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px';
   for (const [d, label] of Object.entries(labels)) {
     const b = el('button', { class: 'chip' }, label) as HTMLButtonElement;
-    const apply = () => b.classList.toggle('active', domains.peek().has(d as Domain));
+    const apply = () => { const on = domains.peek().has(d as Domain); b.classList.toggle('active', on); b.setAttribute('aria-pressed', String(on)); };
     apply();
     b.onclick = () => {
       const s = new Set(domains.peek());
@@ -100,7 +102,7 @@ function renderFilters() {
   const lWrap = document.createElement('div'); lWrap.style.cssText = 'display:flex;gap:6px';
   for (const lv of [1, 2, 3, 4, 5] as Level[]) {
     const b = el('button', { class: 'chip level' }, '⭐'.repeat(lv) + ' L' + lv) as HTMLButtonElement;
-    const apply = () => b.classList.toggle('active', levels.peek().has(lv));
+    const apply = () => { const on = levels.peek().has(lv); b.classList.toggle('active', on); b.setAttribute('aria-pressed', String(on)); };
     apply();
     b.onclick = () => {
       const s = new Set(levels.peek());
@@ -116,7 +118,7 @@ function renderFilters() {
   const sWrap = document.createElement('div'); sWrap.style.cssText = 'display:flex;gap:6px';
   for (const sf of ['canvas2d', 'three']) {
     const b = el('button', { class: 'chip surface' }, sf === 'three' ? UI[lang.peek()].surface3d : UI[lang.peek()].surface2d) as HTMLButtonElement;
-    const apply = () => b.classList.toggle('active', surfaces.peek().has(sf));
+    const apply = () => { const on = surfaces.peek().has(sf); b.classList.toggle('active', on); b.setAttribute('aria-pressed', String(on)); };
     apply();
     b.onclick = () => {
       const s = new Set(surfaces.peek());
