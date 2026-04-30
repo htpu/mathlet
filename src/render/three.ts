@@ -13,9 +13,9 @@ export function getThree(s: ThreeSurface): ThreeContext {
   let ctx = ctxMap.get(s.canvas);
   if (!ctx) {
     const renderer = new THREE.WebGLRenderer({ canvas: s.canvas, antialias: true, alpha: false, preserveDrawingBuffer: true });
-    renderer.setClearColor(0x000000, 1);
+    renderer.setClearColor(0x0d1017, 1);
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(50, 1, 0.01, 1000);
+    const camera = new THREE.PerspectiveCamera(35, 1, 0.01, 1000);
     camera.position.set(3, 3, 3); camera.lookAt(0, 0, 0);
     ctx = { scene, camera, renderer };
     ctxMap.set(s.canvas, ctx);
