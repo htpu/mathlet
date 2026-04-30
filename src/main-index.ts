@@ -154,6 +154,17 @@ const FEATURED_LABEL: Record<Lang, string> = {
   es: '★ Destacados',
 };
 
+const RECENT_LABEL: Record<Lang, string> = {
+  zh: '↺ 最近浏览',
+  en: '↺ Recent',
+  es: '↺ Recientes',
+};
+
+function getRecents(): string[] {
+  try { return JSON.parse(localStorage.getItem('mathlet:recents') ?? '[]'); }
+  catch { return []; }
+}
+
 function makeCard(e: RegistryEntry, featured = false): HTMLAnchorElement {
   const labels = DOMAIN_LABELS_I18N[lang.peek()];
   const tr = tFormula(e.slug, { title: e.title, blurb: e.blurb });
@@ -204,6 +215,16 @@ function renderGrid() {
   root.replaceChildren();
 
   if (isUnfiltered()) {
+    // Recents (if any)
+    const recents = getRecents();
+    const recEntries = recents.map(s => all.find(r => r.slug === s)).filter(Boolean) as RegistryEntry[];
+    if (recEntries.length > 0) {
+      root.appendChild(el('h2', { class: 'section-h' }, RECENT_LABEL[lang.peek()]));
+      const recRow = el('div', { class: 'grid-row' });
+      for (const e of recEntries) recRow.appendChild(makeCard(e));
+      root.appendChild(recRow);
+    }
+
     // Featured strip
     const featuredHeader = el('h2', { class: 'section-h' }, FEATURED_LABEL[lang.peek()]);
     root.appendChild(featuredHeader);
@@ -306,8 +327,26 @@ qInput.addEventListener('input', e => {
   qDeb = window.setTimeout(() => { query.value = v; syncURL(); }, 120);
 });
 
+const HELP_TEXT: Record<Lang, string> = {
+  zh: '/ 搜索 · ? 帮助 · 🎲 随机 · esc 关闭',
+  en: '/ search · ? help · 🎲 random · esc to close',
+  es: '/ buscar · ? ayuda · 🎲 aleatorio · esc para cerrar',
+};
+let helpEl: HTMLElement | null = null;
+function toggleHelp() {
+  if (helpEl) { helpEl.remove(); helpEl = null; return; }
+  helpEl = el('div', { class: 'help-overlay', role: 'dialog' });
+  const box = el('div', { class: 'help-box' });
+  box.appendChild(el('div', { class: 'help-title' }, 'mathlet'));
+  box.appendChild(el('div', {}, HELP_TEXT[lang.peek()]));
+  helpEl.appendChild(box);
+  helpEl.onclick = () => toggleHelp();
+  document.body.appendChild(helpEl);
+}
+
 document.addEventListener('keydown', e => {
-  if (e.key === '/' && document.activeElement?.tagName !== 'INPUT') {
-    e.preventDefault(); qInput.focus();
-  }
+  const inInput = document.activeElement?.tagName === 'INPUT';
+  if (e.key === '/' && !inInput) { e.preventDefault(); qInput.focus(); }
+  else if (e.key === '?' && !inInput) { e.preventDefault(); toggleHelp(); }
+  else if (e.key === 'Escape' && helpEl) { toggleHelp(); }
 });

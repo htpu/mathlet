@@ -130,6 +130,30 @@ code, kbd, .mono { font-family: var(--mono); }
   transition: color 0.12s, border-color 0.12s;
 }
 .random-btn:hover { color: var(--accent); border-color: var(--accent); }
+.help-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+.help-box {
+  background: var(--bg-elev);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 24px 32px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--fg);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  max-width: 90vw;
+}
+.help-box .help-title {
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
 .card {
   display: block;
   background: var(--bg-elev);

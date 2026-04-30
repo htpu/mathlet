@@ -43,6 +43,14 @@ async function bootstrap() {
   const tr = tFormula(formula.meta.slug, { title: formula.meta.title, blurb: formula.meta.blurb });
   document.title = `${tr.title} · mathlet`;
 
+  // Track recent visits (max 8, dedupe, most recent first)
+  try {
+    const key = 'mathlet:recents';
+    const prev: string[] = JSON.parse(localStorage.getItem(key) ?? '[]');
+    const next = [slug, ...prev.filter(s => s !== slug)].slice(0, 8);
+    localStorage.setItem(key, JSON.stringify(next));
+  } catch {}
+
   const urlParams = new URLSearchParams(location.search);
   const initialMode = urlParams.get('mode') === 'play' ? 'play' : 'study';
   const mode = signal<'study' | 'play'>(initialMode);
@@ -129,6 +137,17 @@ async function bootstrap() {
   bar.appendChild(resetBtn);
   const snapBtn = el('button', { class: 'nav-arrow' }, UI[lang.peek()].snapshot) as HTMLButtonElement;
   bar.appendChild(snapBtn);
+  const shareBtn = el('button', { class: 'nav-arrow', title: 'copy link with current params' }, '🔗') as HTMLButtonElement;
+  bar.appendChild(shareBtn);
+  shareBtn.addEventListener('click', async () => {
+    syncURL();
+    try {
+      await navigator.clipboard.writeText(location.href);
+      const orig = shareBtn.textContent;
+      shareBtn.textContent = '✓';
+      setTimeout(() => { shareBtn.textContent = orig; }, 1200);
+    } catch {}
+  });
   root.appendChild(bar);
 
   if (prev) prevBtn.addEventListener('click', () => { location.href = `/f/${prev.slug}.html` + langSuffix(); });
