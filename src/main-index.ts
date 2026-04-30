@@ -177,6 +177,8 @@ const DOMAIN_TOGGLE_LABEL: Record<Lang, string> = { zh: '领域', en: 'Domain', 
 function renderFilters() {
   const root = document.getElementById('filters')!;
   root.replaceChildren();
+  if (isUnfiltered()) { root.style.display = 'none'; return; }
+  root.style.display = '';
   const labels = DOMAIN_LABELS_I18N[lang.peek()];
 
   const lWrap = document.createElement('div'); lWrap.style.cssText = 'display:flex;gap:6px';
@@ -376,63 +378,28 @@ function renderGrid() {
       root.appendChild(row);
     }
 
-    // Group by domain
+    // Domain tiles — single compact grid replaces 21 collapsed sections
     const byDomain = new Map<string, RegistryEntry[]>();
     for (const e of all) {
       if (!byDomain.has(e.domain)) byDomain.set(e.domain, []);
       byDomain.get(e.domain)!.push(e);
     }
-    const PER_SECTION = 6;
-    const moreLabel: Record<Lang, (n: number) => string> = {
-      zh: n => `更多 ${n} 个 →`,
-      en: n => `more ${n} →`,
-      es: n => `${n} más →`,
-    };
-    const goDomain = (dom: string) => {
-      domains.value = new Set([dom as Domain]);
-      renderFilters(); renderBreadcrumbs(); syncURL();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-    let collapsed: Set<string>;
-    const stored = localStorage.getItem('mathlet:collapsed');
-    if (stored === null) {
-      // Default: collapse all except top 3 domains by size
-      const sorted = [...byDomain.entries()].sort((a, b) => b[1].length - a[1].length);
-      collapsed = new Set(sorted.slice(3).map(([d]) => d));
-    } else {
-      try { collapsed = new Set(JSON.parse(stored)); } catch { collapsed = new Set(); }
-    }
-    const persist = () => localStorage.setItem('mathlet:collapsed', JSON.stringify([...collapsed]));
-
+    const browseLabel: Record<Lang, string> = { zh: '按领域浏览', en: 'Browse by domain', es: 'Por dominio' };
+    root.appendChild(el('h2', { class: 'section-h section-h-hero' }, browseLabel[lang.peek()]));
+    const tiles = el('div', { class: 'domain-tiles' });
     for (const [dom, list] of byDomain) {
-      const h = el('h2', { class: 'section-h' }) as HTMLHeadingElement;
-      const caret = el('button', { class: 'section-caret', 'aria-label': 'toggle' }, collapsed.has(dom) ? '▸' : '▾') as HTMLButtonElement;
-      h.appendChild(caret);
-      const label = el('span', { class: 'section-label', role: 'button', tabindex: '0' }) as HTMLElement;
-      label.appendChild(el('span', {}, labels[dom as keyof typeof labels]));
-      label.appendChild(el('span', { class: 'section-count' }, ` (${list.length})`));
-      label.onclick = () => goDomain(dom);
-      label.onkeydown = (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); goDomain(dom); } };
-      h.appendChild(label);
-      root.appendChild(h);
-
-      const row = el('div', { class: 'grid-row' + (collapsed.has(dom) ? ' collapsed' : '') });
-      const visible = list.slice(0, PER_SECTION);
-      for (const e of visible) row.appendChild(makeCard(e));
-      if (list.length > PER_SECTION) {
-        const more = el('a', { class: 'card card-more', href: `/domain/${dom}` }) as HTMLAnchorElement;
-        more.textContent = moreLabel[lang.peek()](list.length - PER_SECTION);
-        more.onclick = (ev) => { ev.preventDefault(); goDomain(dom); };
-        row.appendChild(more);
-      }
-      root.appendChild(row);
-
-      caret.onclick = () => {
-        if (collapsed.has(dom)) { collapsed.delete(dom); row.classList.remove('collapsed'); caret.textContent = '▾'; }
-        else { collapsed.add(dom); row.classList.add('collapsed'); caret.textContent = '▸'; }
-        persist();
+      const a = el('a', { class: 'domain-tile', href: `/domain/${dom}` }) as HTMLAnchorElement;
+      a.appendChild(el('span', { class: 'dt-name' }, labels[dom as keyof typeof labels]));
+      a.appendChild(el('span', { class: 'dt-count' }, String(list.length)));
+      a.onclick = (ev) => {
+        ev.preventDefault();
+        domains.value = new Set([dom as Domain]);
+        renderFilters(); renderBreadcrumbs(); syncURL();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       };
+      tiles.appendChild(a);
     }
+    root.appendChild(tiles);
     return;
   }
 
@@ -450,6 +417,8 @@ function renderBreadcrumbs() {
   const root = document.getElementById('breadcrumbs');
   if (!root) return;
   root.replaceChildren();
+  if (isUnfiltered()) { (root as HTMLElement).style.display = 'none'; return; }
+  (root as HTMLElement).style.display = '';
   const u = UI[lang.peek()];
   const labels = DOMAIN_LABELS_I18N[lang.peek()];
   const total = all.length;
@@ -461,11 +430,6 @@ function renderBreadcrumbs() {
     renderFilters(); renderBreadcrumbs(); syncURL();
   };
   root.appendChild(home);
-
-  if (domains.peek().size === 0 && levels.peek().size === 0 && surfaces.peek().size === 0 && !query.peek()) {
-    root.appendChild(el('span', { class: 'crumb-count' }, `(${total})`));
-    return;
-  }
 
   for (const d of domains.peek()) {
     root.appendChild(el('span', { class: 'crumb-sep' }, '›'));
