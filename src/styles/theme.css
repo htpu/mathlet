@@ -28,6 +28,12 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
+:root { --page-max: 1100px; --page-pad: 20px; }
+/* Full-bleed background sections, content centered. */
+.topbar, .filters, .breadcrumbs { padding-inline: max(var(--page-pad), calc((100% - var(--page-max)) / 2)); }
+/* Plain content sections: cap width and center. */
+.grid, .hero, .domain-tiles, .landing-intro, .featured-row, .grid-row, .detail-bar { max-width: var(--page-max); margin-inline: auto; }
+.detail-body { max-width: var(--page-max); margin-inline: auto; width: 100%; }
 a { color: var(--accent-2); text-decoration: none; }
 a:hover { color: var(--accent); }
 button { font-family: inherit; cursor: pointer; }
