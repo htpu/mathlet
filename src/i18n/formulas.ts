@@ -1430,3 +1430,12 @@ Object.assign(FORMULA_I18N, {
   'birthday-bound': { en: { title: 'Birthday attack probability', blurb: 'Collision probability after k hash queries; k ≈ √N for 50%.' }, es: { title: 'Probabilidad del ataque de cumpleaños', blurb: 'Probabilidad de colisión tras k consultas; k ≈ √N para 50%.' } },
   'lfsr-period': { en: { title: 'LFSR output bitstream', blurb: 'Linear feedback shift register output controlled by tap mask.' }, es: { title: 'Flujo de bits LFSR', blurb: 'Salida de un registro de desplazamiento con realimentación lineal.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'compton-scattering': { en: { title: 'Compton scattering shift', blurb: "Photon wavelength increase λ' − λ vs scattering angle." }, es: { title: 'Compton: cambio de λ', blurb: "Aumento λ' − λ frente al ángulo de dispersión." } },
+  'de-broglie-wavelength': { en: { title: 'de Broglie wavelength', blurb: 'Matter-wave wavelength vs momentum.' }, es: { title: 'Longitud de onda de Broglie', blurb: 'Longitud de onda de materia vs momento.' } },
+  'rydberg-formula': { en: { title: 'Rydberg formula (hydrogen lines)', blurb: 'Hydrogen transition wavelengths.' }, es: { title: 'Fórmula de Rydberg', blurb: 'Longitudes de onda del hidrógeno.' } },
+  'zeeman-splitting': { en: { title: 'Normal Zeeman splitting', blurb: 'Energy levels split by magnetic field.' }, es: { title: 'División Zeeman normal', blurb: 'Niveles divididos por campo magnético.' } },
+  'bohr-radius-z': { en: { title: 'Hydrogenic Bohr radius', blurb: 'Orbit radius scales as n²/Z.' }, es: { title: 'Radio de Bohr (hidrogenoide)', blurb: 'Radio de órbita escala como n²/Z.' } },
+  'larmor-frequency': { en: { title: 'Larmor precession frequency', blurb: 'Nuclear-spin precession ω = γ B.' }, es: { title: 'Frecuencia de Larmor', blurb: 'Precesión de espín nuclear ω = γ B.' } },
+});
