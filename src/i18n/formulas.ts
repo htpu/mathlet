@@ -1504,3 +1504,11 @@ Object.assign(FORMULA_I18N, {
   'einstein-radius': { en: { title: 'Einstein ring radius', blurb: 'Gravitational-lens ring angular radius.' }, es: { title: 'Radio del anillo de Einstein', blurb: 'Radio angular del anillo de lente.' } },
   'binary-pulsar-decay': { en: { title: 'Binary-pulsar orbital decay', blurb: 'Gravitational-wave emission shrinks orbital period.' }, es: { title: 'Decaimiento orbital de púlsar binario', blurb: 'Emisión de ondas gravitacionales acorta el periodo.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'caesar-shift': { en: { title: 'Caesar shift cipher', blurb: 'Letter positions shifted by k modulo 26.' }, es: { title: 'Cifrado César', blurb: 'Posiciones desplazadas por k mod 26.' } },
+  'pisano-period': { en: { title: 'Pisano period π(m)', blurb: 'Period of the Fibonacci sequence modulo m.' }, es: { title: 'Periodo de Pisano', blurb: 'Periodo de Fibonacci módulo m.' } },
+  'bsgs-cost': { en: { title: 'Baby-step Giant-step complexity', blurb: 'Discrete-log BSGS cost grows as √n.' }, es: { title: 'Complejidad BSGS', blurb: 'Coste BSGS crece como √n.' } },
+  'avalanche-effect': { en: { title: 'Hash avalanche distribution', blurb: 'Ideal output-bit-flip distribution Binomial(n, 1/2).' }, es: { title: 'Distribución de avalancha', blurb: 'Binomial(n, 1/2) ideal.' } },
+  'aes-keyspace': { en: { title: 'AES keyspace size (log10)', blurb: 'Symmetric keyspace grows as 2^n.' }, es: { title: 'Espacio de claves AES (log10)', blurb: 'Espacio simétrico crece como 2^n.' } },
+});
