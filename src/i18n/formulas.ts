@@ -1584,3 +1584,11 @@ Object.assign(FORMULA_I18N, {
   'abundance': { en: { title: 'Abundance index σ(n)/n', blurb: '>2 abundant, <2 deficient, =2 perfect.' }, es: { title: 'Índice σ(n)/n', blurb: '>2 abundante; =2 perfecto.' } },
   'omega-prime-count': { en: { title: 'ω(n): distinct prime factors', blurb: 'Erdős-Kac: ω(n) ≈ ln ln n.' }, es: { title: 'ω(n) factores distintos', blurb: 'ω(n) ≈ ln ln n.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'plucker-genus': { en: { title: 'Plücker genus g(d)', blurb: 'Smooth plane algebraic curve genus.' }, es: { title: 'Género de Plücker', blurb: 'Curva algebraica plana suave.' } },
+  'euler-genus-orientable': { en: { title: 'Orientable surface χ(g)', blurb: 'Euler characteristic of closed orientable surface.' }, es: { title: 'χ(g) orientable', blurb: 'Característica de Euler de superficie orientable.' } },
+  'mapping-class-dim': { en: { title: 'Mapping-class group dimension', blurb: 'dim M_g = 6g − 6 for g ≥ 2.' }, es: { title: 'Dimensión del grupo modular', blurb: 'dim M_g = 6g − 6.' } },
+  'seifert-genus-bound': { en: { title: 'Seifert genus lower bound', blurb: 'Knot genus ≥ deg(Alexander)/2.' }, es: { title: 'Cota del género de Seifert', blurb: 'Género ≥ deg(Alexander)/2.' } },
+  'cw-cells-betti': { en: { title: 'Morse inequalities', blurb: 'CW k-cell count ≥ k-th Betti number.' }, es: { title: 'Desigualdades de Morse', blurb: 'k-celdas ≥ k-ésimo número de Betti.' } },
+});
