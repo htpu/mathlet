@@ -1480,3 +1480,11 @@ Object.assign(FORMULA_I18N, {
   'totient-density': { en: { title: 'Totient density φ(n)/n', blurb: 'Few small prime factors → ratio close to 1.' }, es: { title: 'Densidad φ(n)/n', blurb: 'Pocos factores pequeños → razón cercana a 1.' } },
   'diffie-hellman-key': { en: { title: 'Diffie-Hellman shared key', blurb: 'Sweep exponent a; partner key B^a mod p.' }, es: { title: 'Clave compartida Diffie-Hellman', blurb: 'Recorre exponente a; clave B^a mod p.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'lennard-jones': { en: { title: 'Lennard-Jones potential', blurb: 'Pair potential between neutral atoms.' }, es: { title: 'Potencial de Lennard-Jones', blurb: 'Potencial entre átomos neutros.' } },
+  'morse-potential': { en: { title: 'Morse potential', blurb: 'Realistic diatomic vibrational potential.' }, es: { title: 'Potencial de Morse', blurb: 'Potencial vibracional realista.' } },
+  'debye-huckel': { en: { title: 'Debye-Hückel activity coefficient', blurb: 'Activity coefficient vs ionic strength.' }, es: { title: 'Coeficiente de actividad Debye-Hückel', blurb: 'Coef. de actividad vs fuerza iónica.' } },
+  'weak-acid-fraction': { en: { title: 'Weak-acid dissociation fraction', blurb: 'α crosses 0 → 1 around pH = pKa.' }, es: { title: 'Fracción de disociación', blurb: 'α pasa 0 → 1 alrededor de pH = pKa.' } },
+  'eyring-rate': { en: { title: 'Eyring transition-state rate', blurb: 'log10 k vs T from transition-state theory.' }, es: { title: 'Velocidad del estado de transición (Eyring)', blurb: 'log10 k vs T.' } },
+});
