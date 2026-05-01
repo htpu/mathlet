@@ -1439,3 +1439,11 @@ Object.assign(FORMULA_I18N, {
   'bohr-radius-z': { en: { title: 'Hydrogenic Bohr radius', blurb: 'Orbit radius scales as n²/Z.' }, es: { title: 'Radio de Bohr (hidrogenoide)', blurb: 'Radio de órbita escala como n²/Z.' } },
   'larmor-frequency': { en: { title: 'Larmor precession frequency', blurb: 'Nuclear-spin precession ω = γ B.' }, es: { title: 'Frecuencia de Larmor', blurb: 'Precesión de espín nuclear ω = γ B.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'handshake-edges': { en: { title: 'Complete-graph edge count', blurb: 'K_n has n(n−1)/2 edges.' }, es: { title: 'Aristas del grafo completo', blurb: 'K_n tiene n(n−1)/2 aristas.' } },
+  'cayley-spanning-trees': { en: { title: "Cayley's formula τ(K_n)", blurb: 'Spanning-tree count of K_n grows as n^{n−2} (log scale).' }, es: { title: 'Fórmula de Cayley', blurb: 'Cantidad de árboles generadores de K_n.' } },
+  'chromatic-tree': { en: { title: 'Chromatic polynomial of a tree', blurb: 'k(k−1)^{n−1} proper colourings of an n-node tree.' }, es: { title: 'Polinomio cromático del árbol', blurb: 'k(k−1)^{n−1} coloraciones propias.' } },
+  'giant-component-threshold': { en: { title: 'Giant-component threshold (ER)', blurb: 'Phase transition of largest component as mean degree c crosses 1.' }, es: { title: 'Umbral del componente gigante', blurb: 'Transición de fase del componente mayor.' } },
+  'avg-path-length-er': { en: { title: 'ER average path length', blurb: 'Random-graph diameter scales as ln n / ln(np).' }, es: { title: 'Longitud media de camino (ER)', blurb: 'Diámetro escala como ln n / ln(np).' } },
+});
