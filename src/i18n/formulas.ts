@@ -1488,3 +1488,11 @@ Object.assign(FORMULA_I18N, {
   'weak-acid-fraction': { en: { title: 'Weak-acid dissociation fraction', blurb: 'α crosses 0 → 1 around pH = pKa.' }, es: { title: 'Fracción de disociación', blurb: 'α pasa 0 → 1 alrededor de pH = pKa.' } },
   'eyring-rate': { en: { title: 'Eyring transition-state rate', blurb: 'log10 k vs T from transition-state theory.' }, es: { title: 'Velocidad del estado de transición (Eyring)', blurb: 'log10 k vs T.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'ba-power-law': { en: { title: 'Barabási-Albert degree tail', blurb: 'Preferential attachment produces P(k) ~ k^{-3}.' }, es: { title: 'Cola de la distribución BA', blurb: 'Anclaje preferencial produce P(k) ~ k^{-3}.' } },
+  'moore-bound': { en: { title: 'Moore bound (degree d, diameter k)', blurb: 'Max nodes for given degree and diameter.' }, es: { title: 'Cota de Moore', blurb: 'Nodos máx. para grado y diámetro dados.' } },
+  'friendship-paradox': { en: { title: 'Friendship paradox', blurb: 'Average neighbour degree exceeds average degree by σ²/⟨k⟩.' }, es: { title: 'Paradoja de la amistad', blurb: 'Grado medio de vecinos > grado medio.' } },
+  'erdos-renyi-clustering': { en: { title: 'ER clustering coefficient C = p', blurb: 'Random-graph clustering linear in mean degree.' }, es: { title: 'Coef. de clustering ER', blurb: 'C = ⟨k⟩/(n−1).' } },
+  'spectral-gap': { en: { title: 'Cheeger spectral-gap bound', blurb: 'Expansion ≥ (d − λ₂)/2.' }, es: { title: 'Cota de Cheeger', blurb: 'Expansión ≥ (d − λ₂)/2.' } },
+});
