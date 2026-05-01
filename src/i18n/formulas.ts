@@ -1455,3 +1455,12 @@ Object.assign(FORMULA_I18N, {
   'boltzmann-rate': { en: { title: 'Maxwell-Boltzmann speed distribution', blurb: 'Probability density of molecular speeds in 3D gas.' }, es: { title: 'Distribución de velocidades de Maxwell-Boltzmann', blurb: 'Densidad de probabilidad de velocidades moleculares en 3D.' } },
   'equilibrium-keq': { en: { title: "van 't Hoff equilibrium K", blurb: 'Equilibrium constant temperature dependence (linear in 1/T).' }, es: { title: 'Constante de equilibrio (van t Hoff)', blurb: 'Dependencia con la temperatura (lineal en 1/T).' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'shapiro-delay': { en: { title: 'Shapiro time delay', blurb: 'Gravitational delay of light grazing a mass.' }, es: { title: 'Retardo de Shapiro', blurb: 'Retardo gravitacional al rozar una masa.' } },
+  'perihelion-precession': { en: { title: 'Perihelion precession', blurb: 'Relativistic per-orbit precession.' }, es: { title: 'Precesión del perihelio', blurb: 'Precesión relativista por órbita.' } },
+  'hawking-temperature': { en: { title: 'Hawking temperature', blurb: 'Black-hole evaporation temperature (log-log).' }, es: { title: 'Temperatura de Hawking', blurb: 'Temperatura de evaporación (log-log).' } },
+  'unruh-temperature': { en: { title: 'Unruh temperature', blurb: 'Vacuum temperature seen by uniformly accelerating observer.' }, es: { title: 'Temperatura de Unruh', blurb: 'Temperatura del vacío para observador uniformemente acelerado.' } },
+  'gravitational-binding': { en: { title: 'Gravitational binding energy', blurb: 'Self-energy of a uniform sphere U = −3GM²/(5R).' }, es: { title: 'Energía de ligadura gravitacional', blurb: 'Auto-energía de una esfera uniforme.' } },
+  'tidal-acceleration': { en: { title: 'Tidal acceleration', blurb: '2GMr/d³ stretching across an extended body.' }, es: { title: 'Aceleración de marea', blurb: '2GMr/d³ a lo largo de un cuerpo extendido.' } },
+});
