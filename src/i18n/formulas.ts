@@ -1560,3 +1560,11 @@ Object.assign(FORMULA_I18N, {
   'relativistic-velocity-add': { en: { title: 'Relativistic velocity addition', blurb: 'Composing two collinear velocities.' }, es: { title: 'Suma relativista de velocidades', blurb: 'Composición de dos velocidades colineales.' } },
   'four-momentum-shell': { en: { title: 'Relativistic energy shell', blurb: 'E² = (pc)² + (mc²)²; rest mass plus momentum.' }, es: { title: 'Capa de energía relativista', blurb: 'E² = (pc)² + (mc²)².' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'sound-intensity-distance': { en: { title: 'Sound intensity 1/r² falloff', blurb: 'Point-source intensity falls as 1/r².' }, es: { title: 'Intensidad sonora 1/r²', blurb: 'Intensidad cae como 1/r².' } },
+  'spl-db': { en: { title: 'Sound pressure level (dB)', blurb: 'Reference p_ref = 20 µPa.' }, es: { title: 'Nivel de presión sonora (dB)', blurb: 'Referencia p_ref = 20 µPa.' } },
+  'critical-band-bark': { en: { title: 'Bark critical-band scale', blurb: 'Frequency-compressed perceptual scale.' }, es: { title: 'Escala Bark', blurb: 'Escala perceptiva de frecuencia.' } },
+  'standing-wave-pipe': { en: { title: 'Closed-pipe standing wave fₙ', blurb: 'Fundamental + odd harmonics in a closed pipe.' }, es: { title: 'Onda estacionaria en tubo cerrado', blurb: 'Fundamental + armónicos impares.' } },
+  'perceived-loudness': { en: { title: "Stevens' loudness law", blurb: 'Perceived loudness ∝ I^{0.3}.' }, es: { title: 'Ley de Stevens', blurb: 'Sonoridad percibida ∝ I^{0.3}.' } },
+});
