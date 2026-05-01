@@ -1140,7 +1140,6 @@ Object.assign(FORMULA_I18N, {
   'lipid-bilayer': { en: { title: "Lipid bilayer", blurb: "Heads outward, hydrophobic tails core." } },
   'logistic-growth': { en: { title: "Logistic growth", blurb: "S-curve with carrying capacity K." } },
   'micelle-3d': { en: { title: "Micelle", blurb: "Spherical surfactant aggregate." } },
-  'michaelis-menten': { en: { title: "Michaelis-Menten kinetics", blurb: "Enzyme rate saturating with substrate concentration." } },
   'microtubule': { en: { title: "Microtubule", blurb: "Hollow tube of 13 \u03b1\u03b2-tubulin protofilaments." } },
   'mitochondrion': { en: { title: "Mitochondrion", blurb: "Outer + inner cristae membrane producing ATP." } },
   'monod-growth': { en: { title: "Monod growth", blurb: "Microbial growth rate vs substrate." } },
@@ -1394,4 +1393,14 @@ Object.assign(FORMULA_I18N, {
   'torus': { en: { title: 'Torus', blurb: 'Major radius R + minor radius r.' }, es: { title: 'Toro', blurb: 'Radio mayor R + radio menor r.' } },
   'poiseuille': { en: { title: 'Poiseuille flow', blurb: 'Parabolic velocity profile in laminar pipe flow.' }, es: { title: 'Flujo de Poiseuille', blurb: 'Perfil parabólico de velocidad en tubería laminar.' } },
   'streamlines': { en: { title: 'Streamlines (integral curves)', blurb: 'Streamlines of several 2D vector fields.' }, es: { title: 'Líneas de corriente', blurb: 'Líneas de corriente de varios campos vectoriales 2D.' } },
+});
+
+Object.assign(FORMULA_I18N, {
+  'nernst-equation': { en: { title: 'Nernst equation', blurb: 'Cell EMF varies with reaction quotient Q.' }, es: { title: 'Ecuación de Nernst', blurb: 'FEM varía con el cociente de reacción Q.' } },
+  'henderson-hasselbalch': { en: { title: 'Henderson–Hasselbalch', blurb: 'Buffer pH from pKa and the [A⁻]/[HA] ratio.' }, es: { title: 'Henderson–Hasselbalch', blurb: 'pH del buffer a partir de pKa y la razón [A⁻]/[HA].' } },
+  'beer-lambert': { en: { title: 'Beer–Lambert law', blurb: 'Absorbance grows linearly with concentration.' }, es: { title: 'Ley de Beer–Lambert', blurb: 'Absorbancia crece linealmente con la concentración.' } },
+  'langmuir-isotherm': { en: { title: 'Langmuir isotherm', blurb: 'Surface coverage θ saturates as P rises.' }, es: { title: 'Isoterma de Langmuir', blurb: 'Cobertura θ se satura con el aumento de P.' } },
+  'clausius-clapeyron': { en: { title: 'Clausius–Clapeyron', blurb: 'Vapour pressure vs temperature.' }, es: { title: 'Clausius–Clapeyron', blurb: 'Presión de vapor frente a temperatura.' } },
+  'van-der-waals': { en: { title: 'Van der Waals isotherm', blurb: 'Non-ideal gas P–V isotherm.' }, es: { title: 'Isoterma de Van der Waals', blurb: 'Isoterma P–V de gas no ideal.' } },
+  'gibbs-free-energy': { en: { title: 'Gibbs free energy', blurb: 'ΔG = ΔH − TΔS; ΔG = 0 at equilibrium T = ΔH/ΔS.' }, es: { title: 'Energía libre de Gibbs', blurb: 'ΔG = ΔH − TΔS; equilibrio en T = ΔH/ΔS.' } },
 });
