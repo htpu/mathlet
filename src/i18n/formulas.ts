@@ -1568,3 +1568,11 @@ Object.assign(FORMULA_I18N, {
   'standing-wave-pipe': { en: { title: 'Closed-pipe standing wave fₙ', blurb: 'Fundamental + odd harmonics in a closed pipe.' }, es: { title: 'Onda estacionaria en tubo cerrado', blurb: 'Fundamental + armónicos impares.' } },
   'perceived-loudness': { en: { title: "Stevens' loudness law", blurb: 'Perceived loudness ∝ I^{0.3}.' }, es: { title: 'Ley de Stevens', blurb: 'Sonoridad percibida ∝ I^{0.3}.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'rabi-oscillation': { en: { title: 'Rabi oscillation P(t)', blurb: 'Excited-state probability sin²(Ωt/2).' }, es: { title: 'Oscilación de Rabi', blurb: 'Probabilidad sin²(Ωt/2).' } },
+  'spontaneous-emission': { en: { title: 'Spontaneous emission Γ ∝ ω³', blurb: 'log–log slope 3.' }, es: { title: 'Emisión espontánea', blurb: 'Pendiente log–log = 3.' } },
+  'landau-zener': { en: { title: 'Landau-Zener transition', blurb: 'Diabatic transition probability at avoided crossings.' }, es: { title: 'Transición Landau-Zener', blurb: 'Probabilidad diabática en cruces evitados.' } },
+  'qubit-rotation': { en: { title: 'Bloch-sphere rotation ⟨σz⟩', blurb: 'Z expectation as polar angle θ varies.' }, es: { title: 'Rotación de la esfera de Bloch', blurb: 'Valor esperado ⟨σz⟩ vs θ.' } },
+  'franck-condon': { en: { title: 'Franck-Condon vibrational overlap', blurb: 'Poisson-like intensities; Huang-Rhys factor S.' }, es: { title: 'Solapamiento Franck-Condon', blurb: 'Intensidades tipo Poisson (factor Huang-Rhys S).' } },
+});
