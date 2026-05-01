@@ -1552,3 +1552,11 @@ Object.assign(FORMULA_I18N, {
   'mertens-mu': { en: { title: 'Mertens M(x) = Σ μ(n)', blurb: 'Möbius cumulative; Mertens conjecture bound √x.' }, es: { title: 'Mertens M(x)', blurb: 'Acumulado de Möbius.' } },
   'lattice-shortest-vector': { en: { title: 'Minkowski shortest-vector bound', blurb: 'Lattice short-vector length bound vs dimension.' }, es: { title: 'Cota del vector más corto', blurb: 'Cota de longitud del vector más corto vs dimensión.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'lorentz-gamma': { en: { title: 'Lorentz γ factor', blurb: 'Time-dilation factor vs β = v/c.' }, es: { title: 'Factor γ de Lorentz', blurb: 'Factor de dilatación frente a β = v/c.' } },
+  'relativistic-momentum': { en: { title: 'Relativistic momentum', blurb: 'p = γmv (units of mc).' }, es: { title: 'Momento relativista', blurb: 'p = γmv (unidades mc).' } },
+  'relativistic-doppler': { en: { title: 'Relativistic Doppler shift', blurb: 'Longitudinal Doppler frequency ratio.' }, es: { title: 'Doppler relativista', blurb: 'Razón Doppler longitudinal.' } },
+  'relativistic-velocity-add': { en: { title: 'Relativistic velocity addition', blurb: 'Composing two collinear velocities.' }, es: { title: 'Suma relativista de velocidades', blurb: 'Composición de dos velocidades colineales.' } },
+  'four-momentum-shell': { en: { title: 'Relativistic energy shell', blurb: 'E² = (pc)² + (mc²)²; rest mass plus momentum.' }, es: { title: 'Capa de energía relativista', blurb: 'E² = (pc)² + (mc²)².' } },
+});
