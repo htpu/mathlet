@@ -1404,3 +1404,12 @@ Object.assign(FORMULA_I18N, {
   'van-der-waals': { en: { title: 'Van der Waals isotherm', blurb: 'Non-ideal gas P–V isotherm.' }, es: { title: 'Isoterma de Van der Waals', blurb: 'Isoterma P–V de gas no ideal.' } },
   'gibbs-free-energy': { en: { title: 'Gibbs free energy', blurb: 'ΔG = ΔH − TΔS; ΔG = 0 at equilibrium T = ΔH/ΔS.' }, es: { title: 'Energía libre de Gibbs', blurb: 'ΔG = ΔH − TΔS; equilibrio en T = ΔH/ΔS.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'hubble-law': { en: { title: "Hubble's law", blurb: 'Recession velocity proportional to distance.' }, es: { title: 'Ley de Hubble', blurb: 'Velocidad de recesión proporcional a la distancia.' } },
+  'cosmological-redshift': { en: { title: 'Cosmological redshift', blurb: 'Photon wavelength stretches with scale factor.' }, es: { title: 'Corrimiento al rojo cosmológico', blurb: 'La longitud de onda se estira con el factor de escala.' } },
+  'friedmann-flat': { en: { title: 'Friedmann (flat universe)', blurb: 'Hubble parameter vs scale factor for ΛCDM.' }, es: { title: 'Friedmann (universo plano)', blurb: 'Parámetro de Hubble vs factor de escala.' } },
+  'de-sitter-scale': { en: { title: 'de Sitter exponential expansion', blurb: 'Λ-dominated scale factor grows as e^{Ht}.' }, es: { title: 'Expansión exponencial de Sitter', blurb: 'Factor de escala dominado por Λ crece como e^{Ht}.' } },
+  'schwarzschild-radius': { en: { title: 'Schwarzschild radius', blurb: 'Black-hole event horizon size vs mass.' }, es: { title: 'Radio de Schwarzschild', blurb: 'Tamaño del horizonte de sucesos vs masa.' } },
+  'roche-limit': { en: { title: 'Roche limit', blurb: 'Tidal disruption distance for a fluid satellite.' }, es: { title: 'Límite de Roche', blurb: 'Distancia de disrupción tidal para satélite fluido.' } },
+});
