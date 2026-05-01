@@ -92,4 +92,8 @@ loaderLines.push('};');
 loaderLines.push('');
 writeFileSync(LOADERS_OUT, loaderLines.join('\n'));
 
-console.log(`registry: ${records.length} formulas → metadata + loaders split`);
+// Keep public/all-slugs.json in sync (consumed by audit & thumb scripts).
+const slugList = records.map(r => r.slug).sort();
+writeFileSync(resolve('public', 'all-slugs.json'), JSON.stringify(slugList));
+
+console.log(`registry: ${records.length} formulas → metadata + loaders split + all-slugs.json`);

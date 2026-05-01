@@ -1447,3 +1447,11 @@ Object.assign(FORMULA_I18N, {
   'giant-component-threshold': { en: { title: 'Giant-component threshold (ER)', blurb: 'Phase transition of largest component as mean degree c crosses 1.' }, es: { title: 'Umbral del componente gigante', blurb: 'Transición de fase del componente mayor.' } },
   'avg-path-length-er': { en: { title: 'ER average path length', blurb: 'Random-graph diameter scales as ln n / ln(np).' }, es: { title: 'Longitud media de camino (ER)', blurb: 'Diámetro escala como ln n / ln(np).' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'ideal-gas': { en: { title: 'Ideal gas PV = nRT', blurb: 'Isotherm: pressure inversely proportional to volume.' }, es: { title: 'Gas ideal PV = nRT', blurb: 'Isoterma: presión inversamente proporcional al volumen.' } },
+  'raoult-law': { en: { title: "Raoult's law", blurb: 'Total vapour pressure linear in mole fraction (ideal solution).' }, es: { title: 'Ley de Raoult', blurb: 'Presión de vapor lineal en fracción molar (solución ideal).' } },
+  'freezing-point-depression': { en: { title: 'Freezing-point depression', blurb: 'ΔTf = Kf · m · i (colligative property).' }, es: { title: 'Descenso del punto de congelación', blurb: 'ΔTf = Kf · m · i (propiedad coligativa).' } },
+  'boltzmann-rate': { en: { title: 'Maxwell-Boltzmann speed distribution', blurb: 'Probability density of molecular speeds in 3D gas.' }, es: { title: 'Distribución de velocidades de Maxwell-Boltzmann', blurb: 'Densidad de probabilidad de velocidades moleculares en 3D.' } },
+  'equilibrium-keq': { en: { title: "van 't Hoff equilibrium K", blurb: 'Equilibrium constant temperature dependence (linear in 1/T).' }, es: { title: 'Constante de equilibrio (van t Hoff)', blurb: 'Dependencia con la temperatura (lineal en 1/T).' } },
+});
