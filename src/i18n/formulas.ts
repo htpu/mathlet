@@ -1422,3 +1422,11 @@ Object.assign(FORMULA_I18N, {
   'waveshaper-tanh': { en: { title: 'tanh soft-clip waveshaper', blurb: 'Common nonlinear saturation in synths and guitar amps.' }, es: { title: 'Waveshaper tanh', blurb: 'Saturación no lineal típica en sintetizadores.' } },
   'rt60-decay': { en: { title: 'RT60 reverb decay', blurb: 'Time for the sound level to drop by 60 dB.' }, es: { title: 'Decaimiento RT60', blurb: 'Tiempo para que el nivel caiga 60 dB.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'modular-exponentiation': { en: { title: 'Modular exponentiation g^x mod p', blurb: 'Core operation behind the discrete-log problem.' }, es: { title: 'Exponenciación modular g^x mod p', blurb: 'Operación base del problema del logaritmo discreto.' } },
+  'quadratic-residue': { en: { title: 'Quadratic residues x² mod p', blurb: 'Squares modulo a prime; Euler criterion.' }, es: { title: 'Residuos cuadráticos x² mod p', blurb: 'Cuadrados módulo primo; criterio de Euler.' } },
+  'euler-phi': { en: { title: 'Euler totient φ(n)', blurb: 'Count of integers ≤ n coprime to n; powers RSA key gen.' }, es: { title: 'Función φ de Euler', blurb: 'Cantidad de enteros ≤ n coprimos con n.' } },
+  'birthday-bound': { en: { title: 'Birthday attack probability', blurb: 'Collision probability after k hash queries; k ≈ √N for 50%.' }, es: { title: 'Probabilidad del ataque de cumpleaños', blurb: 'Probabilidad de colisión tras k consultas; k ≈ √N para 50%.' } },
+  'lfsr-period': { en: { title: 'LFSR output bitstream', blurb: 'Linear feedback shift register output controlled by tap mask.' }, es: { title: 'Flujo de bits LFSR', blurb: 'Salida de un registro de desplazamiento con realimentación lineal.' } },
+});
