@@ -1544,3 +1544,11 @@ Object.assign(FORMULA_I18N, {
   'wilf-clique': { en: { title: 'Wilf clique-number lower bound', blurb: 'ω(G) ≥ n/(n − ρ(A)).' }, es: { title: 'Cota Wilf del número de clique', blurb: 'ω(G) ≥ n/(n − ρ(A)).' } },
   'girth-moore': { en: { title: 'Girth-Moore bound', blurb: 'Minimum nodes for given degree and odd girth.' }, es: { title: 'Cota de Moore (cintura)', blurb: 'Nodos mínimos para grado y cintura impar.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'carmichael-lambda': { en: { title: 'Carmichael λ(n)', blurb: 'Group exponent — alternative to Euler φ in RSA.' }, es: { title: 'Función λ de Carmichael', blurb: 'Exponente de grupo — alternativa a φ.' } },
+  'gcd-step-count': { en: { title: 'Euclidean GCD step bound (Lamé)', blurb: 'Worst-case division steps ≤ 5 log10(min).' }, es: { title: 'Cota de pasos de Euclides', blurb: 'Pasos de división ≤ 5 log10(mín).' } },
+  'chebyshev-theta': { en: { title: 'Chebyshev θ(x) = Σ log p', blurb: 'Prime log-sum asymptotic to x.' }, es: { title: 'θ(x) de Chebyshev', blurb: 'Suma de log p asintótica a x.' } },
+  'mertens-mu': { en: { title: 'Mertens M(x) = Σ μ(n)', blurb: 'Möbius cumulative; Mertens conjecture bound √x.' }, es: { title: 'Mertens M(x)', blurb: 'Acumulado de Möbius.' } },
+  'lattice-shortest-vector': { en: { title: 'Minkowski shortest-vector bound', blurb: 'Lattice short-vector length bound vs dimension.' }, es: { title: 'Cota del vector más corto', blurb: 'Cota de longitud del vector más corto vs dimensión.' } },
+});
