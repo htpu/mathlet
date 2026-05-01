@@ -1,4 +1,3 @@
-import katex from 'katex';
 import { signal, effect } from './runtime/signal';
 import type { Formula, ParamSpec, ParamValues, Surface } from './formulas/types';
 import { REGISTRY } from './formulas/_registry.generated';
@@ -240,9 +239,14 @@ async function bootstrap() {
   notesPane.appendChild(el('div', { class: 'meta-line' },
     `${DOMAIN_LABELS_I18N[lang.peek()][formula.meta.domain]} · L${formula.meta.level} · ${formula.meta.surface === 'three' ? UI[lang.peek()].surface3d : UI[lang.peek()].surface2d}`));
   const texBlock = el('div', { class: 'tex-block' });
-  try { texBlock.innerHTML = katex.renderToString(formula.meta.tex, { throwOnError: false, displayMode: true, output: 'html' }); }
-  catch { const c = el('code'); c.textContent = formula.meta.tex; texBlock.appendChild(c); }
+  // Render plain TeX immediately; upgrade to KaTeX once the chunk arrives.
+  const codeFallback = el('code'); codeFallback.textContent = formula.meta.tex;
+  texBlock.appendChild(codeFallback);
   notesPane.appendChild(texBlock);
+  void import('katex').then(m => {
+    try { texBlock.innerHTML = m.default.renderToString(formula.meta.tex, { throwOnError: false, displayMode: true, output: 'html' }); }
+    catch {}
+  }).catch(() => {});
   const notesContent = el('div', { class: 'notes-content' });
   notesContent.appendChild(el('p', {}, tr.blurb));
   // Notes are zh-only metadata; only render when current lang is zh.
