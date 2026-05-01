@@ -1520,3 +1520,11 @@ Object.assign(FORMULA_I18N, {
   'allpass-phase': { en: { title: 'First-order all-pass phase', blurb: 'Magnitude = 1; phase shifts with frequency.' }, es: { title: 'Fase pasa-todo de 1er orden', blurb: 'Magnitud = 1; la fase varía con la frecuencia.' } },
   'shepard-glissando': { en: { title: 'Shepard glissando illusion', blurb: 'Stacked octave gaussians create endless rising pitch.' }, es: { title: 'Glissando de Shepard', blurb: 'Octavas apiladas crean ilusión de tono ascendente.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'photoelectric': { en: { title: 'Photoelectric effect E_k = hf − φ', blurb: 'Max kinetic energy linear in photon frequency.' }, es: { title: 'Efecto fotoeléctrico', blurb: 'Energía cinética máx. lineal en frecuencia.' } },
+  'fermi-energy-3d': { en: { title: '3D Fermi energy', blurb: 'Free-electron Fermi energy scales as n^{2/3} (log-log).' }, es: { title: 'Energía de Fermi 3D', blurb: 'E_F escala como n^{2/3}.' } },
+  'bose-einstein-occupation': { en: { title: 'Bose-Einstein occupation number', blurb: '⟨n⟩ = 1/(e^{(E−μ)/kT} − 1).' }, es: { title: 'Ocupación Bose-Einstein', blurb: '⟨n⟩ = 1/(e^{(E−μ)/kT} − 1).' } },
+  'fermi-dirac-occupation': { en: { title: 'Fermi-Dirac occupation number', blurb: 'Electron occupation probability vs (E−μ)/kT.' }, es: { title: 'Ocupación Fermi-Dirac', blurb: 'Probabilidad de ocupación electrónica.' } },
+  'wkb-tunneling': { en: { title: 'WKB tunnelling transmission', blurb: 'Rectangular barrier transmission vs E/V.' }, es: { title: 'Transmisión WKB', blurb: 'Transmisión por barrera rectangular vs E/V.' } },
+});
