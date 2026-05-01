@@ -1472,3 +1472,11 @@ Object.assign(FORMULA_I18N, {
   'karplus-strong': { en: { title: 'Karplus-Strong synthesis', blurb: 'Plucked-string synthesis decay envelope.' }, es: { title: 'Síntesis Karplus-Strong', blurb: 'Envolvente de cuerda pulsada.' } },
   'wood-air-resonance': { en: { title: 'Helmholtz body resonance', blurb: 'Air-cavity resonance of guitar / violin bodies.' }, es: { title: 'Resonancia Helmholtz del cuerpo', blurb: 'Resonancia de cavidad de aire en cuerpos de cuerda.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'fermat-witness': { en: { title: 'Fermat / Miller-Rabin failure rate', blurb: 'False-positive bound 2^{−k} after k rounds.' }, es: { title: 'Tasa de fallos Fermat/MR', blurb: 'Cota de falsos positivos 2^{−k} tras k rondas.' } },
+  'legendre-symbol': { en: { title: 'Legendre symbol (a/p)', blurb: '+1 / −1 / 0 quadratic-residue indicator.' }, es: { title: 'Símbolo de Legendre (a/p)', blurb: 'Indicador de residuo cuadrático.' } },
+  'source-coding-bound': { en: { title: 'Shannon source-coding bound', blurb: 'Binary entropy = lower bound on mean code length.' }, es: { title: 'Cota de codificación de fuente', blurb: 'Entropía binaria = cota inferior de longitud media.' } },
+  'totient-density': { en: { title: 'Totient density φ(n)/n', blurb: 'Few small prime factors → ratio close to 1.' }, es: { title: 'Densidad φ(n)/n', blurb: 'Pocos factores pequeños → razón cercana a 1.' } },
+  'diffie-hellman-key': { en: { title: 'Diffie-Hellman shared key', blurb: 'Sweep exponent a; partner key B^a mod p.' }, es: { title: 'Clave compartida Diffie-Hellman', blurb: 'Recorre exponente a; clave B^a mod p.' } },
+});
