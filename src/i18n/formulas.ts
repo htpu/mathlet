@@ -1536,3 +1536,11 @@ Object.assign(FORMULA_I18N, {
   'flory-huggins': { en: { title: 'Flory-Huggins free energy of mixing', blurb: 'Polymer-solution mixing free energy vs φ.' }, es: { title: 'Energía libre Flory-Huggins', blurb: 'Mezcla de polímero en solución.' } },
   'zero-order-kinetics': { en: { title: 'Zero-order kinetics', blurb: 'Concentration drops linearly; rate independent of [A].' }, es: { title: 'Cinética de orden cero', blurb: 'Concentración cae linealmente.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'turan-density': { en: { title: 'Turán edge bound', blurb: 'Max edges of a K_{r+1}-free graph.' }, es: { title: 'Cota de Turán', blurb: 'Aristas máximas sin K_{r+1}.' } },
+  'moon-moser': { en: { title: 'Moon-Moser MIS bound', blurb: 'Maximum independent-set count ≤ 3^{n/3}.' }, es: { title: 'Cota Moon-Moser', blurb: 'Conjuntos independientes ≤ 3^{n/3}.' } },
+  'spectral-radius-pf': { en: { title: 'Perron-Frobenius spectral radius bounds', blurb: '√d_max ≤ ρ(A) ≤ d_max.' }, es: { title: 'Radio espectral PF', blurb: '√d_max ≤ ρ(A) ≤ d_max.' } },
+  'wilf-clique': { en: { title: 'Wilf clique-number lower bound', blurb: 'ω(G) ≥ n/(n − ρ(A)).' }, es: { title: 'Cota Wilf del número de clique', blurb: 'ω(G) ≥ n/(n − ρ(A)).' } },
+  'girth-moore': { en: { title: 'Girth-Moore bound', blurb: 'Minimum nodes for given degree and odd girth.' }, es: { title: 'Cota de Moore (cintura)', blurb: 'Nodos mínimos para grado y cintura impar.' } },
+});
