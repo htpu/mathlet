@@ -1413,3 +1413,12 @@ Object.assign(FORMULA_I18N, {
   'schwarzschild-radius': { en: { title: 'Schwarzschild radius', blurb: 'Black-hole event horizon size vs mass.' }, es: { title: 'Radio de Schwarzschild', blurb: 'Tamaño del horizonte de sucesos vs masa.' } },
   'roche-limit': { en: { title: 'Roche limit', blurb: 'Tidal disruption distance for a fluid satellite.' }, es: { title: 'Límite de Roche', blurb: 'Distancia de disrupción tidal para satélite fluido.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'midi-frequency': { en: { title: 'MIDI note → frequency', blurb: 'MIDI 0..127 mapped to frequency (A4 = 69 → 440 Hz).' }, es: { title: 'Nota MIDI → frecuencia', blurb: 'MIDI 0..127 mapeado a frecuencia (A4 = 69 → 440 Hz).' } },
+  'cents': { en: { title: 'Cents (logarithmic pitch)', blurb: '1 semitone = 100 ¢; 1 octave = 1200 ¢.' }, es: { title: 'Cents (tono logarítmico)', blurb: '1 semitono = 100 ¢; 1 octava = 1200 ¢.' } },
+  'comb-filter': { en: { title: 'Comb filter response', blurb: 'Feedback delay produces comb-shaped magnitude response.' }, es: { title: 'Respuesta del filtro peine', blurb: 'El retardo realimentado produce respuesta en forma de peine.' } },
+  'ring-modulation': { en: { title: 'Ring modulation', blurb: 'Carrier × modulator → sum and difference frequencies.' }, es: { title: 'Modulación en anillo', blurb: 'Portadora × moduladora → suma y diferencia.' } },
+  'waveshaper-tanh': { en: { title: 'tanh soft-clip waveshaper', blurb: 'Common nonlinear saturation in synths and guitar amps.' }, es: { title: 'Waveshaper tanh', blurb: 'Saturación no lineal típica en sintetizadores.' } },
+  'rt60-decay': { en: { title: 'RT60 reverb decay', blurb: 'Time for the sound level to drop by 60 dB.' }, es: { title: 'Decaimiento RT60', blurb: 'Tiempo para que el nivel caiga 60 dB.' } },
+});
