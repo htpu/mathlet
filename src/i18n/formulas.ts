@@ -1496,3 +1496,11 @@ Object.assign(FORMULA_I18N, {
   'erdos-renyi-clustering': { en: { title: 'ER clustering coefficient C = p', blurb: 'Random-graph clustering linear in mean degree.' }, es: { title: 'Coef. de clustering ER', blurb: 'C = ⟨k⟩/(n−1).' } },
   'spectral-gap': { en: { title: 'Cheeger spectral-gap bound', blurb: 'Expansion ≥ (d − λ₂)/2.' }, es: { title: 'Cota de Cheeger', blurb: 'Expansión ≥ (d − λ₂)/2.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'vis-viva': { en: { title: 'Vis-viva equation', blurb: 'Orbital speed vs distance.' }, es: { title: 'Ecuación vis-viva', blurb: 'Velocidad orbital vs distancia.' } },
+  'orbital-period': { en: { title: "Kepler's third law T(a)", blurb: 'Orbital period scales as a^{3/2}.' }, es: { title: 'Tercera ley de Kepler', blurb: 'Periodo orbital escala como a^{3/2}.' } },
+  'escape-velocity': { en: { title: 'Escape velocity', blurb: 'v_e = √(2GM/r).' }, es: { title: 'Velocidad de escape', blurb: 'v_e = √(2GM/r).' } },
+  'einstein-radius': { en: { title: 'Einstein ring radius', blurb: 'Gravitational-lens ring angular radius.' }, es: { title: 'Radio del anillo de Einstein', blurb: 'Radio angular del anillo de lente.' } },
+  'binary-pulsar-decay': { en: { title: 'Binary-pulsar orbital decay', blurb: 'Gravitational-wave emission shrinks orbital period.' }, es: { title: 'Decaimiento orbital de púlsar binario', blurb: 'Emisión de ondas gravitacionales acorta el periodo.' } },
+});
