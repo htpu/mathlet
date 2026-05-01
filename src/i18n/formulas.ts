@@ -1528,3 +1528,11 @@ Object.assign(FORMULA_I18N, {
   'fermi-dirac-occupation': { en: { title: 'Fermi-Dirac occupation number', blurb: 'Electron occupation probability vs (E−μ)/kT.' }, es: { title: 'Ocupación Fermi-Dirac', blurb: 'Probabilidad de ocupación electrónica.' } },
   'wkb-tunneling': { en: { title: 'WKB tunnelling transmission', blurb: 'Rectangular barrier transmission vs E/V.' }, es: { title: 'Transmisión WKB', blurb: 'Transmisión por barrera rectangular vs E/V.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'tafel-equation': { en: { title: 'Tafel equation', blurb: 'Electrochemical overpotential vs log current density.' }, es: { title: 'Ecuación de Tafel', blurb: 'Sobrepotencial vs log densidad de corriente.' } },
+  'saha-equation': { en: { title: 'Saha ionisation equation', blurb: 'Stellar-gas ionisation ratio (log10) vs temperature.' }, es: { title: 'Ecuación de Saha', blurb: 'Razón de ionización vs temperatura.' } },
+  'boltzmann-population': { en: { title: 'Two-level Boltzmann population ratio', blurb: 'High vs low state population N1/N0 = e^{−ΔE/kT}.' }, es: { title: 'Población Boltzmann (2 niveles)', blurb: 'Razón N1/N0.' } },
+  'flory-huggins': { en: { title: 'Flory-Huggins free energy of mixing', blurb: 'Polymer-solution mixing free energy vs φ.' }, es: { title: 'Energía libre Flory-Huggins', blurb: 'Mezcla de polímero en solución.' } },
+  'zero-order-kinetics': { en: { title: 'Zero-order kinetics', blurb: 'Concentration drops linearly; rate independent of [A].' }, es: { title: 'Cinética de orden cero', blurb: 'Concentración cae linealmente.' } },
+});
