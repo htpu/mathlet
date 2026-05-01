@@ -3,7 +3,7 @@ import type { Formula, ParamSpec, ParamValues, Surface } from './formulas/types'
 import { REGISTRY } from './formulas/_registry.generated';
 import { LOADERS } from './formulas/_loaders.generated';
 import { UI, DOMAIN_LABELS_I18N, LANGS, LANG_LABELS, detectLang, setLang, type Lang } from './i18n/strings';
-import { FORMULA_I18N } from './i18n/formulas';
+import { getFormulaI18N, peekFormulaI18N } from './i18n/formulas-async';
 
 const slug = location.pathname.replace(/^\/f\//, '').replace(/\.html$/, '').replace(/\/$/, '') || 'mandelbrot';
 const meta = REGISTRY.find(r => r.slug === slug);
@@ -25,7 +25,7 @@ function slugToTitle(s: string): string {
 function tFormula(slug: string, fallback: { title: string; blurb: string }): { title: string; blurb: string } {
   const l = lang.peek();
   if (l === 'zh') return fallback;
-  const i = FORMULA_I18N[slug]?.[l];
+  const i = peekFormulaI18N()[slug]?.[l];
   if (i) return i;
   return { title: slugToTitle(slug), blurb: '' };
 }
@@ -42,7 +42,8 @@ if (!meta) {
 async function bootstrap() {
   const loader = LOADERS[slug];
   if (!loader) { root.appendChild(el('div', { class: 'empty' }, `loader missing: ${slug}`)); return; }
-  const mod = await loader();
+  // Load formula module + i18n in parallel; zh resolves instantly.
+  const [mod] = await Promise.all([loader(), getFormulaI18N(lang.peek())]);
   const formula: Formula = mod.default;
   const tr = tFormula(formula.meta.slug, { title: formula.meta.title, blurb: formula.meta.blurb });
   document.title = `${tr.title} · MATHLET`;

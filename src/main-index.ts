@@ -2,7 +2,7 @@ import { signal, effect } from './runtime/signal';
 import type { Domain, Level } from './formulas/types';
 import { REGISTRY, type RegistryEntry } from './formulas/_registry.generated';
 import { UI, DOMAIN_LABELS_I18N, LANGS, LANG_LABELS, LANG_FULL, detectLang, setLang, type Lang } from './i18n/strings';
-import { FORMULA_I18N } from './i18n/formulas';
+import { getFormulaI18N, peekFormulaI18N } from './i18n/formulas-async';
 
 const all = REGISTRY;
 const lang = signal<Lang>(detectLang());
@@ -77,7 +77,7 @@ function slugToTitle(s: string): string {
 function tFormula(slug: string, fallback: { title: string; blurb: string }): { title: string; blurb: string } {
   const l = lang.peek();
   if (l === 'zh') return fallback;
-  const i = FORMULA_I18N[slug]?.[l];
+  const i = peekFormulaI18N()[slug]?.[l];
   if (i) return i;
   return { title: slugToTitle(slug), blurb: '' };
 }
@@ -513,6 +513,8 @@ applyStaticText();
 renderFilters();
 renderBreadcrumbs();
 effect(() => { query.value; domains.value; levels.value; surfaces.value; renderGrid(); renderBreadcrumbs(); });
+// Lazy-load translations and re-render once available (skipped for zh).
+void getFormulaI18N(lang.peek()).then(() => { renderGrid(); renderBreadcrumbs(); });
 try { if (sessionStorage.getItem('mathlet:openAbout') === '1') { sessionStorage.removeItem('mathlet:openAbout'); setTimeout(() => toggleAbout(), 100); } } catch {}
 
 const qInput = document.getElementById('q') as HTMLInputElement;
