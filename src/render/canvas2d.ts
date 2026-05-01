@@ -40,10 +40,14 @@ export function drawAxes(s: Canvas2DSurface, v: View2D, opts: { grid?: boolean; 
 }
 
 export function plotFn(s: Canvas2DSurface, v: View2D, fn: (x: number) => number, color = '#ffb454', samples = 1000, lineWidth = 2) {
-  const { ctx, width } = s;
+  const { ctx, width, height } = s;
   const xMin = v.cx - width / 2 / v.scale;
   const xMax = v.cx + width / 2 / v.scale;
   const dx = (xMax - xMin) / samples;
+  // Clip y to ~1000× viewport so a single huge value (1e30) can't blow up
+  // canvas2d rasterizer (we've seen Chrome crash on extreme coords).
+  const yHalf = height / 2 / v.scale;
+  const yClip = Math.abs(v.cy) + yHalf * 1000;
   ctx.strokeStyle = color;
   ctx.lineWidth = lineWidth / v.scale;
   ctx.beginPath();
@@ -51,7 +55,7 @@ export function plotFn(s: Canvas2DSurface, v: View2D, fn: (x: number) => number,
   for (let i = 0; i <= samples; i++) {
     const x = xMin + i * dx;
     const y = fn(x);
-    if (!isFinite(y)) { started = false; continue; }
+    if (!isFinite(y) || Math.abs(y) > yClip) { started = false; continue; }
     if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
   }
   ctx.stroke();

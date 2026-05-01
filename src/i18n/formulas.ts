@@ -1464,3 +1464,11 @@ Object.assign(FORMULA_I18N, {
   'gravitational-binding': { en: { title: 'Gravitational binding energy', blurb: 'Self-energy of a uniform sphere U = −3GM²/(5R).' }, es: { title: 'Energía de ligadura gravitacional', blurb: 'Auto-energía de una esfera uniforme.' } },
   'tidal-acceleration': { en: { title: 'Tidal acceleration', blurb: '2GMr/d³ stretching across an extended body.' }, es: { title: 'Aceleración de marea', blurb: '2GMr/d³ a lo largo de un cuerpo extendido.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'string-mode': { en: { title: 'String standing-wave mode', blurb: 'Snapshot of the n-th mode on a fixed-end string.' }, es: { title: 'Modo estacionario de cuerda', blurb: 'Forma instantánea del modo n en una cuerda fija.' } },
+  'fletcher-munson': { en: { title: 'Fletcher-Munson equal-loudness (approx)', blurb: 'Simplified equal-loudness curve; bass drops off.' }, es: { title: 'Fletcher-Munson (aprox)', blurb: 'Curva de igual sonoridad simplificada.' } },
+  'just-vs-equal-deviation': { en: { title: 'Just vs 12-TET deviation', blurb: 'Cents deviation of just intonation from equal temperament.' }, es: { title: 'Desviación entonación justa vs TET', blurb: 'Desviación en cents.' } },
+  'karplus-strong': { en: { title: 'Karplus-Strong synthesis', blurb: 'Plucked-string synthesis decay envelope.' }, es: { title: 'Síntesis Karplus-Strong', blurb: 'Envolvente de cuerda pulsada.' } },
+  'wood-air-resonance': { en: { title: 'Helmholtz body resonance', blurb: 'Air-cavity resonance of guitar / violin bodies.' }, es: { title: 'Resonancia Helmholtz del cuerpo', blurb: 'Resonancia de cavidad de aire en cuerpos de cuerda.' } },
+});
