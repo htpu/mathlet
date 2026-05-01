@@ -1,11 +1,12 @@
 import { chromium, type Browser } from 'playwright';
-import { readFileSync, mkdirSync, existsSync, writeFileSync, rmSync } from 'node:fs';
+import { readFileSync, mkdirSync, existsSync, writeFileSync, rmSync, copyFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const URL_BASE = process.env.THUMB_URL ?? 'http://localhost:4173';
 const OUT_DIR = 'public/thumbs';
+const DIST_DIR = 'dist/thumbs';
 const FRAMES = 24;
 const FRAME_INTERVAL_MS = 80;
 const VIEWPORT = { width: 400, height: 250 };
@@ -70,6 +71,12 @@ async function processSlug(browser: Browser, slug: string, idx: number, total: n
     ], { stdio: 'pipe' });
     if (r.status !== 0) {
       return { slug, ok: false, reason: 'ffmpeg: ' + r.stderr.toString().slice(0, 200) };
+    }
+    // Mirror to dist/thumbs/ if a build exists, so a freshly-generated thumb
+    // is served by the running preview without needing a rebuild.
+    if (existsSync('dist')) {
+      mkdirSync(DIST_DIR, { recursive: true });
+      try { copyFileSync(out, join(DIST_DIR, `${slug}.webp`)); } catch {}
     }
     console.log(`[${idx + 1}/${total}] ${slug} ✓`);
     return { slug, ok: true };
