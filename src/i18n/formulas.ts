@@ -1512,3 +1512,11 @@ Object.assign(FORMULA_I18N, {
   'avalanche-effect': { en: { title: 'Hash avalanche distribution', blurb: 'Ideal output-bit-flip distribution Binomial(n, 1/2).' }, es: { title: 'Distribución de avalancha', blurb: 'Binomial(n, 1/2) ideal.' } },
   'aes-keyspace': { en: { title: 'AES keyspace size (log10)', blurb: 'Symmetric keyspace grows as 2^n.' }, es: { title: 'Espacio de claves AES (log10)', blurb: 'Espacio simétrico crece como 2^n.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'lowpass-rc': { en: { title: 'RC low-pass response', blurb: 'First-order RC low-pass magnitude in dB.' }, es: { title: 'Respuesta RC paso bajo', blurb: 'Magnitud paso bajo RC en dB.' } },
+  'resonant-q': { en: { title: 'Resonant peak Q', blurb: 'Second-order resonant filter magnitude.' }, es: { title: 'Pico resonante (Q)', blurb: 'Magnitud de filtro resonante de 2º orden.' } },
+  'mel-scale': { en: { title: 'Mel auditory scale', blurb: 'Perceptual frequency mapping used in MFCC features.' }, es: { title: 'Escala Mel', blurb: 'Mapeo perceptivo de frecuencia.' } },
+  'allpass-phase': { en: { title: 'First-order all-pass phase', blurb: 'Magnitude = 1; phase shifts with frequency.' }, es: { title: 'Fase pasa-todo de 1er orden', blurb: 'Magnitud = 1; la fase varía con la frecuencia.' } },
+  'shepard-glissando': { en: { title: 'Shepard glissando illusion', blurb: 'Stacked octave gaussians create endless rising pitch.' }, es: { title: 'Glissando de Shepard', blurb: 'Octavas apiladas crean ilusión de tono ascendente.' } },
+});
