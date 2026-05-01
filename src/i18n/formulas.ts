@@ -1576,3 +1576,11 @@ Object.assign(FORMULA_I18N, {
   'qubit-rotation': { en: { title: 'Bloch-sphere rotation ⟨σz⟩', blurb: 'Z expectation as polar angle θ varies.' }, es: { title: 'Rotación de la esfera de Bloch', blurb: 'Valor esperado ⟨σz⟩ vs θ.' } },
   'franck-condon': { en: { title: 'Franck-Condon vibrational overlap', blurb: 'Poisson-like intensities; Huang-Rhys factor S.' }, es: { title: 'Solapamiento Franck-Condon', blurb: 'Intensidades tipo Poisson (factor Huang-Rhys S).' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'mertens-prime-harmonic': { en: { title: 'Σ 1/p over primes', blurb: "Mertens' second theorem: ln ln n divergence." }, es: { title: 'Σ 1/p sobre primos', blurb: 'Divergencia ln ln n.' } },
+  'liouville-lambda': { en: { title: 'Liouville λ(n) = (−1)^Ω(n)', blurb: '±1 sequence depending on prime-multiplicity parity.' }, es: { title: 'Función λ de Liouville', blurb: 'Secuencia ±1 según paridad Ω(n).' } },
+  'divisor-tau': { en: { title: 'Divisor count d(n)', blurb: 'Number of divisors of n.' }, es: { title: 'd(n)', blurb: 'Número de divisores de n.' } },
+  'abundance': { en: { title: 'Abundance index σ(n)/n', blurb: '>2 abundant, <2 deficient, =2 perfect.' }, es: { title: 'Índice σ(n)/n', blurb: '>2 abundante; =2 perfecto.' } },
+  'omega-prime-count': { en: { title: 'ω(n): distinct prime factors', blurb: 'Erdős-Kac: ω(n) ≈ ln ln n.' }, es: { title: 'ω(n) factores distintos', blurb: 'ω(n) ≈ ln ln n.' } },
+});
