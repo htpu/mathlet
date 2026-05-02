@@ -55,6 +55,34 @@ code, kbd, .mono { font-family: var(--mono); }
   letter-spacing: -0.5px;
 }
 @keyframes blink { 50% { opacity: 0; } }
+@keyframes ml-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .featured-row > .card,
+  .domain-tiles > .domain-tile,
+  .related-grid > .related-card {
+    animation: ml-fade-up 0.35s ease-out both;
+  }
+  .featured-row > .card:nth-child(1) { animation-delay: 0ms; }
+  .featured-row > .card:nth-child(2) { animation-delay: 40ms; }
+  .featured-row > .card:nth-child(3) { animation-delay: 80ms; }
+  .featured-row > .card:nth-child(4) { animation-delay: 120ms; }
+  .featured-row > .card:nth-child(5) { animation-delay: 160ms; }
+  .featured-row > .card:nth-child(6) { animation-delay: 200ms; }
+  .domain-tiles > .domain-tile:nth-child(1)  { animation-delay: 0ms; }
+  .domain-tiles > .domain-tile:nth-child(2)  { animation-delay: 30ms; }
+  .domain-tiles > .domain-tile:nth-child(3)  { animation-delay: 60ms; }
+  .domain-tiles > .domain-tile:nth-child(4)  { animation-delay: 90ms; }
+  .domain-tiles > .domain-tile:nth-child(5)  { animation-delay: 120ms; }
+  .domain-tiles > .domain-tile:nth-child(6)  { animation-delay: 150ms; }
+  .domain-tiles > .domain-tile:nth-child(7)  { animation-delay: 180ms; }
+  .domain-tiles > .domain-tile:nth-child(8)  { animation-delay: 210ms; }
+  .domain-tiles > .domain-tile:nth-child(9)  { animation-delay: 240ms; }
+  .domain-tiles > .domain-tile:nth-child(10) { animation-delay: 270ms; }
+  .domain-tiles > .domain-tile:nth-child(n+11) { animation-delay: 300ms; }
+}
 .topbar .grow { display: none; }
 .search-wrap {
   flex: 1;
@@ -367,8 +395,9 @@ code, kbd, .mono { font-family: var(--mono); }
 }
 .card:hover {
   border-color: var(--accent-2);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   color: var(--fg);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35), 0 1px 0 rgba(115,201,255,0.15);
 }
 .card .head {
   display: flex; flex-direction: column; gap: 2px;
@@ -556,7 +585,7 @@ code, kbd, .mono { font-family: var(--mono); }
   transition: transform 0.15s, border-color 0.15s;
   position: relative;
 }
-.domain-tile:hover { border-color: var(--accent-2); transform: translateY(-2px); }
+.domain-tile:hover { border-color: var(--accent-2); transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.35), 0 1px 0 rgba(115,201,255,0.15); }
 .domain-tile .dt-thumb {
   display: block; width: 100%; aspect-ratio: 16 / 10; height: auto;
   background: var(--bg); border-bottom: 1px solid var(--border);
