@@ -263,6 +263,28 @@ async function bootstrap() {
   const paramsPane = el('div', { class: 'params-pane' });
   // Default home: under formula in notes pane (study mode)
   notesPane.appendChild(paramsPane);
+
+  // Related formulas: same domain siblings, randomised, 4 cards.
+  const sameDomain = REGISTRY.filter(r => r.domain === formula.meta.domain && r.slug !== slug);
+  if (sameDomain.length > 0) {
+    const related = sameDomain.sort(() => Math.random() - 0.5).slice(0, 4);
+    const relatedHeader: Record<Lang, string> = { zh: '同领域相关', en: 'More in this domain', es: 'Más en este dominio' };
+    const wrap = el('div', { class: 'related-pane' });
+    wrap.appendChild(el('h3', { class: 'related-h' }, relatedHeader[lang.peek()]));
+    const grid = el('div', { class: 'related-grid' });
+    for (const re of related) {
+      const trr = tFormula(re.slug, { title: re.title, blurb: re.blurb });
+      const a = el('a', { class: 'related-card', href: `/f/${re.slug}.html`, title: trr.blurb }) as HTMLAnchorElement;
+      const img = el('img', { class: 'related-thumb', loading: 'lazy', src: `/thumbs/${re.slug}.webp`, alt: '', width: '160', height: '100' }) as HTMLImageElement;
+      img.onerror = () => { img.style.display = 'none'; };
+      a.appendChild(img);
+      a.appendChild(el('div', { class: 'related-title' }, trr.title));
+      grid.appendChild(a);
+    }
+    wrap.appendChild(grid);
+    notesPane.appendChild(wrap);
+  }
+
   body.appendChild(canvasPane);
 
   function rebuildParams() {
