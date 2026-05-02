@@ -378,6 +378,23 @@ function renderGrid() {
   root.replaceChildren();
 
   if (isUnfiltered()) {
+    // Stats banner — site identity + random CTA, single compact line.
+    const _l = lang.peek();
+    const statsTpl: Record<Lang, (n: number) => string> = {
+      zh: n => `${n} 个公式 · 21 个领域 · L1–L5`,
+      en: n => `${n} formulas · 21 domains · L1–L5`,
+      es: n => `${n} fórmulas · 21 dominios · L1–L5`,
+    };
+    const randTpl: Record<Lang, string> = { zh: '🎲 随机一个', en: '🎲 Random', es: '🎲 Aleatorio' };
+    const stats = el('div', { class: 'stats-bar' });
+    stats.appendChild(el('span', { class: 'stats-text' }, statsTpl[_l](all.length)));
+    const randBtn = el('button', { class: 'stats-rand', type: 'button' }, randTpl[_l]) as HTMLButtonElement;
+    randBtn.onclick = () => {
+      const e = all[Math.floor(Math.random() * all.length)];
+      location.href = `/f/${e.slug}.html`;
+    };
+    stats.appendChild(randBtn);
+    root.appendChild(stats);
     // Discover: Popular when data exists, else Featured (one section, not three)
     const discoverSlugs = popularSlugs.length > 0 ? popularSlugs.slice(0, 6) : FEATURED_SLUGS;
     const discoverLabel = popularSlugs.length > 0 ? POPULAR_LABEL[lang.peek()] : FEATURED_LABEL[lang.peek()];
