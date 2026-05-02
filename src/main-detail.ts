@@ -116,7 +116,9 @@ async function bootstrap() {
   domainLink.style.color = 'var(--accent-2)';
   bar.appendChild(domainLink);
   bar.appendChild(el('span', { class: 'crumb-sep' }, '›'));
-  const lvlLink = el('a', { href: `/level/${formula.meta.level}` }, '⭐'.repeat(formula.meta.level) + ' L' + formula.meta.level);
+  const lvlLink = el('a', { href: `/level/${formula.meta.level}`, class: 'crumb-level' }) as HTMLAnchorElement;
+  lvlLink.appendChild(el('span', { class: 'crumb-stars' }, '⭐'.repeat(formula.meta.level)));
+  lvlLink.appendChild(el('span', { class: 'crumb-lvl' }, ' L' + formula.meta.level));
   lvlLink.style.color = 'var(--accent)';
   bar.appendChild(lvlLink);
   bar.appendChild(el('span', { class: 'crumb-sep' }, '›'));
