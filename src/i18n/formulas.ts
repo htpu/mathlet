@@ -1608,3 +1608,11 @@ Object.assign(FORMULA_I18N, {
   'adam-bias': { en: { title: 'Adam bias-correction factor', blurb: '1/(1 − β^t) compensates early estimates.' }, es: { title: 'Corrección de sesgo Adam', blurb: '1/(1 − β^t).' } },
   'armijo-condition': { en: { title: 'Armijo line-search condition', blurb: 'Accept α if f drops below the secant.' }, es: { title: 'Condición de Armijo', blurb: 'Aceptar α si f cae bajo la secante.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'heron-area': { en: { title: "Heron's triangle area", blurb: 'Sweep third side a; b, c fixed.' }, es: { title: 'Área de Herón', blurb: 'Recorre el tercer lado a.' } },
+  'spiral-theodorus': { en: { title: 'Theodorus spiral radius √n', blurb: 'Right triangles stitched to give √n radii.' }, es: { title: 'Espiral de Teodoro', blurb: 'Triángulos rectángulos → radios √n.' } },
+  'distance-point-line': { en: { title: 'Distance from point to line', blurb: '|ax+by+c|/√(a²+b²).' }, es: { title: 'Distancia punto-recta', blurb: '|ax+by+c|/√(a²+b²).' } },
+  'inscribed-radius': { en: { title: 'Inscribed-circle radius r = A/s', blurb: 'Isosceles triangle in-radius vs base.' }, es: { title: 'Radio inscrito r = A/s', blurb: 'Triángulo isósceles vs base.' } },
+  'golden-section': { en: { title: 'Golden-ratio successive divisions', blurb: 'Powers of 1/φ form a geometric sequence.' }, es: { title: 'Sección áurea', blurb: 'Potencias de 1/φ.' } },
+});
