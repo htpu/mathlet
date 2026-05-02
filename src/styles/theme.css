@@ -461,6 +461,22 @@ code, kbd, .mono { font-family: var(--mono); }
 .card .domain-tag { color: var(--accent-2); }
 .card .surf-tag { color: var(--accent-5); }
 
+.site-footer {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  padding: 16px 20px 20px;
+  border-top: 1px solid var(--border);
+  font-family: var(--mono); font-size: 11px;
+  color: var(--fg-mute);
+  letter-spacing: 0.4px;
+}
+.site-footer .ft-brand { color: var(--accent); font-weight: 600; }
+.site-footer .ft-sep { color: var(--border-strong); }
+.site-footer a { color: var(--accent-2); text-decoration: none; }
+.site-footer a:hover { color: var(--accent); }
+.site-footer .ft-meta { color: var(--fg-mute); opacity: 0.7; }
+@media (max-width: 720px) { .site-footer { font-size: 10px; gap: 6px; padding: 12px 12px 16px; } }
 .related-pane { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); }
 .related-h {
   font-family: var(--mono); font-size: 11px; font-weight: 500;
