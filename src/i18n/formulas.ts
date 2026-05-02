@@ -1592,3 +1592,11 @@ Object.assign(FORMULA_I18N, {
   'seifert-genus-bound': { en: { title: 'Seifert genus lower bound', blurb: 'Knot genus ≥ deg(Alexander)/2.' }, es: { title: 'Cota del género de Seifert', blurb: 'Género ≥ deg(Alexander)/2.' } },
   'cw-cells-betti': { en: { title: 'Morse inequalities', blurb: 'CW k-cell count ≥ k-th Betti number.' }, es: { title: 'Desigualdades de Morse', blurb: 'k-celdas ≥ k-ésimo número de Betti.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'first-order-kinetics': { en: { title: 'First-order kinetics', blurb: 'Exponential decay; half-life ln2/k.' }, es: { title: 'Cinética de primer orden', blurb: 'Decaimiento exponencial; t₁/₂ = ln2/k.' } },
+  'half-life-decay': { en: { title: 'Radioactive half-life', blurb: 'N(t)/N0 vs t / t₁/₂.' }, es: { title: 'Vida media radiactiva', blurb: 'N(t)/N0 vs t / t₁/₂.' } },
+  'heat-capacity-debye': { en: { title: 'Debye heat capacity (low-T limit)', blurb: 'C_V ∝ T³ at low T.' }, es: { title: 'Capacidad calorífica Debye', blurb: 'C_V ∝ T³ a baja T.' } },
+  'buffer-capacity': { en: { title: 'Buffer capacity β(pH)', blurb: 'Maximum at pH = pKa.' }, es: { title: 'Capacidad amortiguadora', blurb: 'Máximo en pH = pKa.' } },
+  'raoult-deviation': { en: { title: 'Margules activity (non-ideal)', blurb: 'ln γ₁ = A x₂².' }, es: { title: 'Margules: actividad no ideal', blurb: 'ln γ₁ = A x₂².' } },
+});
