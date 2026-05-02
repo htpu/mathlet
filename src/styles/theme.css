@@ -545,7 +545,15 @@ code, kbd, .mono { font-family: var(--mono); }
   display: flex; justify-content: space-between; align-items: baseline;
   padding: 8px 10px; font-size: 12px;
 }
-.domain-tile .dt-name { color: var(--fg); font-weight: 500; }
+.domain-tile .dt-name { color: var(--fg); font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+.domain-tile .dt-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px;
+  font-size: 13px; line-height: 1;
+  color: var(--accent); opacity: 0.85;
+  transition: transform 0.15s, opacity 0.15s;
+}
+.domain-tile:hover .dt-icon { opacity: 1; transform: scale(1.15); }
 .domain-tile .dt-count { color: var(--fg-mute); font-size: 10px; }
 @media (max-width: 720px) {
   .domain-tiles { padding: 0 12px; gap: 6px; }

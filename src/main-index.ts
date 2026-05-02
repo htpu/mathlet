@@ -437,6 +437,13 @@ function renderGrid() {
       music: ['harmonic-series', 'beating', 'chord-spectrum', 'fm-synthesis'],
       gr: ['gravitational-wave-strain', 'schwarzschild-funnel', 'time-dilation-gr', 'light-deflection'],
     };
+    const DOMAIN_ICON: Record<string, string> = {
+      algebra: 'ƒ', geometry: '◬', calculus: '∫', linalg: '⊞', ode: '⤴',
+      pde: '∿', probability: '🎲', fractal: '❄', topology: '◯', numbertheory: '∺',
+      signals: '∿', optimization: '⊿', vectorfield: '⇶', cellular: '⊞',
+      biology: '🧬', chemistry: '⚗', quantum: '⚛', graph: '◍', crypto: '🔒',
+      music: '♪', gr: '✦',
+    };
     const tiles = el('div', { class: 'domain-tiles' });
     for (const [dom, list] of byDomain) {
       const a = el('a', { class: 'domain-tile', href: `/domain/${dom}` }) as HTMLAnchorElement;
@@ -454,7 +461,11 @@ function renderGrid() {
         a.appendChild(mosaic);
       }
       const meta = el('div', { class: 'dt-meta' });
-      meta.appendChild(el('span', { class: 'dt-name' }, labels[dom as keyof typeof labels]));
+      const nameWrap = el('span', { class: 'dt-name' });
+      const ic = DOMAIN_ICON[dom];
+      if (ic) nameWrap.appendChild(el('span', { class: 'dt-icon' }, ic));
+      nameWrap.appendChild(document.createTextNode(labels[dom as keyof typeof labels]));
+      meta.appendChild(nameWrap);
       meta.appendChild(el('span', { class: 'dt-count' }, String(list.length)));
       a.appendChild(meta);
       a.onclick = (ev) => {
