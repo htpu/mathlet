@@ -1600,3 +1600,11 @@ Object.assign(FORMULA_I18N, {
   'buffer-capacity': { en: { title: 'Buffer capacity β(pH)', blurb: 'Maximum at pH = pKa.' }, es: { title: 'Capacidad amortiguadora', blurb: 'Máximo en pH = pKa.' } },
   'raoult-deviation': { en: { title: 'Margules activity (non-ideal)', blurb: 'ln γ₁ = A x₂².' }, es: { title: 'Margules: actividad no ideal', blurb: 'ln γ₁ = A x₂².' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'soft-thresholding': { en: { title: 'Soft-thresholding operator', blurb: 'L1 (Lasso) proximal operator.' }, es: { title: 'Operador de soft-threshold', blurb: 'Operador proximal L1.' } },
+  'lr-cosine-decay': { en: { title: 'Cosine learning-rate decay', blurb: 'Smoothly anneal η_max → η_min.' }, es: { title: 'Decaimiento coseno de η', blurb: 'Recocido suave de η_max → η_min.' } },
+  'lr-exp-decay': { en: { title: 'Exponential LR decay', blurb: 'η_t = η₀ γ^t.' }, es: { title: 'Decaimiento exponencial', blurb: 'η_t = η₀ γ^t.' } },
+  'adam-bias': { en: { title: 'Adam bias-correction factor', blurb: '1/(1 − β^t) compensates early estimates.' }, es: { title: 'Corrección de sesgo Adam', blurb: '1/(1 − β^t).' } },
+  'armijo-condition': { en: { title: 'Armijo line-search condition', blurb: 'Accept α if f drops below the secant.' }, es: { title: 'Condición de Armijo', blurb: 'Aceptar α si f cae bajo la secante.' } },
+});
