@@ -474,13 +474,14 @@ function renderGrid() {
       fluid: ['bernoulli', 'stokes-drag', 'reynolds-number'],
       chaos: ['henon-map', 'standard-map', 'tent-map'],
       gametheory: ['hawk-dove-replicator', 'nash-bargain', 'prisoners-dilemma'],
+      logic: ['truth-table-3var', 'sat-phase-transition', 'majority-gate'],
     };
     const DOMAIN_ICON: Record<string, string> = {
       algebra: 'ƒ', geometry: '◬', calculus: '∫', linalg: '⊞', ode: '⤴',
       pde: '∿', probability: '🎲', fractal: '❄', topology: '◯', numbertheory: '∺',
       signals: '∿', optimization: '⊿', vectorfield: '⇶', cellular: '⊞',
       biology: '🧬', chemistry: '⚗', quantum: '⚛', graph: '◍', crypto: '🔒',
-      music: '♪', gr: '✦', astronomy: '🪐', economics: '💹', statmech: '🌡', fluid: '🌊', chaos: '🌀', gametheory: '♟',
+      music: '♪', gr: '✦', astronomy: '🪐', economics: '💹', statmech: '🌡', fluid: '🌊', chaos: '🌀', gametheory: '♟', logic: '⊨',
     };
     const tiles = el('div', { class: 'domain-tiles' });
     for (const [dom, list] of byDomain) {

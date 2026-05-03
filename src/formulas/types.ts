@@ -3,7 +3,7 @@ export type Domain =
   | 'probability' | 'fractal' | 'topology' | 'numbertheory'
   | 'signals' | 'optimization' | 'vectorfield' | 'cellular'
   | 'biology' | 'chemistry'
-  | 'quantum' | 'graph' | 'crypto' | 'music' | 'gr' | 'astronomy' | 'economics' | 'statmech' | 'fluid' | 'chaos' | 'gametheory';
+  | 'quantum' | 'graph' | 'crypto' | 'music' | 'gr' | 'astronomy' | 'economics' | 'statmech' | 'fluid' | 'chaos' | 'gametheory' | 'logic';
 
 export const DOMAIN_LABELS: Record<Domain, string> = {
   algebra: '代数 / 三角 / 复数',
@@ -33,6 +33,7 @@ export const DOMAIN_LABELS: Record<Domain, string> = {
   fluid: '流体力学 / 涡 / 阻力',
   chaos: '混沌 / 离散映射',
   gametheory: '博弈论 / 演化',
+  logic: '逻辑 / 布尔 / SAT',
 };
 
 export type Level = 1 | 2 | 3 | 4 | 5;
