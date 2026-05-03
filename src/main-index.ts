@@ -396,6 +396,17 @@ function renderGrid() {
     };
     stats.appendChild(randBtn);
     root.appendChild(stats);
+    // Saved (favourites) — surface above featured if present.
+    let favs: string[] = [];
+    try { favs = JSON.parse(localStorage.getItem('mathlet:favs') ?? '[]'); } catch {}
+    const favEntries = favs.map(s => all.find(r => r.slug === s)).filter(Boolean) as RegistryEntry[];
+    if (favEntries.length > 0) {
+      const savedLabel: Record<Lang, string> = { zh: '★ 已收藏', en: '★ Saved', es: '★ Guardados' };
+      root.appendChild(el('h2', { class: 'section-h section-h-hero' }, savedLabel[lang.peek()]));
+      const row = el('div', { class: 'featured-row' });
+      for (const e of favEntries.slice(0, 6)) row.appendChild(makeCard(e, true));
+      root.appendChild(row);
+    }
     // Discover: Popular when data exists, else Featured (one section, not three)
     const discoverSlugs = popularSlugs.length > 0 ? popularSlugs.slice(0, 6) : FEATURED_SLUGS;
     const discoverLabel = popularSlugs.length > 0 ? POPULAR_LABEL[lang.peek()] : FEATURED_LABEL[lang.peek()];

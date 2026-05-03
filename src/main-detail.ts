@@ -140,6 +140,22 @@ async function bootstrap() {
   bar.appendChild(diceBtn);
   const snapBtn = el('button', { class: 'nav-arrow' }, UI[lang.peek()].snapshot) as HTMLButtonElement;
   bar.appendChild(snapBtn);
+  const FAV_KEY = 'mathlet:favs';
+  const getFavs = (): string[] => { try { return JSON.parse(localStorage.getItem(FAV_KEY) ?? '[]'); } catch { return []; } };
+  const isFav = () => getFavs().includes(slug);
+  const favBtn = el('button', { class: 'nav-arrow', title: 'favourite (toggle)' }) as HTMLButtonElement;
+  const renderFav = () => { favBtn.textContent = isFav() ? '★' : '☆'; favBtn.style.color = isFav() ? 'var(--accent)' : ''; };
+  renderFav();
+  favBtn.addEventListener('click', () => {
+    const cur = getFavs();
+    const idx = cur.indexOf(slug);
+    if (idx >= 0) cur.splice(idx, 1); else cur.unshift(slug);
+    localStorage.setItem(FAV_KEY, JSON.stringify(cur.slice(0, 64)));
+    renderFav();
+    const msg: Record<Lang, string> = isFav() ? { zh: '★ 已收藏', en: '★ Saved', es: '★ Guardado' } : { zh: '☆ 取消收藏', en: '☆ Unsaved', es: '☆ Quitado' };
+    toast(msg[lang.peek()], 900);
+  });
+  bar.appendChild(favBtn);
   const shareBtn = el('button', { class: 'nav-arrow', title: 'copy link with current params' }, '🔗') as HTMLButtonElement;
   bar.appendChild(shareBtn);
   const shareCopy: Record<Lang, string> = { zh: '✓ 链接已复制', en: '✓ Link copied', es: '✓ Enlace copiado' };
@@ -378,6 +394,7 @@ async function bootstrap() {
     if (e.key === 'r') { for (const p of formula.params) paramSignals[p.key].value = p.default; syncURL(); rebuildParams(); toast({zh:'已重置',en:'reset',es:'reiniciado'}[lang.peek()],900); }
     else if (e.key === 'd') { diceBtn.click(); toast({zh:'🎲 随机',en:'🎲 random',es:'🎲 aleatorio'}[lang.peek()],900); }
     else if (e.key === 's' || e.key === 'S') { void doShare(); }
+    else if (e.key === 'f' || e.key === 'F') { favBtn.click(); }
     else if (e.key === 'ArrowLeft' && prev) location.href = `/f/${prev.slug}.html`;
     else if (e.key === 'ArrowRight' && next) location.href = `/f/${next.slug}.html`;
     else if (e.key === 'k' && globalPrev) location.href = `/f/${globalPrev.slug}.html`;
@@ -386,7 +403,7 @@ async function bootstrap() {
     else if (e.key === 'G' && globalNext) location.href = `/f/${REGISTRY[REGISTRY.length-1].slug}.html`;
     else if (e.key === '?') {
       e.preventDefault();
-      const lines = ['mathlet detail · keyboard', '', '← → prev/next in same domain+level', 'j / k  next/prev across all formulas', 'g / G  first / last formula', 'r  reset params', 'd  randomise params', 's  share (copy URL)', '/  search (top)', 'esc  close'];
+      const lines = ['mathlet detail · keyboard', '', '← → prev/next in same domain+level', 'j / k  next/prev across all formulas', 'g / G  first / last formula', 'r  reset params', 'd  randomise params', 'f  favourite (toggle)', 's  share (copy URL)', '/  search (top)', 'esc  close'];
       const o = document.createElement('div');
       o.style.cssText = 'position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;cursor:pointer';
       const b = document.createElement('div');
