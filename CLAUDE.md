@@ -78,12 +78,19 @@ AUDIT_URL=https://math.htpu.net npx tsx scripts/audit-renders.ts
      view: { cx:0, cy:0, scale:60 },
    });
    ```
-2. Slug must be ASCII URL-safe (no `ç`, no spaces — they break Cloudflare routing).
+2. Slug must be ASCII URL-safe (no `ç`, no spaces — they break Cloudflare routing). Also check the slug isn't already used in another domain (`grep "slug: '<slug>'" src/formulas/_registry.generated.ts`) — collisions silently hide one entry.
 3. `npm run registry`
 4. `npm run dev` and check `/f/<slug>`
 5. `npm run build` (or `npm run deploy`)
+6. **Generate the thumbnail** — required, not optional. Cards without `public/thumbs/<slug>.webp` show a broken image on the home grid. Run:
+   ```
+   npm run preview &              # serve dist on :4173
+   THUMB_URL=http://localhost:4173 npx tsx scripts/generate-thumbs.ts
+   kill %1                        # stop preview
+   ```
+   The script skips slugs whose `.webp` already exists, so this only generates the new ones. Commit `public/thumbs/<slug>.webp` alongside the formula file.
 
-Optional but encouraged: add zh→en/es to `src/i18n/formulas.ts`. Optional thumbnail regen via `generate-thumbs.ts`.
+Optional but encouraged: add zh→en/es to `src/i18n/formulas.ts`.
 
 ## Tracked state
 - `localStorage['mathlet:lang']` — language
