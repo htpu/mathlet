@@ -202,6 +202,7 @@ export const LOADERS: Record<string, () => Promise<{ default: any }>> = {
   'ideal-gas': () => import('./chemistry/ideal-gas'),
   'langmuir-isotherm': () => import('./chemistry/langmuir-isotherm'),
   'lennard-jones': () => import('./chemistry/lennard-jones'),
+  'methane-combustion': () => import('./chemistry/methane-combustion'),
   'methane-tetrahedral': () => import('./chemistry/methane-tetrahedral'),
   'morse-potential': () => import('./chemistry/morse-potential'),
   'ph-titration': () => import('./chemistry/ph-titration'),

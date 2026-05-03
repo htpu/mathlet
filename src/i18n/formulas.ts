@@ -1616,3 +1616,7 @@ Object.assign(FORMULA_I18N, {
   'inscribed-radius': { en: { title: 'Inscribed-circle radius r = A/s', blurb: 'Isosceles triangle in-radius vs base.' }, es: { title: 'Radio inscrito r = A/s', blurb: 'Triángulo isósceles vs base.' } },
   'golden-section': { en: { title: 'Golden-ratio successive divisions', blurb: 'Powers of 1/φ form a geometric sequence.' }, es: { title: 'Sección áurea', blurb: 'Potencias de 1/φ.' } },
 });
+
+Object.assign(FORMULA_I18N, {
+  'methane-combustion': { en: { title: 'Methane combustion CH₄ + 2O₂ → CO₂ + 2H₂O', blurb: 'Animated atom rearrangement: reactants → flame → products.' }, es: { title: 'Combustión de metano', blurb: 'Reordenamiento atómico animado.' } },
+});
