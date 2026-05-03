@@ -1,5 +1,6 @@
 import { readdirSync, statSync, writeFileSync, readFileSync } from 'node:fs';
 import { resolve, join } from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const FORMULAS_DIR = join(ROOT, 'src/formulas');
@@ -96,4 +97,42 @@ writeFileSync(LOADERS_OUT, loaderLines.join('\n'));
 const slugList = records.map(r => r.slug).sort();
 writeFileSync(resolve('public', 'all-slugs.json'), JSON.stringify(slugList));
 
-console.log(`registry: ${records.length} formulas → metadata + loaders split + all-slugs.json`);
+// public/recent.json — top 24 slugs by git-first-add timestamp desc. The home
+// page "Recently added" row reads this so order reflects real add time, not
+// alphabetic-tail of the registry.
+try {
+  const out = execFileSync(
+    'git',
+    ['log', '--diff-filter=A', '--name-only', '--reverse', '--format=COMMIT %at', '--', 'src/formulas/'],
+    { cwd: ROOT, encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 },
+  );
+  const slugToTs = new Map<string, number>();
+  let cur = 0;
+  for (const line of out.split('\n')) {
+    if (line.startsWith('COMMIT ')) {
+      cur = parseInt(line.slice(7), 10) || 0;
+    } else if (line.startsWith('src/formulas/') && line.endsWith('.ts')) {
+      const slug = line.slice(line.lastIndexOf('/') + 1).replace(/\.ts$/, '');
+      if (!slugToTs.has(slug) && cur) slugToTs.set(slug, cur);
+    }
+  }
+  const validSlugs = new Set(records.map(r => r.slug));
+  for (const r of records) {
+    if (!slugToTs.has(r.slug)) {
+      try {
+        const fp = join(FORMULAS_DIR, r.path.replace(/^\.\//, '') + '.ts');
+        slugToTs.set(r.slug, Math.floor(statSync(fp).mtimeMs / 1000));
+      } catch { /* ignore */ }
+    }
+  }
+  const ranked = [...slugToTs.entries()]
+    .filter(([s]) => validSlugs.has(s))
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 24)
+    .map(([slug, ts]) => ({ slug, ts }));
+  writeFileSync(resolve('public', 'recent.json'), JSON.stringify(ranked));
+} catch (e) {
+  console.warn('registry: skip recent.json —', (e as Error).message);
+}
+
+console.log(`registry: ${records.length} formulas → metadata + loaders split + all-slugs.json + recent.json`);

@@ -7,6 +7,13 @@ import { getFormulaI18N, peekFormulaI18N } from './i18n/formulas-async';
 
 const all = REGISTRY;
 const lang = signal<Lang>(detectLang());
+const recentSlugs = signal<string[]>([]);
+fetch('/recent.json')
+  .then(r => r.ok ? r.json() : [])
+  .then((arr: { slug: string; ts: number }[]) => {
+    recentSlugs.value = arr.map(x => x.slug);
+  })
+  .catch(() => { /* fall back to registry-tail order */ });
 setLang(lang.peek());
 
 const params = new URLSearchParams(location.search);
@@ -396,9 +403,13 @@ function renderGrid() {
     };
     stats.appendChild(randBtn);
     root.appendChild(stats);
-    // Recently added — last 6 entries by registry order.
+    // Recently added — top 6 by git-first-add timestamp (public/recent.json),
+    // falling back to registry-tail order if the fetch hasn't resolved yet.
     const recentLabel: Record<Lang, string> = { zh: '✨ 新加', en: '✨ Recently added', es: '✨ Añadidos' };
-    const recentEntries = all.slice(-6).reverse();
+    const rs = recentSlugs.value;
+    const recentEntries = rs.length > 0
+      ? (rs.map(s => all.find(r => r.slug === s)).filter(Boolean) as RegistryEntry[]).slice(0, 6)
+      : all.slice(-6).reverse();
     if (recentEntries.length > 0) {
       root.appendChild(el('h2', { class: 'section-h section-h-hero' }, recentLabel[lang.peek()]));
       const row = el('div', { class: 'featured-row' });
