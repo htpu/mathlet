@@ -470,13 +470,14 @@ function renderGrid() {
       gr: ['gravitational-wave-strain', 'schwarzschild-funnel', 'time-dilation-gr', 'light-deflection'],
       astronomy: ['kepler-orbit', 'tidal-force', 'hill-sphere'],
       economics: ['compound-interest', 'cobb-douglas', 'lorenz-curve'],
+      statmech: ['ising-mft', 'schottky-anomaly', 'two-level-partition'],
     };
     const DOMAIN_ICON: Record<string, string> = {
       algebra: 'ƒ', geometry: '◬', calculus: '∫', linalg: '⊞', ode: '⤴',
       pde: '∿', probability: '🎲', fractal: '❄', topology: '◯', numbertheory: '∺',
       signals: '∿', optimization: '⊿', vectorfield: '⇶', cellular: '⊞',
       biology: '🧬', chemistry: '⚗', quantum: '⚛', graph: '◍', crypto: '🔒',
-      music: '♪', gr: '✦', astronomy: '🪐', economics: '💹',
+      music: '♪', gr: '✦', astronomy: '🪐', economics: '💹', statmech: '🌡',
     };
     const tiles = el('div', { class: 'domain-tiles' });
     for (const [dom, list] of byDomain) {
