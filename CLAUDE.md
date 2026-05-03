@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-mathlet — 731 interactive math formula visualizations. Vite + TS strict + KaTeX + Three.js, custom 80-LOC reactive runtime, SSG to Cloudflare Pages.
+mathlet — 734 interactive math formula visualizations. Vite + TS strict + KaTeX + Three.js, custom 80-LOC reactive runtime, SSG to Cloudflare Pages.
 
 - Production: https://math.htpu.net
 - CF Pages: https://mathlet.pages.dev (project: `mathlet`)
@@ -15,7 +15,7 @@ mathlet — 731 interactive math formula visualizations. Vite + TS strict + KaTe
 ```
 npm run dev        # Vite dev server (HMR)
 npm run registry   # regenerate src/formulas/_registry.generated.ts + _loaders.generated.ts after adding/removing/renaming a formula file
-npm run build      # registry → vite build → ssg (prerenders index + 731 detail pages + sitemap)
+npm run build      # registry → vite build → ssg (prerenders index + 734 detail pages + sitemap)
 npm run preview    # preview built dist on :4173
 npm run deploy     # full build + wrangler pages deploy
 ```
@@ -105,5 +105,5 @@ Optional but encouraged: add zh→en/es to `src/i18n/formulas.ts`.
 - URL params on `/`: `q`, `domain`, `level`, `surface`, `lang`
 - URL params on `/f/<slug>`: `mode=play`, `lang`, plus every formula's own `params[].key`
 
-## Domain list (24)
-`algebra`, `geometry`, `calculus`, `linalg`, `ode`, `pde`, `probability`, `fractal`, `topology`, `numbertheory`, `signals`, `optimization`, `vectorfield`, `cellular`, `biology`, `chemistry`, `quantum`, `graph`, `crypto`, `music`, `gr`, `astronomy`, `economics`, `statmech`.
+## Domain list (25)
+`algebra`, `geometry`, `calculus`, `linalg`, `ode`, `pde`, `probability`, `fractal`, `topology`, `numbertheory`, `signals`, `optimization`, `vectorfield`, `cellular`, `biology`, `chemistry`, `quantum`, `graph`, `crypto`, `music`, `gr`, `astronomy`, `economics`, `statmech`, `fluid`.
