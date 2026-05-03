@@ -3,7 +3,7 @@ export type Domain =
   | 'probability' | 'fractal' | 'topology' | 'numbertheory'
   | 'signals' | 'optimization' | 'vectorfield' | 'cellular'
   | 'biology' | 'chemistry'
-  | 'quantum' | 'graph' | 'crypto' | 'music' | 'gr';
+  | 'quantum' | 'graph' | 'crypto' | 'music' | 'gr' | 'astronomy';
 
 export const DOMAIN_LABELS: Record<Domain, string> = {
   algebra: '代数 / 三角 / 复数',
@@ -27,6 +27,7 @@ export const DOMAIN_LABELS: Record<Domain, string> = {
   crypto: '密码 / 编码',
   music: '音乐 / 声学',
   gr: '广义相对论 / 微分几何',
+  astronomy: '天文 / 轨道 / 恒星',
 };
 
 export type Level = 1 | 2 | 3 | 4 | 5;

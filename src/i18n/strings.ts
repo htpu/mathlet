@@ -80,7 +80,7 @@ export const DOMAIN_LABELS_I18N: Record<Lang, Record<Domain, string>> = {
     linalg: '线性代数', ode: 'ODE / 动力系统', pde: 'PDE / 物理场',
     probability: '概率 / 统计', fractal: '分形 / 混沌', topology: '拓扑 / 流形',
     numbertheory: '数论 / 离散', signals: '信号 / 变换', optimization: '优化 / 数值',
-    vectorfield: '向量场 / 微分几何', cellular: '元胞自动机 / 涌现', biology: '生物 / 基因 / 分子', chemistry: '化学 / 反应 / 分子', quantum: '量子 / 波函数', graph: '图论 / 算法', crypto: '密码 / 编码', music: '音乐 / 声学', gr: '广义相对论 / 微分几何',
+    vectorfield: '向量场 / 微分几何', cellular: '元胞自动机 / 涌现', biology: '生物 / 基因 / 分子', chemistry: '化学 / 反应 / 分子', quantum: '量子 / 波函数', graph: '图论 / 算法', crypto: '密码 / 编码', music: '音乐 / 声学', gr: '广义相对论 / 微分几何', astronomy: '天文 / 轨道 / 恒星',
   },
   en: {
     algebra: 'Algebra / Trig / Complex', geometry: 'Geometry / Analytic',
@@ -89,7 +89,7 @@ export const DOMAIN_LABELS_I18N: Record<Lang, Record<Domain, string>> = {
     probability: 'Probability / Statistics', fractal: 'Fractals / Chaos',
     topology: 'Topology / Manifolds', numbertheory: 'Number Theory / Discrete',
     signals: 'Signals / Transforms', optimization: 'Optimization / Numerics',
-    vectorfield: 'Vector Fields / Diff Geo', cellular: 'Cellular Automata / Emergence', biology: 'Biology / Genes / Molecules', chemistry: 'Chemistry / Reactions / Molecules', quantum: 'Quantum / Wavefunctions', graph: 'Graph Theory / Algorithms', crypto: 'Cryptography / Coding', music: 'Music / Acoustics', gr: 'General Relativity / Diff Geo',
+    vectorfield: 'Vector Fields / Diff Geo', cellular: 'Cellular Automata / Emergence', biology: 'Biology / Genes / Molecules', chemistry: 'Chemistry / Reactions / Molecules', quantum: 'Quantum / Wavefunctions', graph: 'Graph Theory / Algorithms', crypto: 'Cryptography / Coding', music: 'Music / Acoustics', gr: 'General Relativity / Diff Geo', astronomy: 'Astronomy / Orbits / Stars',
   },
   es: {
     algebra: 'Álgebra / Trig / Complejos', geometry: 'Geometría / Analítica',
@@ -98,7 +98,7 @@ export const DOMAIN_LABELS_I18N: Record<Lang, Record<Domain, string>> = {
     probability: 'Probabilidad / Estadística', fractal: 'Fractales / Caos',
     topology: 'Topología / Variedades', numbertheory: 'Teoría de Números / Discreta',
     signals: 'Señales / Transformadas', optimization: 'Optimización / Numérico',
-    vectorfield: 'Campos Vectoriales / Geo Dif', cellular: 'Autómatas Celulares / Emergencia', biology: 'Biología / Genes / Moléculas', chemistry: 'Química / Reacciones / Moléculas', quantum: 'Cuántica / Funciones de onda', graph: 'Teoría de Grafos / Algoritmos', crypto: 'Criptografía / Codificación', music: 'Música / Acústica', gr: 'Relatividad General / Geo Dif',
+    vectorfield: 'Campos Vectoriales / Geo Dif', cellular: 'Autómatas Celulares / Emergencia', biology: 'Biología / Genes / Moléculas', chemistry: 'Química / Reacciones / Moléculas', quantum: 'Cuántica / Funciones de onda', graph: 'Teoría de Grafos / Algoritmos', crypto: 'Criptografía / Codificación', music: 'Música / Acústica', gr: 'Relatividad General / Geo Dif', astronomy: 'Astronomía / Órbitas / Estrellas',
   },
 };
 
