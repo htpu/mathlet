@@ -1,5 +1,6 @@
 import { signal, effect } from './runtime/signal';
 import { installScrollAffordances } from './runtime/scroll-affordances';
+import { toast } from './runtime/toast';
 import type { Formula, ParamSpec, ParamValues, Surface } from './formulas/types';
 import { REGISTRY } from './formulas/_registry.generated';
 import { LOADERS } from './formulas/_loaders.generated';
@@ -141,15 +142,15 @@ async function bootstrap() {
   bar.appendChild(snapBtn);
   const shareBtn = el('button', { class: 'nav-arrow', title: 'copy link with current params' }, '🔗') as HTMLButtonElement;
   bar.appendChild(shareBtn);
-  shareBtn.addEventListener('click', async () => {
+  const shareCopy: Record<Lang, string> = { zh: '✓ 链接已复制', en: '✓ Link copied', es: '✓ Enlace copiado' };
+  const doShare = async () => {
     syncURL();
     try {
       await navigator.clipboard.writeText(location.href);
-      const orig = shareBtn.textContent;
-      shareBtn.textContent = '✓';
-      setTimeout(() => { shareBtn.textContent = orig; }, 1200);
-    } catch {}
-  });
+      toast(shareCopy[lang.peek()]);
+    } catch { toast(location.href, 3000); }
+  };
+  shareBtn.addEventListener('click', doShare);
   root.appendChild(bar);
   // Wire topbar (logo + search + menu) — search goes to /?q=
   const qInput = document.getElementById('q-detail') as HTMLInputElement | null;
@@ -374,8 +375,9 @@ async function bootstrap() {
   document.addEventListener('keydown', e => {
     if ((e.target as HTMLElement).tagName === 'INPUT') return;
     if (e.metaKey || e.ctrlKey || e.altKey) return;
-    if (e.key === 'r') { for (const p of formula.params) paramSignals[p.key].value = p.default; syncURL(); rebuildParams(); }
-    else if (e.key === 'd') { diceBtn.click(); }
+    if (e.key === 'r') { for (const p of formula.params) paramSignals[p.key].value = p.default; syncURL(); rebuildParams(); toast({zh:'已重置',en:'reset',es:'reiniciado'}[lang.peek()],900); }
+    else if (e.key === 'd') { diceBtn.click(); toast({zh:'🎲 随机',en:'🎲 random',es:'🎲 aleatorio'}[lang.peek()],900); }
+    else if (e.key === 's' || e.key === 'S') { void doShare(); }
     else if (e.key === 'ArrowLeft' && prev) location.href = `/f/${prev.slug}.html`;
     else if (e.key === 'ArrowRight' && next) location.href = `/f/${next.slug}.html`;
     else if (e.key === 'k' && globalPrev) location.href = `/f/${globalPrev.slug}.html`;
@@ -384,7 +386,7 @@ async function bootstrap() {
     else if (e.key === 'G' && globalNext) location.href = `/f/${REGISTRY[REGISTRY.length-1].slug}.html`;
     else if (e.key === '?') {
       e.preventDefault();
-      const lines = ['mathlet detail · keyboard', '', '← → prev/next in same domain+level', 'j / k  next/prev across all formulas', 'g / G  first / last formula', 'r  reset params', 'd  randomise params', '/  search (top)', 'esc  close'];
+      const lines = ['mathlet detail · keyboard', '', '← → prev/next in same domain+level', 'j / k  next/prev across all formulas', 'g / G  first / last formula', 'r  reset params', 'd  randomise params', 's  share (copy URL)', '/  search (top)', 'esc  close'];
       const o = document.createElement('div');
       o.style.cssText = 'position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;cursor:pointer';
       const b = document.createElement('div');
