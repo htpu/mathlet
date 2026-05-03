@@ -1,4 +1,5 @@
 import { signal, effect } from './runtime/signal';
+import { installScrollAffordances } from './runtime/scroll-affordances';
 import type { Domain, Level } from './formulas/types';
 import { REGISTRY, type RegistryEntry } from './formulas/_registry.generated';
 import { UI, DOMAIN_LABELS_I18N, LANGS, LANG_LABELS, LANG_FULL, detectLang, setLang, type Lang } from './i18n/strings';
@@ -538,6 +539,7 @@ function renderBreadcrumbs() {
 
 renderTopbar();
 applyStaticText();
+installScrollAffordances();
 renderFilters();
 renderBreadcrumbs();
 effect(() => { query.value; domains.value; levels.value; surfaces.value; renderGrid(); renderBreadcrumbs(); });

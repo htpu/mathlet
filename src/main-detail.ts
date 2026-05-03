@@ -1,4 +1,5 @@
 import { signal, effect } from './runtime/signal';
+import { installScrollAffordances } from './runtime/scroll-affordances';
 import type { Formula, ParamSpec, ParamValues, Surface } from './formulas/types';
 import { REGISTRY } from './formulas/_registry.generated';
 import { LOADERS } from './formulas/_loaders.generated';
@@ -38,6 +39,7 @@ if (!meta) {
 } else {
   void bootstrap();
 }
+installScrollAffordances();
 
 async function bootstrap() {
   const loader = LOADERS[slug];
