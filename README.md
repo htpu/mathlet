@@ -1,6 +1,6 @@
 # mathlet
 
-**734 interactive math formula visualizations** — every formula is a live canvas with adjustable parameters. 25 domains. Zero framework. Vite + TypeScript strict + KaTeX + Three.js, custom 80-LOC reactive runtime, SSG to Cloudflare Pages.
+**737 interactive math formula visualizations** — every formula is a live canvas with adjustable parameters. 26 domains. Zero framework. Vite + TypeScript strict + KaTeX + Three.js, custom 80-LOC reactive runtime, SSG to Cloudflare Pages.
 
 → **Live**: <https://math.htpu.net>
 
@@ -17,11 +17,11 @@
 
 ## What's inside
 
-- **734 formulas** across 25 domains: algebra, geometry, calculus, linear algebra, ODE, PDE, probability, fractal, topology, number theory, signals, optimization, vector field, cellular automata, biology, chemistry, quantum, graph, crypto, music, general relativity.
+- **737 formulas** across 26 domains: algebra, geometry, calculus, linear algebra, ODE, PDE, probability, fractal, topology, number theory, signals, optimization, vector field, cellular automata, biology, chemistry, quantum, graph, crypto, music, general relativity.
 - **5 difficulty levels** (L1 to L5).
 - **Two render surfaces**: `canvas2d` for 2D plots, fields, fractals, CA; `three` for 3D surfaces, molecules, attractors.
 - **Templates** (`src/templates/`): `fn1d`, `param2d`, `polar`, `escape`, `ode2d`, `ode3d`, `surface3d`, `ifs`, `ca1d`, `ca2d`, `vfield2d`, `rwalk`, `matrix2d`, `histogram` — pick the right template, write 10 lines, ship a formula.
-- **i18n**: 中 / EN / ES with full coverage on all 734 entries.
+- **i18n**: 中 / EN / ES with full coverage on all 737 entries.
 - **SSG**: per-formula prerendered HTML for SEO + KaTeX noscript fallback + filtered landing pages per domain / level / surface + sitemap with hreflang + per-page BreadcrumbList & ItemList JSON-LD.
 
 ## Detail page UX
@@ -63,7 +63,7 @@ Slug must be ASCII URL-safe. For 3D formulas, set `surface: 'three'` explicitly 
 ```sh
 npm install
 npm run dev        # Vite HMR dev server
-npm run build      # registry → vite build → ssg (734 detail pages + 28 landings + sitemap)
+npm run build      # registry → vite build → ssg (737 detail pages + 28 landings + sitemap)
 npm run preview    # serve dist on :4173
 npm run deploy     # build + wrangler pages deploy
 ```
@@ -71,7 +71,7 @@ npm run deploy     # build + wrangler pages deploy
 ## Architecture
 
 - **`src/runtime/signal.ts`** — ~80 LOC `signal` / `computed` / `effect`. The whole reactive layer.
-- **`src/main-index.ts`** — index page: featured row + 25 domain mosaic tiles + filter chips + breadcrumbs.
+- **`src/main-index.ts`** — index page: featured row + 26 domain mosaic tiles + filter chips + breadcrumbs.
 - **`src/main-detail.ts`** — detail page: parameter sliders bound via signals, URL-synced, keyboard shortcuts, share button.
 - **`scripts/generate-registry.ts`** — scans `src/formulas/<domain>/<slug>.ts`, regex-extracts `meta`, writes registry + lazy loader map for chunk splitting.
 - **`scripts/ssg.ts`** — JSDOM-based prerender of index + detail + landings; injects KaTeX-rendered TeX, OG/Twitter, JSON-LD, hreflang, sitemap.
