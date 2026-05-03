@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-mathlet — 423+ interactive math formula visualizations. Vite + TS strict + KaTeX + Three.js, custom 80-LOC reactive runtime, SSG to Cloudflare Pages.
+mathlet — 725 interactive math formula visualizations. Vite + TS strict + KaTeX + Three.js, custom 80-LOC reactive runtime, SSG to Cloudflare Pages.
 
 - Production: https://math.htpu.net
 - CF Pages: https://mathlet.pages.dev (project: `mathlet`)
@@ -15,7 +15,7 @@ mathlet — 423+ interactive math formula visualizations. Vite + TS strict + KaT
 ```
 npm run dev        # Vite dev server (HMR)
 npm run registry   # regenerate src/formulas/_registry.generated.ts + _loaders.generated.ts after adding/removing/renaming a formula file
-npm run build      # registry → vite build → ssg (prerenders index + 423 detail pages + sitemap)
+npm run build      # registry → vite build → ssg (prerenders index + 725 detail pages + sitemap)
 npm run preview    # preview built dist on :4173
 npm run deploy     # full build + wrangler pages deploy
 ```
@@ -89,6 +89,12 @@ AUDIT_URL=https://math.htpu.net npx tsx scripts/audit-renders.ts
    kill %1                        # stop preview
    ```
    The script skips slugs whose `.webp` already exists, so this only generates the new ones. Commit `public/thumbs/<slug>.webp` alongside the formula file.
+7. **Update the formula count and domain count** wherever they appear. After `npm run registry`, the canonical count is `grep -c "slug:" src/formulas/_registry.generated.ts`. Sync to:
+   - `README.md` — both the hero number and the domain-list paragraph
+   - `index.html` — `<title>`, `meta[name="description"]`, all `og:*` and `twitter:*` tags
+   - `src/i18n/strings.ts` — `siteTagline`, `docTitle`, `docDescription`, `heroBody` for **all three** languages (zh/en/es)
+   - this `CLAUDE.md` — line 7 ("X interactive math formula visualizations") and the SSG line in the Commands block, plus the `Domain list (N)` heading at the bottom if a new domain was added
+   Quick check: `grep -nE "[0-9]+ (formula|公式|fórmula|domain|领域|dominio)" README.md CLAUDE.md index.html src/i18n/strings.ts` — every match should show the new count.
 
 Optional but encouraged: add zh→en/es to `src/i18n/formulas.ts`.
 
@@ -99,5 +105,5 @@ Optional but encouraged: add zh→en/es to `src/i18n/formulas.ts`.
 - URL params on `/`: `q`, `domain`, `level`, `surface`, `lang`
 - URL params on `/f/<slug>`: `mode=play`, `lang`, plus every formula's own `params[].key`
 
-## Domain list (14)
-`algebra`, `geometry`, `calculus`, `linalg`, `ode`, `pde`, `probability`, `fractal`, `topology`, `numbertheory`, `signals`, `optimization`, `vectorfield`, `cellular`.
+## Domain list (22)
+`algebra`, `geometry`, `calculus`, `linalg`, `ode`, `pde`, `probability`, `fractal`, `topology`, `numbertheory`, `signals`, `optimization`, `vectorfield`, `cellular`, `biology`, `chemistry`, `quantum`, `graph`, `crypto`, `music`, `gr`, `astronomy`.
