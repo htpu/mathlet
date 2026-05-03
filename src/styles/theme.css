@@ -671,8 +671,11 @@ code, kbd, .mono { font-family: var(--mono); }
 .detail {
   display: grid;
   grid-template-rows: auto 1fr;
-  height: 100vh;
+  /* Fill viewport between topbar (top) and site-footer (bottom). */
+  min-height: calc(100vh - 50px - 56px);
+  height: calc(100vh - 50px - 56px);
 }
+@media (max-width: 720px) { .detail { height: auto; min-height: calc(100vh - 50px); } }
 .detail-bar {
   display: flex; align-items: center; gap: 14px;
   padding: 10px 20px;

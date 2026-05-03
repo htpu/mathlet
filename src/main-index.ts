@@ -396,6 +396,15 @@ function renderGrid() {
     };
     stats.appendChild(randBtn);
     root.appendChild(stats);
+    // Recently added — last 6 entries by registry order.
+    const recentLabel: Record<Lang, string> = { zh: '✨ 新加', en: '✨ Recently added', es: '✨ Añadidos' };
+    const recentEntries = all.slice(-6).reverse();
+    if (recentEntries.length > 0) {
+      root.appendChild(el('h2', { class: 'section-h section-h-hero' }, recentLabel[lang.peek()]));
+      const row = el('div', { class: 'featured-row' });
+      for (const e of recentEntries) row.appendChild(makeCard(e, true));
+      root.appendChild(row);
+    }
     // Saved (favourites) — surface above featured if present.
     let favs: string[] = [];
     try { favs = JSON.parse(localStorage.getItem('mathlet:favs') ?? '[]'); } catch {}
